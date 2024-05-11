@@ -20,7 +20,7 @@ You will need:
 3. Solve problems and test if they are valid.
 
 ```shell
-go test -v -bench -race ./...
+go test -v -bench=. -race ./...
 ```
 
 ## Update
