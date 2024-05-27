@@ -1,6 +1,6 @@
 # exercises-go
 
-This is exercises repo.
+Test text. This is exercises repo.
 
 ## Prerequisites
 
