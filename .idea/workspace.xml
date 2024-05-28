@@ -5,16 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f2095e2b-d29a-44b0-b879-c8ead09cdab6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/exercise1/problem10/problem10.go" beforeDir="false" afterPath="$PROJECT_DIR$/exercise1/problem10/problem10.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/exercise1/problem11/problem11.go" beforeDir="false" afterPath="$PROJECT_DIR$/exercise1/problem11/problem11.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/exercise1/problem12/problem12.go" beforeDir="false" afterPath="$PROJECT_DIR$/exercise1/problem12/problem12.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/exercise1/problem4/problem4.go" beforeDir="false" afterPath="$PROJECT_DIR$/exercise1/problem4/problem4.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/exercise1/problem5/problem5.go" beforeDir="false" afterPath="$PROJECT_DIR$/exercise1/problem5/problem5.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/exercise1/problem6/problem6.go" beforeDir="false" afterPath="$PROJECT_DIR$/exercise1/problem6/problem6.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/exercise1/problem7/problem7.go" beforeDir="false" afterPath="$PROJECT_DIR$/exercise1/problem7/problem7.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/exercise1/problem8/problem8.go" beforeDir="false" afterPath="$PROJECT_DIR$/exercise1/problem8/problem8.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/exercise1/problem9/problem9.go" beforeDir="false" afterPath="$PROJECT_DIR$/exercise1/problem9/problem9.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

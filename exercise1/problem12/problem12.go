@@ -1,11 +1,14 @@
 package problem11
 
 import (
-	"golang.org/x/exp/constraints"
 	"sort"
 )
 
-func keysAndValues[K constraints.Ordered, V any](m map[K]V) ([]K, []V) {
+type Ordered interface {
+	~int | ~int8 | ~int16 | ~int32 | ~int64 | ~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~uintptr | ~float32 | ~float64 | ~string
+}
+
+func keysAndValues[K Ordered, V any](m map[K]V) ([]K, []V) {
 	var keys []K
 	var values []V
 	for k, v := range m {
@@ -16,7 +19,7 @@ func keysAndValues[K constraints.Ordered, V any](m map[K]V) ([]K, []V) {
 
 	return keys, values
 }
-func sortSlice[T constraints.Ordered, V any](k []T, v []V) {
+func sortSlice[T Ordered, V any](k []T, v []V) {
 	indices := make([]int, len(k))
 	for i := range k {
 		indices[i] = i
