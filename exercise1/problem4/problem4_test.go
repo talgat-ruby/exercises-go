@@ -26,7 +26,7 @@ func TestMapping(t *testing.T) {
 
 	for _, r := range table {
 		out := mapping(r.inp)
-		if maps.Equal(out, r.exp) {
+		if !maps.Equal(out, r.exp) {
 			t.Errorf("mapping(%v) was incorrect, got: %v, expected: %v.", r.inp, out, r.exp)
 		}
 	}
