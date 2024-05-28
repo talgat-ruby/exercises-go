@@ -1,10 +1,14 @@
 package problem6
 
-func sumOfTwo(a []int, b []int, v int) bool {
-	for _, av := range a {
-		for _, bv := range b {
-			if (av + bv) == v {
-				return true
+func sumOfTwo(sliceA, sliceB []int, sum int) bool {
+	mapA := make(map[int]int)
+	for i, v := range sliceA {
+		if sum > v {
+			mapA[sum-v] = i
+			for _, e := range sliceB {
+				if _, ok := mapA[e]; ok {
+					return true
+				}
 			}
 		}
 	}

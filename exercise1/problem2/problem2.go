@@ -1,21 +1,15 @@
 package problem2
 
-import (
-	"strings"
-	"unicode"
-)
+import "strings"
 
 func capitalize(names []string) []string {
-	capitalizedNames := []string{}
-	for i := range len(names) {
-		name := names[i]
-		if len(name) != 0 {
-			name = strings.ToLower(name)
-			chars := []rune(name)
-			chars[0] = unicode.ToUpper(chars[0])
-			name = strings.TrimSpace(string(chars))
+	result := make([]string, len(names))
+	for i, name := range names {
+		if len(name) >= 2 {
+			result[i] = strings.ToUpper(string(name[0])) + strings.ToLower(string(name[1:]))
+		} else {
+			result[i] = strings.ToUpper(name)
 		}
-		capitalizedNames = append(capitalizedNames, name)
 	}
-	return capitalizedNames
+	return result
 }

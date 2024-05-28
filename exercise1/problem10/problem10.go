@@ -1,11 +1,11 @@
 package problem10
 
-func factory() (map[string]int, func(string) func(int)) {
-	brands := map[string]int{}
-	return brands, func(brand string) func(int) {
-		brands[brand] = 0
-		return func(incrementVal int) {
-			brands[brand] += incrementVal
+func factory() (map[string]int, func(brandName string) func(increment int)) {
+	brand := map[string]int{}
+	return brand, func(brandName string) func(increment int) {
+		brand[brandName] = 0
+		return func(increment int) {
+			brand[brandName] += increment
 		}
 	}
 }

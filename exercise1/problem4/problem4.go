@@ -2,10 +2,10 @@ package problem4
 
 import "strings"
 
-func mapping(letters []string) map[string]string {
-	lettersMap := map[string]string{}
-	for i := range len(letters) {
-		lettersMap[letters[i]] = strings.ToUpper(letters[i])
+func mapping(in []string) map[string]string {
+	result := map[string]string{}
+	for _, e := range in {
+		result[e] = strings.ToUpper(e)
 	}
-	return lettersMap
+	return result
 }

@@ -1,29 +1,38 @@
 package problem11
 
 import (
+	"fmt"
 	"reflect"
 	"sort"
 )
 
-func keysAndValues[T ~int | ~string | ~bool, P ~int | ~string | ~bool](itemsMap map[T]P) ([]T, []P) {
-	keys := []T{}
-	vals := []P{}
-	for k, _ := range itemsMap {
+func keysAndValues[K comparable, V any](m map[K]V) ([]K, []V) {
+	// Extract keys from the map.
+	keys := make([]K, 0, len(m))
+	for k := range m {
 		keys = append(keys, k)
 	}
 
+	// Sort the keys using reflection.
 	sort.Slice(keys, func(i, j int) bool {
-		a := reflect.ValueOf(keys[i])
-		b := reflect.ValueOf(keys[j])
-		if a.Kind() == reflect.String {
-			return a.String() < b.String()
-		} else {
-			return a.Int() < b.Int()
+		vi := reflect.ValueOf(keys[i])
+		vj := reflect.ValueOf(keys[j])
+		switch vi.Kind() {
+		case reflect.String:
+			return vi.String() < vj.String()
+		case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+			return vi.Int() < vj.Int()
+		default:
+			// Add more cases if needed
+			return fmt.Sprintf("%v", keys[i]) < fmt.Sprintf("%v", keys[j])
 		}
 	})
 
-	for _, key := range keys {
-		vals = append(vals, itemsMap[key])
+	// Extract values based on the sorted keys.
+	values := make([]V, 0, len(m))
+	for _, k := range keys {
+		values = append(values, m[k])
 	}
-	return keys, vals
+
+	return keys, values
 }

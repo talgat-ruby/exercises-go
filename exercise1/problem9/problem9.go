@@ -1,10 +1,11 @@
 package problem9
 
-func factory(val int) func(...int) []int {
+func factory(multiple int) func(...int) []int {
 	return func(nums ...int) []int {
-		for i, num := range nums {
-			nums[i] = num * val
+		var result []int
+		for _, num := range nums {
+			result = append(result, num*multiple)
 		}
-		return nums
+		return result
 	}
 }

@@ -1,14 +1,13 @@
 package problem11
 
-func removeDups[T ~int | ~bool | ~string](items []T) []T {
-	itemsMap := make(map[T]int)
-	uniqueItems := []T{}
-	for _, item := range items {
-		_, found := itemsMap[item]
-		if !found {
-			uniqueItems = append(uniqueItems, item)
-			itemsMap[item] += 1
+func removeDups[T comparable](list []T) []T {
+	unique := map[T]struct{}{}
+	var result []T
+	for _, v := range list {
+		if _, ok := unique[v]; !ok {
+			result = append(result, v)
 		}
+		unique[v] = struct{}{}
 	}
-	return uniqueItems
+	return result
 }
