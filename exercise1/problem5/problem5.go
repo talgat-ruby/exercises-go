@@ -8,6 +8,7 @@ type KVPair struct {
 }
 
 func products(items map[string]int, price int) []string {
+	// smth
 	output := []KVPair{}
 	for k, v := range items {
 		if v >= price {
