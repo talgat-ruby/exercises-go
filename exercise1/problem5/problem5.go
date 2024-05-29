@@ -2,28 +2,34 @@ package problem5
 
 import "sort"
 
-type Pair struct {
-	Key   string
-	Value int
+type Product struct {
+	name  string
+	price int
 }
 
-type PairList []Pair
-
-func (p PairList) Len() int           { return len(p) }
-func (p PairList) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
-func (p PairList) Less(i, j int) bool { return p[i].Value < p[j].Value }
-
 func products(vals map[string]int, threshold int) []string {
+	var filteredProducts []Product
 
-	result := make(PairList, len(vals))
-	i := 0
-	for s, v := range vals {
-		if v >= threshold {
-			result[i] = Pair{s, v}
-			i++
+	// Filter products based on the minimum price
+	for name, price := range vals {
+		if price >= threshold {
+			filteredProducts = append(filteredProducts, Product{name, price})
 		}
 	}
-	sort.Sort(result)
 
-	return result
+	// Sort products by price in ascending order and by name in descending order for equal prices
+	sort.Slice(filteredProducts, func(i, j int) bool {
+		if filteredProducts[i].price == filteredProducts[j].price {
+			return filteredProducts[i].name < filteredProducts[j].name // Descending order of names
+		}
+		return filteredProducts[i].price > filteredProducts[j].price // Ascending order of prices
+	})
+
+	// Extract the sorted product names
+	var sortedProductNames []string
+	for _, p := range filteredProducts {
+		sortedProductNames = append(sortedProductNames, p.name)
+	}
+
+	return sortedProductNames
 }

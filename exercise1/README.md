@@ -13,4 +13,4 @@ Please provide solution for the following problems * is mandatory
 9. [problem9](./problem9/README.md) *
 10. [problem10](./problem10/README.md) * 
 11. [problem11](./problem11/README.md) *
-12. [problem12](./problem12/README.md) * //
+12. [problem12](./problem12/README.md) * 
