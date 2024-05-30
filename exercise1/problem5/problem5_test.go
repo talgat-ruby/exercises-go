@@ -40,7 +40,7 @@ func TestProducts(t *testing.T) {
 
 	for _, r := range table {
 		out := products(r.catalog, r.minPrice)
-		if slices.Equal(out, r.exp) {
+		if !slices.Equal(out, r.exp) {
 			t.Errorf("products(%v, %d) was incorrect, got: %v, expected: %v.", r.catalog, r.minPrice, out, r.exp)
 		}
 	}
