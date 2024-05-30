@@ -1,4 +1,13 @@
 package problem4
 
-func mapping() {
+import "strings"
+
+func mapping(letters []string) map[string]string {
+	output := make(map[string]string)
+
+	for _, letter := range letters {
+		output[letter] = strings.ToUpper(letter)
+	}
+
+	return output
 }
