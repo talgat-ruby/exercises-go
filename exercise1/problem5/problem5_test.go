@@ -34,13 +34,13 @@ func TestProducts(t *testing.T) {
 		{
 			map[string]int{"Dell": 400, "HP": 300, "Apple": 400},
 			350,
-			[]string{"Apple", "Dell"},
+			[]string{"Dell", "Apple"},
 		},
 	}
 
 	for _, r := range table {
 		out := products(r.catalog, r.minPrice)
-		if slices.Equal(out, r.exp) {
+		if !slices.Equal(out, r.exp) {
 			t.Errorf("products(%v, %d) was incorrect, got: %v, expected: %v.", r.catalog, r.minPrice, out, r.exp)
 		}
 	}
