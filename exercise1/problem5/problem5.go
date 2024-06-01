@@ -17,7 +17,10 @@ func products(items map[string]int, price int) []string {
 	}
 
 	sort.Slice(output, func(i int, j int) bool {
-		return output[i].val < output[j].val
+		if output[i].val == output[j].val {
+			return output[i].key < output[j].key
+		}
+		return output[i].val > output[j].val
 	})
 
 	newOutput := []string{}
