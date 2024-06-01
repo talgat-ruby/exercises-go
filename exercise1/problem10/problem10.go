@@ -1,7 +1,18 @@
 package problem10
 
-func factory() (brands map[string]int, func makeBrandFunc) {
-	brands = make(map[string]int, 0)
+func factory() (map[string]int, func (name string) func(increment int)) {
+	brands := make(map[string]int, 0)
 
-	return
+	makeBrand := func (name string) func(increment int)  {
+		brands[name] = 0
+
+
+		increment := func (increment int)  {
+			brands[name] = brands[name] + increment
+		}
+
+		return increment
+	}
+
+	return brands, makeBrand
 }
