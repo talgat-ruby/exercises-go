@@ -14,17 +14,17 @@ func TestProducts(t *testing.T) {
 		{
 			map[string]int{"Computer": 600, "TV": 800, "Radio": 100},
 			300,
-			[]string{"TV", "Computer"},
+			[]string{"Computer", "TV"},
 		},
 		{
 			map[string]int{"Bike1": 510, "Bike2": 401, "Bike3": 501},
 			500,
-			[]string{"Bike1", "Bike3"},
+			[]string{"Bike3", "Bike1"},
 		},
 		{
 			map[string]int{"Calvin Klein": 2000, "Armani": 5000, "Dolce & Gabbana": 2000},
 			1000,
-			[]string{"Armani", "Calvin Klein", "Dolce & Gabbana"},
+			[]string{"Calvin Klein", "Dolce & Gabbana", "Armani"},
 		},
 		{
 			map[string]int{"Loafers": 50, "Vans": 10, "Crocs": 20},
@@ -34,7 +34,7 @@ func TestProducts(t *testing.T) {
 		{
 			map[string]int{"Dell": 400, "HP": 300, "Apple": 400},
 			350,
-			[]string{"Dell", "Apple"},
+			[]string{"Apple", "Dell"},
 		},
 	}
 

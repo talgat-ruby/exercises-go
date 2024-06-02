@@ -16,7 +16,7 @@ func products(catalog map[string]int, price int) []string {
 				products[j], products[j+1] = products[j+1], products[j]
 			}
 
-			if products[j] == products[j+1] && products[j] < products[j+1] {
+			if catalog[products[j]] == catalog[products[j+1]] && products[j] > products[j+1] {
 				products[j], products[j+1] = products[j+1], products[j]
 			}
 		}
