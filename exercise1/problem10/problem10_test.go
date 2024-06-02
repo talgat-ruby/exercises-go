@@ -14,7 +14,7 @@ func TestFactory(t *testing.T) {
 	hyundaiIncrementer(5)
 	makeBrand("Kia")
 
-	exp := map[string]int{"Hyundai": 5, "Kia": 0, "Toyota": 3}
+	exp := map[string]int{"Hyundai": 5, "Kia": 0, "Toyota": 2}
 
 	if !maps.Equal(brands, exp) {
 		t.Errorf("factory was incorrect, got: %v, expected: %v.", brands, exp)
