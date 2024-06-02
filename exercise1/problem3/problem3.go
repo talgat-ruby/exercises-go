@@ -9,6 +9,6 @@ const (
 	lr dir = "lr"
 )
 
-func diagonalize() {
-
+func diagonalize(n int, corner string) [][]int {
+	return [][]int{}
 }
