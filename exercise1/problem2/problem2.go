@@ -1,21 +1,22 @@
 package problem2
 
-import (
-	"strings"
-	"unicode"
-)
-
-func capitalize(names []string) []string {
-	capitalizedNames := []string{}
-	for i := range len(names) {
-		name := names[i]
-		if len(name) != 0 {
-			name = strings.ToLower(name)
-			chars := []rune(name)
-			chars[0] = unicode.ToUpper(chars[0])
-			name = strings.TrimSpace(string(chars))
+func capitalize(words []string) []string {
+	for i, word := range words {
+		wordLength := len(word)
+		if wordLength == 0 {
+			continue
 		}
-		capitalizedNames = append(capitalizedNames, name)
+		letters := []rune(word)
+		for j := 0; j < wordLength; j++ {
+			letter := letters[j]
+			if 'a' <= letter && letter <= 'z' && j == 0 {
+				letter = letter - 'a' + 'A'
+			} else if 'A' <= letter && letter <= 'Z' && j != 0 {
+				letter = letter - 'A' + 'a'
+			}
+			letters[j] = letter
+		}
+		words[i] = string(letters)
 	}
-	return capitalizedNames
+	return words
 }

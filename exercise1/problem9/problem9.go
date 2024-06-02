@@ -1,10 +1,10 @@
 package problem9
 
-func factory(val int) func(...int) []int {
-	return func(nums ...int) []int {
-		for i, num := range nums {
-			nums[i] = num * val
+func factory(multiplier int) func(slice ...int) []int {
+	return func(slice ...int) []int {
+		for i := 0; i < len(slice); i++ {
+			slice[i] = multiplier * slice[i]
 		}
-		return nums
+		return slice
 	}
 }

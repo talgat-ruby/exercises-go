@@ -1,29 +1,17 @@
 package problem11
 
 import (
-	"reflect"
-	"sort"
+	"cmp"
+	"slices"
 )
 
-func keysAndValues[T ~int | ~string | ~bool, P ~int | ~string | ~bool](itemsMap map[T]P) ([]T, []P) {
-	keys := []T{}
-	vals := []P{}
-	for k, _ := range itemsMap {
+func keysAndValues[K cmp.Ordered, V any](inMap map[K]V) (keys []K, values []V) {
+	for k := range inMap {
 		keys = append(keys, k)
 	}
-
-	sort.Slice(keys, func(i, j int) bool {
-		a := reflect.ValueOf(keys[i])
-		b := reflect.ValueOf(keys[j])
-		if a.Kind() == reflect.String {
-			return a.String() < b.String()
-		} else {
-			return a.Int() < b.Int()
-		}
-	})
-
-	for _, key := range keys {
-		vals = append(vals, itemsMap[key])
+	slices.Sort(keys)
+	for _, k := range keys {
+		values = append(values, inMap[k])
 	}
-	return keys, vals
+	return keys, values
 }

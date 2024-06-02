@@ -1,10 +1,18 @@
 package problem1
 
-func isChangeEnough(changes [4]int, amountToPay float32) bool {
-	total := float32(changes[0]) * 0.25
-	total += float32(changes[1]) * 0.10
-	total += float32(changes[2]) * 0.05
-	total += float32(changes[3]) * 0.01
-
-	return float32(total) >= amountToPay
+func isChangeEnough(coins [4]int, total float32) bool {
+	values := []float32{0.25, 0.10, 0.05, 0.01}
+	for i, nominal := range values {
+		if total < nominal {
+			continue
+		}
+		requiredCoins := int(total / nominal)
+		if requiredCoins > coins[i] && i == 3 {
+			return false
+		} else if requiredCoins > coins[i] {
+			requiredCoins = coins[i]
+		}
+		total -= float32(requiredCoins) * nominal
+	}
+	return int(total) == 0
 }

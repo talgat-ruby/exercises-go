@@ -1,9 +1,8 @@
 package problem8
 
 func simplify(list []string) map[string]int {
-	indMap := make(map[string]int)
+	indMap := map[string]int{}
 	load(indMap, list)
-
 	return indMap
 }
 

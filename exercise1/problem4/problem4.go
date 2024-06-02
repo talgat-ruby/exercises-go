@@ -1,11 +1,20 @@
 package problem4
 
-import "strings"
-
-func mapping(letters []string) map[string]string {
-	lettersMap := map[string]string{}
-	for i := range len(letters) {
-		lettersMap[letters[i]] = strings.ToUpper(letters[i])
+func mapping(words []string) map[string]string {
+	out := make(map[string]string)
+	for _, word := range words {
+		out[word] = ToUpper(word)
 	}
-	return lettersMap
+	return out
+}
+
+func ToUpper(word string) string {
+	letters := []rune(word)
+	upperWord := make([]rune, len(word))
+	for i, letter := range letters {
+		if letter >= 'a' && letter <= 'z' {
+			upperWord[i] = letter - 'a' + 'A'
+		}
+	}
+	return string(upperWord)
 }
