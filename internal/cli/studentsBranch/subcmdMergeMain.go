@@ -15,7 +15,7 @@ type subcmdMergeMain struct {
 func newSubcmdMergeMain() *subcmdMergeMain {
 	cmd := flag.NewFlagSet(cmdNameMergeMain, flag.ExitOnError)
 
-	students := strings.Split(studentsData, "\n")
+	students := strings.Split(strings.TrimSpace(studentsData), "\n")
 	sort.Strings(students)
 
 	return &subcmdMergeMain{
@@ -57,7 +57,11 @@ func (s *subcmdMergeMain) parse(args []string) error {
 		if err := pushRemoteBranch(student); err != nil {
 			return fmt.Errorf("could not push to %s branch: %w", student, err)
 		}
-		fmt.Printf("merge main to %s\n", student)
+		fmt.Printf("merged main to %s\n", student)
+	}
+
+	if err := switchToBranch("main"); err != nil {
+		return fmt.Errorf("could not switch to main branch: %w", err)
 	}
 
 	return nil
