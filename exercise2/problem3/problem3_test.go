@@ -293,7 +293,7 @@ func TestSet(t *testing.T) {
 		}
 
 		for _, r := range table {
-			sets := make([]*Set, 0, len(r.sets))
+			sets := make([]Set, 0, len(r.sets))
 			for _, s := range r.sets {
 				newSet := NewSet()
 				for _, v := range s {
@@ -349,7 +349,7 @@ func TestSet(t *testing.T) {
 		}
 
 		for _, r := range table {
-			sets := make([]*Set, 0, len(r.sets))
+			sets := make([]Set, 0, len(r.sets))
 			for _, s := range r.sets {
 				newSet := NewSet()
 				for _, v := range s {
