@@ -5,14 +5,14 @@ import (
 )
 
 func TestAccounts(t *testing.T) {
-	normanOsborne := BankAccount{
+	normanOsborne := &BankAccount{
 		name:    "Norman Osborne",
 		balance: 1_000_000,
 	}
-	peterParker := FedexAccount{
+	peterParker := &FedexAccount{
 		name: "Peter Parker",
 	}
-	auntMay := KazPostAccount{
+	auntMay := &KazPostAccount{
 		name:    "Aunt May",
 		balance: 200,
 	}
@@ -21,10 +21,10 @@ func TestAccounts(t *testing.T) {
 	sendPackagesTo("Mary Jane", peterParker, auntMay)
 
 	if normanOsborne.balance != 1_000_000-10 {
-		t.Errorf("withdrawMoney() was incorrect, got: %d, expected: %d", normanOsborne.balance, 1_000_000-10)
+		t.Errorf("withdrawMoney() was incorrect, got: %v, expected: %v", normanOsborne.balance, 1_000_000-10)
 	}
 	if auntMay.balance != 200-10 {
-		t.Errorf("withdrawMoney() was incorrect, got: %d, expected: %d", auntMay.balance, 200-10)
+		t.Errorf("withdrawMoney() was incorrect, got: %v, expected: %v", auntMay.balance, 200-10)
 	}
 
 	if peterParker.packages[0] != "Peter Parker send package to Mary Jane" {
