@@ -201,6 +201,8 @@ func TestLinkedList(t *testing.T) {
 
 			f, _ := ll.Find(row[1])
 
+			//Мы добавляем в линкед лист по штучно, и лист должен был выглядить так 1 -> 2 -> 3,
+			//старая првоерка работала будто так будто лист должен был выглядить наоборот
 			if f.value != row[1] || f.next.value != row[2] {
 				t.Errorf("Find(%v) was incorrect, got: %v", row[1], f)
 			}
@@ -219,6 +221,8 @@ func TestLinkedList(t *testing.T) {
 
 			f, _ := ll.Find(row[2])
 
+			//Мы добавляем в линкед лист по штучно, и лист должен был выглядить так 1 -> 2 -> 3 -> 4,
+			//старая првоерка работала будто так будто лист должен был выглядить наоборот
 			if f.value != row[2] || f.next.value != row[3] {
 				t.Errorf("Find(%v) was incorrect, got: %v", row[2], f)
 			}
@@ -234,7 +238,7 @@ func TestLinkedList(t *testing.T) {
 				}
 				ll.Add(el)
 			}
-
+			//тут был бы аут оф рендж
 			f, _ := ll.Find(row[0])
 
 			if f.value != row[0] || f.next.value != row[1] {

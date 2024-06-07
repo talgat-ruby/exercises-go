@@ -5,6 +5,7 @@ import (
 )
 
 func TestAccounts(t *testing.T) {
+	//Поменял везде на & потому что мы бы передавали копии и никак не могли бы менять оригинальные значения
 	normanOsborne := &BankAccount{
 		name:    "Norman Osborne",
 		balance: 1_000_000,

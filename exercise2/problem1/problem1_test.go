@@ -108,6 +108,7 @@ func TestQueue(t *testing.T) {
 			for _, v := range r.vals {
 				queue.Enqueue(v)
 			}
+			//Изменил range на форик, почему то даже когда обновил го до 1.22 версий range по инт не полчился
 			for i := 0; i < r.removeSize; i++ {
 				_, _ = queue.Dequeue()
 			}
