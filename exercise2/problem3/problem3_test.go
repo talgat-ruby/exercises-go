@@ -294,7 +294,7 @@ func TestSet(t *testing.T) {
 
 		for _, r := range table {
 			//изменил []*Set, потому что если мы сделаем чтобы функция NewSet возвращала *Set на 181 строке будет ошибка Invalid operation: &c == &set (mismatched types *Set and **Set)
-			sets := make([]Set, 0, len(r.sets))
+			sets := make([]Set, 0, len(r.sets)) // раньше было sets := make([]*Set, 0, len(r.sets))
 			for _, s := range r.sets {
 				newSet := NewSet()
 				for _, v := range s {
@@ -351,7 +351,7 @@ func TestSet(t *testing.T) {
 
 		for _, r := range table {
 			//изменил []*Set, потому что если мы сделаем чтобы функция NewSet возвращала *Set на 181 строке будет ошибка Invalid operation: &c == &set (mismatched types *Set and **Set)
-			sets := make([]Set, 0, len(r.sets))
+			sets := make([]Set, 0, len(r.sets)) // раньше было sets := make([]*Set, 0, len(r.sets))
 			for _, s := range r.sets {
 				newSet := NewSet()
 				for _, v := range s {

@@ -109,7 +109,7 @@ func TestStack(t *testing.T) {
 				stack.Push(v)
 			}
 			//Изменил range на форик, почему то даже когда обновил го до 1.22 версий range по инт не полчился
-			for i := 0; i < r.removeSize; i++ {
+			for i := 0; i < r.removeSize; i++ { // раньше было for range r.removeSize {
 				_, _ = stack.Pop()
 			}
 			if stack.Size() != len(r.vals)-r.removeSize {
