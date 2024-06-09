@@ -1,10 +1,16 @@
 package problem7
 
-type BankAccount struct {
+type Account struct {
+	name    string
+	balance int
 }
 
-type FedexAccount struct {
-}
+type BankAccount Account
 
-type KazPostAccount struct {
+type FedexAccount Account
+
+type KazPostAccount Account
+
+func withdrawMoney(value int) {
+
 }

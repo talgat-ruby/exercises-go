@@ -1,7 +1,25 @@
 package problem6
 
-type Animal struct{}
+type All struct {
+	name    string
+	legsNum int
+}
 
-type Insect struct{}
+type Animal All
 
-func sumOfAllLegsNum() {}
+type Insect All
+
+func sumOfAllLegsNum(animals ...interface{}) int {
+	total := 0
+
+	for _, animal := range animals {
+		switch v := animal.(type) {
+		case *Animal:
+			total += v.legsNum
+		case *Insect:
+			total += v.legsNum
+		}
+	}
+
+	return total
+}
