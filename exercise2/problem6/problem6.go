@@ -1,7 +1,33 @@
 package problem6
 
-type Animal struct{}
+type creature interface {
+	Legs() int
+}
 
-type Insect struct{}
+type Animal struct {
+	name    string
+	legsNum int
+}
 
-func sumOfAllLegsNum() {}
+type Insect struct {
+	name    string
+	legsNum int
+}
+
+func (a Animal) Legs() int {
+	return a.legsNum
+}
+
+func (i Insect) Legs() int {
+	return i.legsNum
+}
+
+func sumOfAllLegsNum(creatures ...creature) int {
+	total := 0
+
+	for _, creature := range creatures {
+		total += creature.Legs()
+	}
+
+	return total
+}
