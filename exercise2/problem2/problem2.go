@@ -1,6 +1,8 @@
 package problem2
 
-import "errors"
+import (
+	"errors"
+)
 
 type Stack struct {
 	items []any
@@ -28,7 +30,7 @@ func (s *Stack) Size() int {
 }
 
 func (s *Stack) Peek() (any, error) {
-	if len(s.items) == 0 {
+	if s.IsEmpty() {
 		err := errors.New("stack is empty. Nothing to peek")
 
 		return nil, err

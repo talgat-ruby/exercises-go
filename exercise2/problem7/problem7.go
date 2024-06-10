@@ -1,16 +1,24 @@
 package problem7
 
-type Account struct {
-	name    string
-	balance int
+type Account interface {
+	getName() string
+	getBalance() int
+	withdraw(newBalance int)
 }
 
-type BankAccount Account
+type Sender interface {
+	getName() string
+	sendPackage(recipient string)
+}
 
-type FedexAccount Account
+func withdrawMoney(value int, accounts ...Account) {
+	for _, account := range accounts {
+		account.withdraw(value)
+	}
+}
 
-type KazPostAccount Account
-
-func withdrawMoney(value int) {
-
+func sendPackagesTo(recipient string, sender ...Sender) {
+	for _, sender := range sender {
+		sender.sendPackage(recipient)
+	}
 }
