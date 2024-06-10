@@ -22,3 +22,5 @@ go.work
 
 .idea
 .DS_Store*
+
+/exercise2/problem7_2
