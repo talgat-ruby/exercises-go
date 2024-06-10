@@ -3,41 +3,36 @@ package problem1
 import "errors"
 
 type Queue struct {
-	items []any
-	size  int
+	length int
+	array  []any
 }
 
-// push into the queue
-func (q *Queue) Enqueue(item any) {
-	q.items = append(q.items, item)
-	q.size++
+func (q *Queue) Enqueue(val any) {
+	q.array = append(q.array[:], val)
+	q.length++
 }
 
-// pop from the queue
 func (q *Queue) Dequeue() (any, error) {
-	if q.size == 0 {
-		return nil, errors.New("queue is empty")
+	if q.length > 0 {
+		q.length--
+		val := q.array[0]
+		q.array = q.array[1 : q.length+1]
+		return val, nil
 	}
-	poppedItem := q.items[0]
-	q.items = q.items[1:]
-	q.size--
-	return poppedItem, nil
+	return nil, errors.New("queue is empty")
 }
 
-// peek into the queue
 func (q *Queue) Peek() (any, error) {
-	if q.size == 0 {
-		return nil, errors.New("queue is empty")
+	if q.length > 0 {
+		return q.array[0], nil
 	}
-	return q.items[0], nil
+	return nil, errors.New("queue is empty")
 }
 
-// size of the queue
 func (q *Queue) Size() int {
-	return q.size
+	return q.length
 }
 
-// is empty?
 func (q *Queue) IsEmpty() bool {
-	return q.size == 0
+	return q.length == 0
 }

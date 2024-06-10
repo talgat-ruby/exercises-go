@@ -1,10 +1,13 @@
 package problem7
 
-import "fmt"
+type hasBalance interface {
+	Withdraw(amount int)
+}
 
 type BankAccount struct {
 	name    string
 	balance int
+	hasBalance
 }
 
 type FedexAccount struct {
@@ -16,46 +19,48 @@ type KazPostAccount struct {
 	name     string
 	balance  int
 	packages []string
+	hasBalance
 }
 
-type Bank interface {
-	withdraw(int)
-}
-
-type Post interface {
-	send(string)
-}
-
-func (b *BankAccount) withdraw(amount int) {
-	if b.balance >= amount {
-		b.balance -= amount
+func (acc *BankAccount) Withdraw(amount int) {
+	if amount > 0 && amount <= acc.balance {
+		acc.balance -= amount
 	}
 }
 
-func (k *KazPostAccount) withdraw(amount int) {
-	if k.balance >= amount {
-		k.balance -= amount
+func (acc *KazPostAccount) Withdraw(amount int) {
+	if amount > 0 && amount <= acc.balance {
+		acc.balance -= amount
 	}
 }
 
-func (f *FedexAccount) send(pckg string) {
-	msg := fmt.Sprintf("%s send package to %s", f.name, pckg)
-	f.packages = append(f.packages, msg)
+func (acc *FedexAccount) AddPackage(pkg string) {
+	acc.packages = append(acc.packages, pkg)
 }
 
-func (k *KazPostAccount) send(pckg string) {
-	msg := fmt.Sprintf("%s send package to %s", k.name, pckg)
-	k.packages = append(k.packages, msg)
+func (acc *KazPostAccount) AddPackage(pkg string) {
+	acc.packages = append(acc.packages, pkg)
 }
 
-func withdrawMoney(amount int, people ...Bank) {
-	for _, person := range people {
-		person.withdraw(amount)
+func withdrawMoney(amount int, accounts ...any) {
+	for _, account := range accounts {
+		switch account.(type) {
+		case *BankAccount:
+			account.(*BankAccount).Withdraw(amount)
+		case *KazPostAccount:
+			account.(*KazPostAccount).Withdraw(amount)
+		}
 	}
 }
 
-func sendPackagesTo(pckg string, people ...Post) {
-	for _, person := range people {
-		person.send(pckg)
+func sendPackagesTo(pkg string, accounts ...any) {
+	postfix := " send package to " + pkg
+	for _, account := range accounts {
+		if acc, ok := account.(*FedexAccount); ok {
+			acc.AddPackage(acc.name + postfix)
+		}
+		if acc, ok := account.(*KazPostAccount); ok {
+			acc.AddPackage(acc.name + postfix)
+		}
 	}
 }
