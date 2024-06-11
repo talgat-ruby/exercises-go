@@ -108,7 +108,7 @@ func TestStack(t *testing.T) {
 			for _, v := range r.vals {
 				stack.Push(v)
 			}
-			for range r.removeSize {
+			for i := 0; i < r.removeSize; i++ {
 				_, _ = stack.Pop()
 			}
 			if stack.Size() != len(r.vals)-r.removeSize {
