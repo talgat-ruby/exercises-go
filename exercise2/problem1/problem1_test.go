@@ -108,7 +108,7 @@ func TestQueue(t *testing.T) {
 			for _, v := range r.vals {
 				queue.Enqueue(v)
 			}
-			for range r.removeSize {
+			for i := 0; i < r.removeSize; i++ {
 				_, _ = queue.Dequeue()
 			}
 			if queue.Size() != len(r.vals)-r.removeSize {
