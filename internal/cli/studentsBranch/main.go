@@ -2,58 +2,51 @@ package main
 
 import (
 	_ "embed"
+	"flag"
 	"fmt"
-	"log"
 	"os"
-	"os/exec"
-	"sort"
-	"strings"
 )
 
 //go:embed students-branch.txt
 var studentsData string
 
 func main() {
-	students := strings.Split(studentsData, "\n")
-	sort.Strings(students)
+	cmdCreateBranches := newSubcmdCreateBranches()
+	cmdMergeMain := newSubcmdMergeMain()
 
-	if err := switchToBranch("main"); err != nil {
-		fmt.Println(err)
-		log.Fatal(err)
+	// Verify that a subcommand has been provided
+	// os.Arg[0] is the main command
+	// os.Arg[1] will be the subcommand
+	if len(os.Args) < 2 {
+		fmt.Printf(
+			"one of subcommands: %v is required\n",
+			[]string{
+				cmdCreateBranches.getCmdName(),
+				cmdMergeMain.getCmdName(),
+			},
+		)
+		os.Exit(1)
 	}
 
-	for _, student := range students {
-		if err := createRemoteBranch(student); err != nil {
-			log.Fatal(err)
+	// Switch on the subcommand
+	// Parse the flags for appropriate FlagSet
+	// FlagSet.Parse() requires a set of arguments to parse as input
+	// os.Args[2:] will be all arguments starting after the subcommand at os.Args[1]
+	switch os.Args[1] {
+	case cmdCreateBranches.getCmdName():
+		if err := cmdCreateBranches.parse(os.Args[2:]); err != nil {
+			fmt.Printf("error in cmd %s: %+v", cmdCreateBranches.getCmdName(), err)
+			cmdCreateBranches.printDefaults()
+			os.Exit(1)
 		}
-		fmt.Printf("created remote branch %s\n", student)
+	case cmdMergeMain.getCmdName():
+		if err := cmdMergeMain.parse(os.Args[2:]); err != nil {
+			fmt.Printf("error in cmd %s: %+v", cmdMergeMain.getCmdName(), err)
+			cmdMergeMain.printDefaults()
+			os.Exit(1)
+		}
+	default:
+		flag.PrintDefaults()
+		os.Exit(1)
 	}
-
-	os.Exit(0)
-}
-
-func switchToBranch(branch string) error {
-	cmd := exec.Command("git", "switch", "-C", branch)
-	return cmd.Run()
-}
-
-func createRemoteBranch(branch string) error {
-	if err := switchToBranch(branch); err != nil {
-		log.Fatal(err)
-	}
-
-	if err := pushRemoteBranch(branch); err != nil {
-		return err
-	}
-
-	if err := switchToBranch("main"); err != nil {
-		log.Fatal(err)
-	}
-
-	return nil
-}
-
-func pushRemoteBranch(branch string) error {
-	cmd := exec.Command("git", "push", "--set-upstream", "origin", branch)
-	return cmd.Run()
 }
