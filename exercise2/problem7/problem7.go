@@ -2,13 +2,12 @@ package problem7
 
 import "errors"
 
-type Withdrawable interface {
-	WithdrawMoney(amount int) error
-	RecieveMoney(amount int) error
+type Account interface {
+	Withdraw(amount int) error
 }
 
-type Sendable interface {
-	RecievePackage(packageName string)
+type PackageSender interface {
+	SendPackageTo(name string) error
 }
 
 type BankAccount struct {
@@ -16,9 +15,9 @@ type BankAccount struct {
 	balance int
 }
 
-func (b BankAccount) WithdrawMoney(amount int) error {
-	if b.balance < amount {
-		return errors.New("Not enough money")
+func (b *BankAccount) Withdraw(amount int) error {
+	if amount > b.balance {
+		return errors.New("not enough money")
 	}
 	b.balance -= amount
 	return nil
@@ -26,12 +25,12 @@ func (b BankAccount) WithdrawMoney(amount int) error {
 
 type FedexAccount struct {
 	name     string
-	Balance  int
 	packages []string
 }
 
-func (f FedexAccount) RecievePackage(packageName string) {
-	f.packages = append(f.packages, packageName)
+func (f *FedexAccount) SendPackageTo(name string) error {
+	f.packages = append(f.packages, f.name+" send package to "+name)
+	return nil
 }
 
 type KazPostAccount struct {
@@ -40,35 +39,27 @@ type KazPostAccount struct {
 	packages []string
 }
 
-func (k KazPostAccount) RecievePackage(packageName string) {
-	k.packages = append(k.packages, packageName)
-}
-
-func (k KazPostAccount) WithdrawMoney(amount int) error {
-	if k.balance < amount {
-		return errors.New("Not enough money")
+func (k *KazPostAccount) Withdraw(amount int) error {
+	if amount > k.balance {
+		return errors.New("not enough money")
 	}
 	k.balance -= amount
 	return nil
 }
 
-func (b BankAccount) RecieveMoney(amount int) error {
-	b.balance += amount
+func (k *KazPostAccount) SendPackageTo(name string) error {
+	k.packages = append(k.packages, k.name+" send package to "+name)
 	return nil
 }
 
-func (k KazPostAccount) RecieveMoney(amount int) error {
-	k.balance += amount
-	return nil
+func withdrawMoney(amount int, accounts ...Account) {
+	for _, a := range accounts {
+		a.Withdraw(amount)
+	}
 }
 
-func withdrawMoney(amount int, w, r Withdrawable) {
-	w.WithdrawMoney(amount)
-	r.RecieveMoney(amount)
-}
-
-func sendPackagesTo(packageName string, recievers ...Sendable) {
-	for _, r := range recievers {
-		r.RecievePackage(packageName)
+func sendPackagesTo(name string, accounts ...PackageSender) {
+	for _, a := range accounts {
+		a.SendPackageTo(name)
 	}
 }

@@ -17,8 +17,8 @@ func TestAccounts(t *testing.T) {
 		balance: 200,
 	}
 
-	withdrawMoney(10, normanOsborne, auntMay)
-	sendPackagesTo("Mary Jane", peterParker, auntMay)
+	withdrawMoney(10, &normanOsborne, &auntMay)
+	sendPackagesTo("Mary Jane", &peterParker, &auntMay)
 
 	if normanOsborne.balance != 1_000_000-10 {
 		t.Errorf("withdrawMoney() was incorrect, got: %d, expected: %d", normanOsborne.balance, 1_000_000-10)
