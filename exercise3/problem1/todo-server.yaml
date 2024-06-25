@@ -1,0 +1,182 @@
+swagger: "2.0"
+info:
+  description: "This is a sample server TODO server."
+  version: "1.0.0"
+  title: "Swagger TODO server 2.0"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "talgat.s@protonmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:8080"
+tags:
+  - name: "todo"
+    description: "Everything about your TODO list"
+schemes:
+  - "http"
+paths:
+  /todo:
+    get:
+      tags:
+        - "todo"
+      summary: "Get all todos"
+      description: ""
+      operationId: "getTodos"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Todo"
+        "400":
+          description: "Invalid request"
+    post:
+      tags:
+        - "todo"
+      summary: "Add a new todo"
+      description: ""
+      operationId: "addTodo"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Todo object that needs to be added to the db"
+          required: true
+          schema:
+            $ref: "#/definitions/TodoCreate"
+      responses:
+        "201":
+          description: Successfuly created
+        "400":
+          description: Invalid input
+        "422":
+          description: Validation exception
+  /todo/{todoId}:
+    get:
+      tags:
+        - "todo"
+      summary: "Get todo by ID"
+      description: "Returns a single pet"
+      operationId: "getTodo"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "todoId"
+          in: "path"
+          description: "ID of todo to return"
+          required: true
+          type: "integer"
+          format: "int"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Todo"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Todo not found"
+    patch:
+      tags:
+        - "todo"
+      summary: "Update a todo by id"
+      description: ""
+      operationId: "updateTodo"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "todoId"
+          in: "path"
+          description: "ID of todo to update"
+          required: true
+          type: "integer"
+          format: "int"
+        - in: "body"
+          name: "body"
+          description: "Todo object that needs to be updated"
+          required: true
+          schema:
+            $ref: "#/definitions/TodoUpdate"
+      responses:
+        "201":
+          description: Successfuly updated
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Todo not found"
+        "422":
+          description: "Validation exception"
+    delete:
+      tags:
+        - "todo"
+      summary: "Delete a todo by id"
+      description: ""
+      operationId: "deleteTodo"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "todoId"
+          in: "path"
+          description: "Todo id to delete"
+          required: true
+          type: "integer"
+          format: "int"
+      responses:
+        "201":
+          description: Successfuly deleted
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Todo not found"
+definitions:
+  Todo:
+    type: "object"
+    properties:
+      id:
+        $ref: "#/definitions/TodoID"
+      description:
+        $ref: "#/definitions/TodoDescription"
+      done:
+        $ref: "#/definitions/TodoDone"
+      createdAt:
+        $ref: "#/definitions/TodoCreatedAt"
+      updatedAt:
+        $ref: "#/definitions/TodoUpdatedAt"
+  TodoCreate:
+    type: "object"
+    properties:
+      description:
+        $ref: "#/definitions/TodoDescription"
+  TodoUpdate:
+    type: "object"
+    properties:
+      description:
+        $ref: "#/definitions/TodoDescription"
+      done:
+        $ref: "#/definitions/TodoDone"
+  TodoID:
+    type: "integer"
+    format: "int"
+  TodoDescription:
+    type: "string"
+  TodoDone:
+    type: "boolean"
+    default: false
+  TodoCreatedAt:
+    type: "string"
+    format: "date-time"
+  TodoUpdatedAt:
+    type: "string"
+    format: "date-time"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"

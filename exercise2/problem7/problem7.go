@@ -29,4 +29,3 @@ func sendPackagesTo(receiver string, fromAccount FedexAccount, toAccount *KazPos
 	packageMessage := fmt.Sprintf("%s send package to %s", fromAccount.name, receiver)
 	fromAccount.packages = append(fromAccount.packages, packageMessage)
 	toAccount.packages = append(toAccount.packages, packageMessage)
-}
