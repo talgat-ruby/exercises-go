@@ -5,14 +5,14 @@ import (
 )
 
 func TestAccounts(t *testing.T) {
-	normanOsborne := BankAccount{
+	normanOsborne := &BankAccount{
 		name:    "Norman Osborne",
 		balance: 1_000_000,
 	}
-	peterParker := FedexAccount{
+	peterParker := &FedexAccount{
 		name: "Peter Parker",
 	}
-	auntMay := KazPostAccount{
+	auntMay := &KazPostAccount{
 		name:    "Aunt May",
 		balance: 200,
 	}
