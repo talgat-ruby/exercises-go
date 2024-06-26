@@ -18,20 +18,20 @@ type KazPostAccount struct {
 	packages []string
 }
 
+type post interface {
+	sendPackage(name string)
+}
+
+type bank interface {
+	withdraw(amount int)
+}
+
 func (k *KazPostAccount) sendPackage(Name string) {
 	k.packages = append(k.packages, fmt.Sprintf("%s send package to %s", k.name, Name))
 }
 
 func (f *FedexAccount) sendPackage(Name string) {
 	f.packages = append(f.packages, fmt.Sprintf("%s send package to %s", f.name, Name))
-}
-
-type Package interface {
-	sendPackage(name string)
-}
-
-type Account interface {
-	withdraw(amount int)
 }
 
 func (b *BankAccount) withdraw(amount int) {
@@ -50,14 +50,14 @@ func (k *KazPostAccount) withdraw(amount int) {
 	}
 }
 
-func withdrawMoney(amount int, accounts ...Account) {
+func withdrawMoney(amount int, accounts ...bank) {
 	for _, account := range accounts {
 		account.withdraw(amount)
 	}
 }
 
-func sendPackagesTo(name string, accounts ...Package) {
-	for _, account := range accounts {
-		account.sendPackage(name)
+func sendPackagesTo(name string, senders ...post) {
+	for _, sebder := range senders {
+		sebder.sendPackage(name)
 	}
 }
