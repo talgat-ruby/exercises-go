@@ -4,15 +4,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/talgat-ruby/exercises-go/exercise3/problem1/internal/api/router"
+	"github.com/talgat-ruby/exercises-go/exercise3/problem1/internal/conf"
+	"github.com/talgat-ruby/exercises-go/exercise3/problem1/internal/db"
 	"log/slog"
 	"net"
 	"net/http"
 	"os"
 	"os/signal"
-
-	"github.com/talgat-ruby/lessons-go/lesson8/planet-express-personal/internal/api/router"
-	"github.com/talgat-ruby/lessons-go/lesson8/planet-express-personal/internal/conf"
-	"github.com/talgat-ruby/lessons-go/lesson8/planet-express-personal/internal/db"
 )
 
 type Api struct {

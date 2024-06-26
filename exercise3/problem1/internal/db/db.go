@@ -6,7 +6,7 @@ import (
 
 	_ "github.com/lib/pq"
 
-	"github.com/talgat-ruby/lessons-go/lesson8/planet-express-personal/internal/conf"
+	"github.com/talgat-ruby/exercises-go/exercise3/problem1/internal/conf"
 )
 
 type Model struct {
