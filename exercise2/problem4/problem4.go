@@ -103,11 +103,12 @@ func (ll *LinkedList[T]) IsEmpty() bool {
 	return ll.size == 0
 }
 
-func (ll *LinkedList[T]) Find(value T) (Element[T], error) {
+func (ll *LinkedList[T]) Find(value T) (*Element[T], error) {
 	for current := ll.head; current != nil; current = current.next {
 		if current.value == value {
-			return *current, nil
+			return current, nil
 		}
 	}
-	return Element[T]{}, errors.New("the element was not found")
+	return nil, errors.New("the element was not found")
 }
+
