@@ -1,7 +1,7 @@
 package problem3
 
 import (
-	"github.com/talgat-ruby/exercises-go/pkg/util"
+	"github.com/talgat-ruby/exercises-go/exercise3/pkg/util"
 	"slices"
 	"testing"
 )

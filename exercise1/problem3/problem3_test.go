@@ -1,10 +1,9 @@
 package problem3
 
 import (
+	"github.com/talgat-ruby/exercises-go/exercise3/pkg/util"
 	"slices"
 	"testing"
-
-	"github.com/talgat-ruby/exercises-go/pkg/util"
 )
 
 func TestDiagonalize(t *testing.T) {

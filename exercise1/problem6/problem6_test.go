@@ -1,9 +1,8 @@
 package problem6
 
 import (
+	"github.com/talgat-ruby/exercises-go/exercise3/pkg/util"
 	"testing"
-
-	"github.com/talgat-ruby/exercises-go/pkg/util"
 )
 
 func TestSumOfTwo(t *testing.T) {
