@@ -1,11 +1,10 @@
 package problem8
 
 func simplify(list []string) map[string]int {
-	var indMap map[string]int
-
-	indMap = make(map[string]int)
-	load(&indMap, &list)
-
+	indMap := make(map[string]int, len(list))
+	for i, name := range list {
+		indMap[name] = i
+	}
 	return indMap
 }
 
