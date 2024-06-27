@@ -1,16 +1,13 @@
 package problem8
 
-func simplify(list []string) map[string]int {
-	var indMap map[string]int
-
-	indMap = make(map[string]int)
-	load(&indMap, &list)
-
-	return indMap
+func simplify(keys []string) map[string]int {
+	m := make(map[string]int)
+	load(&m, &keys)
+	return m
 }
 
-func load(m *map[string]int, students *[]string) {
-	for i, name := range *students {
-		(*m)[name] = i
+func load(m *map[string]int, keys *[]string) {
+	for i, key := range *keys {
+		(*m)[key] = i
 	}
 }

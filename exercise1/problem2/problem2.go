@@ -1,4 +1,15 @@
 package problem2
 
-func capitalize() {
+import "strings"
+
+func capitalize(names []string) []string {
+	capitalizedNames := make([]string, len(names))
+	for i, name := range names {
+		if name == "" {
+			capitalizedNames[i] = ""
+		} else {
+			capitalizedNames[i] = strings.Title(strings.ToLower(name))
+		}
+	}
+	return capitalizedNames
 }
