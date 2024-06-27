@@ -201,7 +201,7 @@ func TestLinkedList(t *testing.T) {
 
 			f, _ := ll.Find(row[1])
 
-			if f.value != row[1] || f.next.value != row[0] {
+			if f.value != row[1] || f.next.value != row[2] {
 				t.Errorf("Find(%v) was incorrect, got: %v", row[1], f)
 			}
 		})
@@ -219,7 +219,7 @@ func TestLinkedList(t *testing.T) {
 
 			f, _ := ll.Find(row[2])
 
-			if f.value != row[2] || f.next.value != row[1] {
+			if f.value != row[2] || f.next.value != row[3] {
 				t.Errorf("Find(%v) was incorrect, got: %v", row[2], f)
 			}
 		})
@@ -235,9 +235,9 @@ func TestLinkedList(t *testing.T) {
 				ll.Add(el)
 			}
 
-			f, _ := ll.Find(row[1])
+			f, _ := ll.Find(row[0])
 
-			if f.value != row[1] || f.next.value != row[0] {
+			if f.value != row[0] || f.next.value != row[1] {
 				t.Errorf("Find(%v) was incorrect, got: %v", row[1], f)
 			}
 		})
