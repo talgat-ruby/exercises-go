@@ -6,20 +6,22 @@ import (
 	"log/slog"
 	"net/http"
 	"strconv"
+	"time"
 )
 
-type employeeHandler struct {
+type todoHandler struct {
 	model *db.Model
 }
 
-type Employee struct {
-	ID       int    `json:"id"`
-	Name     string `json:"name"`
-	Position string `json:"position"`
-	IsRobot  bool   `json:"is_robot"`
+type Todo struct {
+	ID          int       `json:"id"`
+	Description string    `json:"description"`
+	Done        bool      `json:"done"`
+	CreatedAt   time.Time `json:"createdAt"`
+	UpdatedAt   time.Time `json:"updatedAt"`
 }
 
-func (h *employeeHandler) GetEmployeeHandler(w http.ResponseWriter, r *http.Request) {
+func (h *todoHandler) GetTodoHandler(w http.ResponseWriter, r *http.Request) {
 	strId := r.PathValue("id")
 
 	slog.Info("Get employee with id: ", strId)
@@ -31,72 +33,69 @@ func (h *employeeHandler) GetEmployeeHandler(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	emplModel, err := h.model.SelectEmployee(id)
+	todoModel, err := h.model.SelectTodo(id)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		_ = json.NewEncoder(w).Encode(ErrJson{Message: err.Error()})
 		return
 	}
 
-	empl := &Employee{
-		ID:       emplModel.ID,
-		Name:     emplModel.Name,
-		Position: emplModel.Position,
-		IsRobot:  emplModel.IsRobot,
+	todo := &Todo{
+		ID:          todoModel.ID,
+		Description: todoModel.Description,
+		Done:        todoModel.Done,
 	}
 	w.Header().Set("Content-Type", "application/json")
-	err = json.NewEncoder(w).Encode(empl)
+	err = json.NewEncoder(w).Encode(todo)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 }
 
-func (h *employeeHandler) GetEmployeesHandler(w http.ResponseWriter, r *http.Request) {
+func (h *todoHandler) GetEmployeesHandler(w http.ResponseWriter, r *http.Request) {
 	slog.Info("Get employees")
 
-	emplsModel, err := h.model.SelectEmployees()
+	todosModel, err := h.model.SelectTodos()
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		_ = json.NewEncoder(w).Encode(ErrJson{Message: err.Error()})
 		return
 	}
 
-	empls := make([]*Employee, len(emplsModel))
-	for i, empl := range emplsModel {
-		empls[i] = &Employee{
-			ID:       empl.ID,
-			Name:     empl.Name,
-			Position: empl.Position,
-			IsRobot:  empl.IsRobot,
+	todos := make([]*Todo, len(todosModel))
+	for i, todo := range todosModel {
+		todos[i] = &Todo{
+			ID:          todo.ID,
+			Description: todo.Description,
+			Done:        todo.Done,
 		}
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	err = json.NewEncoder(w).Encode(empls)
+	err = json.NewEncoder(w).Encode(todos)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 }
 
-func (h *employeeHandler) CreateEmployeeHandler(w http.ResponseWriter, r *http.Request) {
-	empl := &Employee{}
+func (h *todoHandler) CreateEmployeeHandler(w http.ResponseWriter, r *http.Request) {
+	todo := &Todo{}
 
 	if r.Header.Get("Content-Type") == "application/json" {
-		if err := json.NewDecoder(r.Body).Decode(&empl); err != nil {
+		if err := json.NewDecoder(r.Body).Decode(&todo); err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 	}
 
-	emplModel := &db.EmployeeModel{
-		Name:     empl.Name,
-		Position: empl.Position,
-		IsRobot:  empl.IsRobot,
+	todoModel := &db.TodoModel{
+		Description: todo.Description,
+		Done:        todo.Done,
 	}
 
-	if err := h.model.InsertEmployee(emplModel); err != nil {
+	if err := h.model.InsertTodo(todoModel); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		_ = json.NewEncoder(w).Encode(ErrJson{Message: err.Error()})
 		return
