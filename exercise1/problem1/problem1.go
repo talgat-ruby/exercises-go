@@ -1,10 +1,10 @@
 package problem1
 
-func isChangeEnough(changes [4]int, amountToPay float32) bool {
-	total := float32(changes[0]) * 0.25
-	total += float32(changes[1]) * 0.10
-	total += float32(changes[2]) * 0.05
-	total += float32(changes[3]) * 0.01
-
-	return float32(total) >= amountToPay
+func isChangeEnough(pocket [4]int, coast float32) bool {
+	var total float32
+	total += float32(pocket[0]) * 0.25
+	total += float32(pocket[1]) * 0.1
+	total += float32(pocket[2]) * 0.05
+	total += float32(pocket[3]) * 0.01
+	return total >= coast
 }

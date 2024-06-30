@@ -1,11 +1,12 @@
 package problem4
 
-import "strings"
+import "github.com/talgat-ruby/exercises-go/pkg/util"
 
-func mapping(letters []string) map[string]string {
-	lettersMap := map[string]string{}
-	for i := range len(letters) {
-		lettersMap[letters[i]] = strings.ToUpper(letters[i])
+func mapping(keys []string) map[string]string {
+	m := make(map[string]string, len(keys))
+	for _, v := range keys {
+		m[v] = util.ToUpper(v)
 	}
-	return lettersMap
+
+	return m
 }

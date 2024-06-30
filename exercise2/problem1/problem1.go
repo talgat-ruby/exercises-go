@@ -1,43 +1,59 @@
 package problem1
 
-import "errors"
+import "fmt"
+
+type Node struct {
+	Data any
+	Tail *Node
+}
 
 type Queue struct {
-	items []any
-	size  int
+	head *Node
 }
 
-// push into the queue
-func (q *Queue) Enqueue(item any) {
-	q.items = append(q.items, item)
-	q.size++
-}
-
-// pop from the queue
-func (q *Queue) Dequeue() (any, error) {
-	if q.size == 0 {
-		return nil, errors.New("queue is empty")
-	}
-	poppedItem := q.items[0]
-	q.items = q.items[1:]
-	q.size--
-	return poppedItem, nil
-}
-
-// peek into the queue
-func (q *Queue) Peek() (any, error) {
-	if q.size == 0 {
-		return nil, errors.New("queue is empty")
-	}
-	return q.items[0], nil
-}
-
-// size of the queue
 func (q *Queue) Size() int {
-	return q.size
+	head := q.head
+	size := 0
+	for head != nil {
+		head = head.Tail
+		size++
+	}
+
+	return size
 }
 
-// is empty?
 func (q *Queue) IsEmpty() bool {
-	return q.size == 0
+	return q.head == nil
+}
+
+func (q *Queue) Enqueue(v any) {
+	node := q.head
+	if node == nil {
+		q.head = &Node{Data: v}
+		return
+	}
+
+	for node.Tail != nil {
+		node = node.Tail
+	}
+	node.Tail = &Node{Data: v}
+}
+
+func (q *Queue) Dequeue() (any, error) {
+	if q.head == nil {
+		return nil, fmt.Errorf("empty queue")
+	}
+
+	v := q.head.Data
+	q.head = q.head.Tail
+	return v, nil
+}
+
+func (q *Queue) Peek() (any, error) {
+	if q.head == nil {
+		return nil, fmt.Errorf("empty queue")
+	}
+
+	v := q.head.Data
+	return v, nil
 }

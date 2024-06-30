@@ -1,8 +1,16 @@
 package problem6
 
+type Legged interface {
+	Legs() int
+}
+
 type Animal struct {
 	name    string
 	legsNum int
+}
+
+func (a *Animal) Legs() int {
+	return a.legsNum
 }
 
 type Insect struct {
@@ -10,15 +18,14 @@ type Insect struct {
 	legsNum int
 }
 
-func sumOfAllLegsNum(creatures ...interface{}) int {
-	sum := 0
-	for _, creature := range creatures {
-		switch v := creature.(type) {
-		case *Animal:
-			sum += v.legsNum
-		case *Insect:
-			sum += v.legsNum
-		}
+func (i *Insect) Legs() int {
+	return i.legsNum
+}
+
+func sumOfAllLegsNum(livingBeings ...Legged) int {
+	legs := 0
+	for _, v := range livingBeings {
+		legs += v.Legs()
 	}
-	return sum
+	return legs
 }

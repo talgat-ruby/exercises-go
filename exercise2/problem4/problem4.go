@@ -1,37 +1,110 @@
 package problem4
 
-type Element[T any] struct {
-	value T
-	next  *Element[T]
+import "fmt"
+
+type Element[V comparable] struct {
+	value V
+	next  *Element[V]
 }
 
-type LinkedList[T any] struct {
-	list []Element[T]
-	size int
+type LinkedList[V comparable] struct {
+	head *Element[V]
 }
 
-func (ll *LinkedList[T]) Add(item *Element[T]) {}
+func (ll *LinkedList[V]) Add(v *Element[V]) {
+	head := ll.head
+	if head == nil {
+		ll.head = v
+		return
+	}
 
-func (ll *LinkedList[T]) Insert(item *Element[T], position int) error {
-	return nil
+	for head.next != nil {
+		head = head.next
+	}
+	head.next = v
 }
 
-func (ll *LinkedList[T]) Delete(item *Element[T]) error {
-	return nil
+func (ll *LinkedList[V]) Insert(v *Element[V], pos int) error {
+	pos--
+	head := ll.head
+	if pos == 0 {
+		v.next = head
+		ll.head = v
+		return nil
+	}
+	prev := ll.head
+	head = head.next
+	for i := 1; head != nil; i++ {
+		if i == pos {
+			prev.next = v
+			v.next = head
+			return nil
+		}
+		head = head.next
+	}
+	return fmt.Errorf("position outsid the range of the linked list")
 }
 
-func (ll *LinkedList[T]) Find(item any) (*Element[T], error) {
-	return nil, nil
+func (ll *LinkedList[V]) Delete(v *Element[V]) error {
+	head := ll.head
+	if ll.IsEmpty() {
+		return fmt.Errorf("linked list is empty")
+	}
+
+	if head.value == v.value {
+		ll.head = head.next
+		return nil
+	}
+	prev := ll.head
+	head = head.next
+	for head != nil {
+		if head.value == v.value {
+			prev.next = head.next
+			return nil
+		}
+		prev = head
+		head = head.next
+	}
+	return fmt.Errorf("element not found")
 }
 
-func (ll *LinkedList[T]) List() []Element[T] {
-	return ll.list
+func (ll *LinkedList[V]) Find(v V) (*Element[V], error) {
+	head := ll.head
+	if ll.IsEmpty() {
+		return nil, fmt.Errorf("linked list is empty")
+	}
+
+	for head != nil {
+		if head.value == v {
+			return head, nil
+		}
+		head = head.next
+	}
+
+	return nil, fmt.Errorf("element not found")
 }
 
-func (ll *LinkedList[T]) Size() int {
-	return ll.size
+func (ll *LinkedList[V]) List() []V {
+	size := ll.Size()
+	slice := make([]V, size)
+	head := ll.head
+	for i := 0; i < size; i++ {
+		slice[i] = head.value
+		head = head.next
+	}
+	return slice
 }
 
-func (ll *LinkedList[T]) IsEmpty() bool {
-	return ll.size == 0
+func (ll *LinkedList[V]) Size() int {
+	size := 0
+	head := ll.head
+	for head != nil {
+		size++
+		head = head.next
+	}
+	return size
+}
+
+func (ll *LinkedList[V]) IsEmpty() bool {
+	return ll.head == nil
 }

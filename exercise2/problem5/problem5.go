@@ -3,16 +3,19 @@ package problem5
 import "fmt"
 
 type Person struct {
-	name string
-	age  int
+	Name string
+	Age  int
 }
 
-func (p *Person) compareAge(otherPerson *Person) string {
-	if otherPerson.age == p.age {
-		return fmt.Sprintf("%s is the same age as me.", otherPerson.name)
-	} else if otherPerson.age > p.age {
-		return fmt.Sprintf("%s is older than me.", otherPerson.name)
-	} else {
-		return fmt.Sprintf("%s is younger than me.", otherPerson.name)
+func (p1 *Person) compareAge(p2 *Person) string {
+	format := ""
+	switch {
+	case p1.Age > p2.Age:
+		format = "%s is younger than me."
+	case p1.Age < p2.Age:
+		format = "%s is older than me."
+	default:
+		format = "%s is the same age as me."
 	}
+	return fmt.Sprintf(format, p2.Name)
 }
