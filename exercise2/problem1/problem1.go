@@ -51,8 +51,4 @@ func (q *Queue) Size() int {
 
 func (q *Queue) IsEmpty() bool {
 	return q.size == 0
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 65670fa52b399c8edf3ad9e67bc9fc06c74afb99
