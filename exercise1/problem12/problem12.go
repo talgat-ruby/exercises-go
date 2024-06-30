@@ -1,29 +1,18 @@
 package problem11
 
-import (
-	"reflect"
-	"sort"
-)
+func keysAndValues[K comparable, V any](inp map[K]V) ([]K, []V) {
+	var keys []K
+	var values []V
 
-func keysAndValues[T ~int | ~string | ~bool, P ~int | ~string | ~bool](itemsMap map[T]P) ([]T, []P) {
-	keys := []T{}
-	vals := []P{}
-	for k, _ := range itemsMap {
-		keys = append(keys, k)
+	if inp == nil {
+		return keys, values
 	}
 
-	sort.Slice(keys, func(i, j int) bool {
-		a := reflect.ValueOf(keys[i])
-		b := reflect.ValueOf(keys[j])
-		if a.Kind() == reflect.String {
-			return a.String() < b.String()
-		} else {
-			return a.Int() < b.Int()
-		}
-	})
-
-	for _, key := range keys {
-		vals = append(vals, itemsMap[key])
+	// Создаем срезы для ключей и значений
+	for key, value := range inp {
+		keys = append(keys, key)
+		values = append(values, value)
 	}
-	return keys, vals
+
+	return keys, values
 }

@@ -2,42 +2,53 @@ package problem1
 
 import "errors"
 
-type Queue struct {
-	items []any
-	size  int
+type Node struct {
+	value interface{}
+	next  *Node
 }
 
-// push into the queue
-func (q *Queue) Enqueue(item any) {
-	q.items = append(q.items, item)
+type Queue struct {
+	head *Node
+	tail *Node
+	size int
+}
+
+func (q *Queue) Enqueue(value interface{}) {
+	newNode := &Node{value: value}
+	if q.tail != nil {
+		q.tail.next = newNode
+	}
+	q.tail = newNode
+	if q.head == nil {
+		q.head = newNode
+	}
 	q.size++
 }
 
-// pop from the queue
-func (q *Queue) Dequeue() (any, error) {
-	if q.size == 0 {
+func (q *Queue) Dequeue() (interface{}, error) {
+	if q.head == nil {
 		return nil, errors.New("queue is empty")
 	}
-	poppedItem := q.items[0]
-	q.items = q.items[1:]
+	value := q.head.value
+	q.head = q.head.next
+	if q.head == nil {
+		q.tail = nil
+	}
 	q.size--
-	return poppedItem, nil
+	return value, nil
 }
 
-// peek into the queue
-func (q *Queue) Peek() (any, error) {
-	if q.size == 0 {
+func (q *Queue) Peek() (interface{}, error) {
+	if q.head == nil {
 		return nil, errors.New("queue is empty")
 	}
-	return q.items[0], nil
+	return q.head.value, nil
 }
 
-// size of the queue
 func (q *Queue) Size() int {
 	return q.size
 }
 
-// is empty?
 func (q *Queue) IsEmpty() bool {
 	return q.size == 0
 }

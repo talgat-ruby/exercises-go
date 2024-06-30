@@ -6,7 +6,7 @@ same sequential order as the old slice (minus duplicates).
 ```go
 removeDups([]int{1, 0, 1, 0}) // [1, 0]
 
-removeDups([]bool{true, false, false, true}) // ["The", "big", "cat"]
+removeDups([]bool{true, false, false, true}) // ["true", "false"]
 
 removeDups([]string{"John", "Taylor", "John"}) // ["John", "Taylor"]
 ```

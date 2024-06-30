@@ -2,30 +2,27 @@ package problem5
 
 import "sort"
 
-type KVPair struct {
-	key string
-	val int
-}
+func products(products map[string]int, min int) []string {
+	var filtered []string
 
-func products(items map[string]int, price int) []string {
-	// smth
-	output := []KVPair{}
-	for k, v := range items {
-		if v >= price {
-			output = append(output, KVPair{k, v})
+	for name, price := range products {
+		if price >= min {
+			filtered = append(filtered, name)
 		}
 	}
 
-	sort.Slice(output, func(i int, j int) bool {
-		if output[i].val == output[j].val {
-			return output[i].key < output[j].key
+	// проверка на пустую мапу
+	if len(filtered) == 0 {
+		return []string{}
+	}
+
+	sort.Slice(filtered, func(i, j int) bool {
+		priceI, priceJ := products[filtered[i]], products[filtered[j]]
+		if priceI == priceJ {
+			return filtered[i] < filtered[j]
 		}
-		return output[i].val > output[j].val
+		return priceI > priceJ
 	})
 
-	newOutput := []string{}
-	for _, item := range output {
-		newOutput = append(newOutput, item.key)
-	}
-	return newOutput
+	return filtered
 }

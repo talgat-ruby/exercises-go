@@ -1,61 +1,36 @@
 package problem7
 
-import "fmt"
+import (
+	"testing"
+)
 
-type BankAccount struct {
-	name    string
-	balance int
-}
-
-type FedexAccount struct {
-	name     string
-	packages []string
-}
-
-type KazPostAccount struct {
-	name     string
-	balance  int
-	packages []string
-}
-
-type Bank interface {
-	withdraw(int)
-}
-
-type Post interface {
-	send(string)
-}
-
-func (b *BankAccount) withdraw(amount int) {
-	if b.balance >= amount {
-		b.balance -= amount
+func TestAccounts(t *testing.T) {
+	normanOsborne := &BankAccount{
+		name:    "Norman Osborne",
+		balance: 1_000_000,
 	}
-}
-
-func (k *KazPostAccount) withdraw(amount int) {
-	if k.balance >= amount {
-		k.balance -= amount
+	peterParker := &FedexAccount{
+		name: "Peter Parker",
 	}
-}
-
-func (f *FedexAccount) send(pckg string) {
-	msg := fmt.Sprintf("%s send package to %s", f.name, pckg)
-	f.packages = append(f.packages, msg)
-}
-
-func (k *KazPostAccount) send(pckg string) {
-	msg := fmt.Sprintf("%s send package to %s", k.name, pckg)
-	k.packages = append(k.packages, msg)
-}
-
-func withdrawMoney(amount int, people ...Bank) {
-	for _, person := range people {
-		person.withdraw(amount)
+	auntMay := &KazPostAccount{
+		name:    "Aunt May",
+		balance: 200,
 	}
-}
 
-func sendPackagesTo(pckg string, people ...Post) {
-	for _, person := range people {
-		person.send(pckg)
+	withdrawMoney(10, normanOsborne, auntMay)
+	sendPackagesTo("Mary Jane", peterParker, auntMay)
+
+	if normanOsborne.balance != 1_000_000-10 {
+		t.Errorf("withdrawMoney() was incorrect, got: %d, expected: %d", normanOsborne.balance, 1_000_000-10)
+	}
+	if auntMay.balance != 200-10 {
+		t.Errorf("withdrawMoney() was incorrect, got: %d, expected: %d", auntMay.balance, 200-10)
+	}
+
+	if peterParker.packages[0] != "Peter Parker send package to Mary Jane" {
+		t.Errorf("sendPackagesTo() was incorrect, got: %s, expected: %s", peterParker.packages[0], "Peter Parker send package to Mary Jane")
+	}
+	if auntMay.packages[0] != "Aunt May send package to Mary Jane" {
+		t.Errorf("sendPackagesTo() was incorrect, got: %s, expected: %s", peterParker.packages[0], "Aunt May send package to Mary Jane")
 	}
 }

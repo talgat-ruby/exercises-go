@@ -2,31 +2,37 @@ package problem2
 
 import "errors"
 
-type Stack struct {
-	items []any
-	size  int
+type Node struct {
+	value interface{}
+	next  *Node
 }
 
-func (s *Stack) Push(item any) {
-	s.items = append(s.items, item)
+type Stack struct {
+	top  *Node
+	size int
+}
+
+func (s *Stack) Push(value interface{}) {
+	newNode := &Node{value: value, next: s.top}
+	s.top = newNode
 	s.size++
 }
 
-func (s *Stack) Pop() (any, error) {
-	if s.size == 0 {
+func (s *Stack) Pop() (interface{}, error) {
+	if s.top == nil {
 		return nil, errors.New("stack is empty")
 	}
-	poppedItem := s.items[s.size-1]
-	s.items = s.items[:s.size-1]
+	value := s.top.value
+	s.top = s.top.next
 	s.size--
-	return poppedItem, nil
+	return value, nil
 }
 
-func (s *Stack) Peek() (any, error) {
-	if s.size == 0 {
+func (s *Stack) Peek() (interface{}, error) {
+	if s.top == nil {
 		return nil, errors.New("stack is empty")
 	}
-	return s.items[s.size-1], nil
+	return s.top.value, nil
 }
 
 func (s *Stack) Size() int {

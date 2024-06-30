@@ -1,18 +1,20 @@
 package problem5
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Person struct {
-	name string
-	age  int
+	Name string
+	Age  int
 }
 
-func (p *Person) compareAge(otherPerson *Person) string {
-	if otherPerson.age == p.age {
-		return fmt.Sprintf("%s is the same age as me.", otherPerson.name)
-	} else if otherPerson.age > p.age {
-		return fmt.Sprintf("%s is older than me.", otherPerson.name)
+func (p *Person) compareAge(other *Person) string {
+	if other.Age > p.Age {
+		return fmt.Sprintf("%s is older than me.", other.Name)
+	} else if other.Age < p.Age {
+		return fmt.Sprintf("%s is younger than me.", other.Name)
 	} else {
-		return fmt.Sprintf("%s is younger than me.", otherPerson.name)
+		return fmt.Sprintf("%s is the same age as me.", other.Name)
 	}
 }

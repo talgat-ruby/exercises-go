@@ -6,16 +6,15 @@ import (
 )
 
 func capitalize(names []string) []string {
-	capitalizedNames := []string{}
-	for i := range len(names) {
-		name := names[i]
-		if len(name) != 0 {
-			name = strings.ToLower(name)
-			chars := []rune(name)
-			chars[0] = unicode.ToUpper(chars[0])
-			name = strings.TrimSpace(string(chars))
+	var capitalizedNames []string
+	for _, name := range names {
+		if len(name) > 0 {
+			first := string(unicode.ToUpper(rune(name[0])))
+			next := strings.ToLower(name[1:])
+			capitalizedNames = append(capitalizedNames, first+next)
+		} else {
+			capitalizedNames = append(capitalizedNames, "")
 		}
-		capitalizedNames = append(capitalizedNames, name)
 	}
 	return capitalizedNames
 }
