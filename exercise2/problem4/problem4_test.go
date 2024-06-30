@@ -235,9 +235,9 @@ func TestLinkedList(t *testing.T) {
 				ll.Add(el)
 			}
 
-			f, _ := ll.Find(row[1])
+			f, _ := ll.Find(row[0])
 
-			if f.value != row[1] || f.next != nil {
+			if f.value != row[0] || f.next.value != row[1] {
 				t.Errorf("Find(%v) was incorrect, got: %v", row[1], f)
 			}
 		})
