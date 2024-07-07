@@ -1,14 +1,13 @@
 package problem11
 
-func removeDups[T ~int | ~bool | ~string](items []T) []T {
-	itemsMap := make(map[T]int)
-	uniqueItems := []T{}
-	for _, item := range items {
-		_, found := itemsMap[item]
-		if !found {
-			uniqueItems = append(uniqueItems, item)
-			itemsMap[item] += 1
+import "slices"
+
+func removeDups[T comparable](s []T) []T {
+	distinct := make([]T, 0)
+	for _, v := range s {
+		if !slices.Contains(distinct, v) {
+			distinct = append(distinct, v)
 		}
 	}
-	return uniqueItems
+	return distinct
 }

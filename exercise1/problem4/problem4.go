@@ -3,9 +3,10 @@ package problem4
 import "strings"
 
 func mapping(letters []string) map[string]string {
-	lettersMap := map[string]string{}
-	for i := range len(letters) {
-		lettersMap[letters[i]] = strings.ToUpper(letters[i])
+	m := make(map[string]string, len(letters))
+	for _, letter := range letters {
+		m[letter] = strings.ToUpper(letter)
 	}
-	return lettersMap
+
+	return m
 }

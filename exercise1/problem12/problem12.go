@@ -1,29 +1,25 @@
 package problem11
 
 import (
-	"reflect"
+	"golang.org/x/exp/constraints"
 	"sort"
 )
 
-func keysAndValues[T ~int | ~string | ~bool, P ~int | ~string | ~bool](itemsMap map[T]P) ([]T, []P) {
-	keys := []T{}
-	vals := []P{}
-	for k, _ := range itemsMap {
+func keysAndValues[K constraints.Ordered, V any](m map[K]V) ([]K, []V) {
+	keys := make([]K, 0)
+	values := make([]V, 0)
+
+	for k := range m {
 		keys = append(keys, k)
 	}
 
 	sort.Slice(keys, func(i, j int) bool {
-		a := reflect.ValueOf(keys[i])
-		b := reflect.ValueOf(keys[j])
-		if a.Kind() == reflect.String {
-			return a.String() < b.String()
-		} else {
-			return a.Int() < b.Int()
-		}
+		return keys[i] < keys[j]
 	})
 
-	for _, key := range keys {
-		vals = append(vals, itemsMap[key])
+	for _, v := range keys {
+		values = append(values, m[v])
 	}
-	return keys, vals
+
+	return keys, values
 }
