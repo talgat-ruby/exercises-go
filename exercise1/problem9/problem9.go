@@ -1,11 +1,10 @@
 package problem9
 
-func factory(size int) func(args ...int) []int {
-	return func(args ...int) []int {
-		s := make([]int, 0)
-		for _, arg := range args {
-			s = append(s, arg*size)
+func factory(val int) func(...int) []int {
+	return func(nums ...int) []int {
+		for i, num := range nums {
+			nums[i] = num * val
 		}
-		return s
+		return nums
 	}
 }

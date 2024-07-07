@@ -1,43 +1,31 @@
 package problem5
 
-import (
-	"slices"
-	"sort"
-)
+import "sort"
 
-func products(m map[string]int, min int) []string {
-	for k, v := range m {
-		if v < min {
-			delete(m, k)
+type KVPair struct {
+	key string
+	val int
+}
+
+func products(items map[string]int, price int) []string {
+	// smth
+	output := []KVPair{}
+	for k, v := range items {
+		if v >= price {
+			output = append(output, KVPair{k, v})
 		}
 	}
 
-	if len(m) < 1 {
-		return make([]string, 0)
-	}
-
-	values := make([]int, 0)
-
-	for _, v := range m {
-		if !slices.Contains(values, v) {
-			values = append(values, v)
+	sort.Slice(output, func(i int, j int) bool {
+		if output[i].val == output[j].val {
+			return output[i].key < output[j].key
 		}
-	}
+		return output[i].val > output[j].val
+	})
 
-	sort.Sort(sort.Reverse(sort.IntSlice(values)))
-	res := make([]string, 0)
-
-	for _, outerV := range values {
-		similar := make([]string, 0)
-		for k, innerV := range m {
-			if outerV == innerV {
-				similar = append(similar, k)
-			}
-		}
-		sort.Strings(similar)
-		for _, v := range similar {
-			res = append(res, v)
-		}
+	newOutput := []string{}
+	for _, item := range output {
+		newOutput = append(newOutput, item.key)
 	}
-	return res
+	return newOutput
 }
