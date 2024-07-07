@@ -2,11 +2,11 @@ package router
 
 import (
 	"encoding/json"
-	"github.com/talgat-ruby/exercises-go/exercise3/problem1/internal/db"
 	"log/slog"
 	"net/http"
 	"strconv"
-	"time"
+
+	"exercise3/problem1/internal/db"
 )
 
 type todoHandler struct {
@@ -14,17 +14,15 @@ type todoHandler struct {
 }
 
 type Todo struct {
-	ID          int       `json:"id"`
-	Description string    `json:"description"`
-	Done        bool      `json:"done"`
-	CreatedAt   time.Time `json:"createdAt"`
-	UpdatedAt   time.Time `json:"updatedAt"`
+	ID          int    `json:"id"`
+	Description string `json:"description"`
+	IsDone      bool   `json:"done"`
 }
 
 func (h *todoHandler) GetTodoHandler(w http.ResponseWriter, r *http.Request) {
 	strId := r.PathValue("id")
 
-	slog.Info("Get employee with id: ", strId)
+	slog.Info("Get todo with id: ", strId)
 
 	id, err := strconv.Atoi(strId)
 	if err != nil {
@@ -33,18 +31,26 @@ func (h *todoHandler) GetTodoHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	todoModel, err := h.model.SelectTodo(id)
+	todoModel, err := h.model.GetTodo(id)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		_ = json.NewEncoder(w).Encode(ErrJson{Message: err.Error()})
 		return
 	}
 
+	if todoModel == nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(ErrJson{Message: "Record not found"})
+		return
+	}
+
 	todo := &Todo{
 		ID:          todoModel.ID,
 		Description: todoModel.Description,
-		Done:        todoModel.Done,
+		IsDone:      todoModel.Done,
 	}
+
 	w.Header().Set("Content-Type", "application/json")
 	err = json.NewEncoder(w).Encode(todo)
 	if err != nil {
@@ -53,10 +59,10 @@ func (h *todoHandler) GetTodoHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *todoHandler) GetEmployeesHandler(w http.ResponseWriter, r *http.Request) {
-	slog.Info("Get employees")
+func (h *todoHandler) GetTodosHandler(w http.ResponseWriter, r *http.Request) {
+	slog.Info("Get todos")
 
-	todosModel, err := h.model.SelectTodos()
+	todosModel, err := h.model.GetTodos()
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		_ = json.NewEncoder(w).Encode(ErrJson{Message: err.Error()})
@@ -68,7 +74,7 @@ func (h *todoHandler) GetEmployeesHandler(w http.ResponseWriter, r *http.Request
 		todos[i] = &Todo{
 			ID:          todo.ID,
 			Description: todo.Description,
-			Done:        todo.Done,
+			IsDone:      todo.Done,
 		}
 	}
 
@@ -80,7 +86,7 @@ func (h *todoHandler) GetEmployeesHandler(w http.ResponseWriter, r *http.Request
 	}
 }
 
-func (h *todoHandler) CreateEmployeeHandler(w http.ResponseWriter, r *http.Request) {
+func (h *todoHandler) CreateTodoHandler(w http.ResponseWriter, r *http.Request) {
 	todo := &Todo{}
 
 	if r.Header.Get("Content-Type") == "application/json" {
@@ -92,10 +98,62 @@ func (h *todoHandler) CreateEmployeeHandler(w http.ResponseWriter, r *http.Reque
 
 	todoModel := &db.TodoModel{
 		Description: todo.Description,
-		Done:        todo.Done,
 	}
 
-	if err := h.model.InsertTodo(todoModel); err != nil {
+	if err := h.model.CreateTodo(todoModel); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		_ = json.NewEncoder(w).Encode(ErrJson{Message: err.Error()})
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+}
+
+func (h *todoHandler) UpdateTodoHandler(w http.ResponseWriter, r *http.Request) {
+	strId := r.PathValue("id")
+
+	slog.Info("todo with id to update: ", strId)
+
+	id, err := strconv.Atoi(strId)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		_ = json.NewEncoder(w).Encode(ErrJson{Message: err.Error()})
+		return
+	}
+
+	var data struct {
+		Description string `json:"description"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	if err := h.model.UpdateTodo(data.Description, id); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		_ = json.NewEncoder(w).Encode(ErrJson{Message: err.Error()})
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+}
+
+func (h *todoHandler) DeleteTodoHandler(w http.ResponseWriter, r *http.Request) {
+	strId := r.PathValue("id")
+
+	slog.Info("todo with id to delete: ", strId)
+
+	id, err := strconv.Atoi(strId)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		_ = json.NewEncoder(w).Encode(ErrJson{Message: err.Error()})
+		return
+	}
+
+	if err := h.model.DeleteTodo(id); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		_ = json.NewEncoder(w).Encode(ErrJson{Message: err.Error()})
 		return

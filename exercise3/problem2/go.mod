@@ -1,3 +1,9 @@
-module github.com/talgat-ruby/exercises-go/exercise3/problem2
+module exercise3/problem2
 
 go 1.22.4
+
+require (
+	github.com/inconshreveable/mousetrap v1.1.0 // indirect
+	github.com/spf13/cobra v1.8.1 // indirect
+	github.com/spf13/pflag v1.0.5 // indirect
+)

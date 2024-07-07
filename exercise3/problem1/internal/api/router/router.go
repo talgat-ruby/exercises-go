@@ -1,8 +1,9 @@
 package router
 
 import (
-	"github.com/talgat-ruby/exercises-go/exercise3/problem1/internal/db"
 	"net/http"
+
+	"exercise3/problem1/internal/db"
 )
 
 type ErrJson struct {
@@ -10,12 +11,13 @@ type ErrJson struct {
 }
 
 func SetupRoutes(mux *http.ServeMux, model *db.Model) {
-	emplH := &employeeHandler{
+	todoH := &todoHandler{
 		model: model,
 	}
 
-	mux.HandleFunc("GET /ping", GetPingHandler)
-	mux.HandleFunc("GET /employee/{id}", emplH.GetEmployeeHandler)
-	mux.HandleFunc("GET /employee", emplH.GetEmployeesHandler)
-	mux.HandleFunc("POST /employee", emplH.CreateEmployeeHandler)
+	mux.HandleFunc("GET /todo/{id}", todoH.GetTodoHandler)
+	mux.HandleFunc("GET /todo", todoH.GetTodosHandler)
+	mux.HandleFunc("POST /todo", todoH.CreateTodoHandler)
+	mux.HandleFunc("PATCH /todo/{id}", todoH.UpdateTodoHandler)
+	mux.HandleFunc("DELETE /todo/{id}", todoH.DeleteTodoHandler)
 }
