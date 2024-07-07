@@ -1,38 +1,37 @@
 package problem2
 
-import "errors"
+import "fmt"
 
 type Stack struct {
-	items []any
-	size  int
+	values []any
 }
 
-func (s *Stack) Push(item any) {
-	s.items = append(s.items, item)
-	s.size++
+func (s *Stack) Push(any2 any) {
+	dS := make([]any, 0)
+	dS = append(dS, any2)
+	s.values = append(dS, s.values...)
 }
 
 func (s *Stack) Pop() (any, error) {
-	if s.size == 0 {
-		return nil, errors.New("stack is empty")
+	if s.IsEmpty() {
+		return nil, fmt.Errorf("empty")
 	}
-	poppedItem := s.items[s.size-1]
-	s.items = s.items[:s.size-1]
-	s.size--
-	return poppedItem, nil
+	v := s.values[0]
+	s.values = s.values[1:]
+	return v, nil
 }
 
 func (s *Stack) Peek() (any, error) {
-	if s.size == 0 {
-		return nil, errors.New("stack is empty")
+	if s.IsEmpty() {
+		return nil, fmt.Errorf("empty")
 	}
-	return s.items[s.size-1], nil
+	return s.values[0], nil
 }
 
 func (s *Stack) Size() int {
-	return s.size
+	return len(s.values)
 }
 
 func (s *Stack) IsEmpty() bool {
-	return s.size == 0
+	return s.Size() == 0
 }

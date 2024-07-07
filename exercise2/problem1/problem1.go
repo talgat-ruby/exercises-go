@@ -1,43 +1,35 @@
 package problem1
 
-import "errors"
+import "fmt"
 
 type Queue struct {
-	items []any
-	size  int
+	values []any
 }
 
-// push into the queue
-func (q *Queue) Enqueue(item any) {
-	q.items = append(q.items, item)
-	q.size++
+func (q *Queue) Enqueue(any2 any) {
+	q.values = append(q.values, any2)
 }
 
-// pop from the queue
 func (q *Queue) Dequeue() (any, error) {
-	if q.size == 0 {
-		return nil, errors.New("queue is empty")
+	if q.IsEmpty() {
+		return nil, fmt.Errorf("empty")
 	}
-	poppedItem := q.items[0]
-	q.items = q.items[1:]
-	q.size--
-	return poppedItem, nil
+	v := q.values[0]
+	q.values = q.values[1:]
+	return v, nil
 }
 
-// peek into the queue
 func (q *Queue) Peek() (any, error) {
-	if q.size == 0 {
-		return nil, errors.New("queue is empty")
+	if q.IsEmpty() {
+		return nil, fmt.Errorf("empty")
 	}
-	return q.items[0], nil
+	return q.values[0], nil
 }
 
-// size of the queue
 func (q *Queue) Size() int {
-	return q.size
+	return len(q.values)
 }
 
-// is empty?
 func (q *Queue) IsEmpty() bool {
-	return q.size == 0
+	return q.Size() == 0
 }

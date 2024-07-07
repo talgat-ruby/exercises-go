@@ -1,14 +1,25 @@
 package problem7
 
-import "fmt"
+type Withdrawable interface {
+	GetBalance() int
+	SetBalance(int)
+}
+
+type Sendable interface {
+	GetName() string
+	GetPackages() []string
+	SetPackages([]string)
+}
 
 type BankAccount struct {
-	name    string
-	balance int
+	name     string
+	balance  int
+	packages []string
 }
 
 type FedexAccount struct {
 	name     string
+	balance  int
 	packages []string
 }
 
@@ -18,44 +29,74 @@ type KazPostAccount struct {
 	packages []string
 }
 
-type Bank interface {
-	withdraw(int)
+func (b *BankAccount) GetName() string {
+	return b.name
 }
 
-type Post interface {
-	send(string)
+func (b *FedexAccount) GetName() string {
+	return b.name
 }
 
-func (b *BankAccount) withdraw(amount int) {
-	if b.balance >= amount {
-		b.balance -= amount
+func (b *KazPostAccount) GetName() string {
+	return b.name
+}
+
+func (b *BankAccount) GetBalance() int {
+	return b.balance
+}
+
+func (b *FedexAccount) GetBalance() int {
+	return b.balance
+}
+
+func (b *KazPostAccount) GetBalance() int {
+	return b.balance
+}
+
+func (b *BankAccount) SetBalance(i int) {
+	b.balance = i
+}
+
+func (b *FedexAccount) SetBalance(i int) {
+	b.balance = i
+}
+
+func (b *KazPostAccount) SetBalance(i int) {
+	b.balance = i
+}
+
+func (b *BankAccount) GetPackages() []string {
+	return b.packages
+}
+
+func (b *FedexAccount) GetPackages() []string {
+	return b.packages
+}
+
+func (b *KazPostAccount) GetPackages() []string {
+	return b.packages
+}
+
+func (b *BankAccount) SetPackages(p []string) {
+	b.packages = p
+}
+
+func (b *FedexAccount) SetPackages(p []string) {
+	b.packages = p
+}
+
+func (b *KazPostAccount) SetPackages(p []string) {
+	b.packages = p
+}
+
+func withdrawMoney(m int, a ...Withdrawable) {
+	for _, account := range a {
+		account.SetBalance(account.GetBalance() - m)
 	}
 }
 
-func (k *KazPostAccount) withdraw(amount int) {
-	if k.balance >= amount {
-		k.balance -= amount
-	}
-}
-
-func (f *FedexAccount) send(pckg string) {
-	msg := fmt.Sprintf("%s send package to %s", f.name, pckg)
-	f.packages = append(f.packages, msg)
-}
-
-func (k *KazPostAccount) send(pckg string) {
-	msg := fmt.Sprintf("%s send package to %s", k.name, pckg)
-	k.packages = append(k.packages, msg)
-}
-
-func withdrawMoney(amount int, people ...Bank) {
-	for _, person := range people {
-		person.withdraw(amount)
-	}
-}
-
-func sendPackagesTo(pckg string, people ...Post) {
-	for _, person := range people {
-		person.send(pckg)
+func sendPackagesTo(name string, s ...Sendable) {
+	for _, sender := range s {
+		sender.SetPackages(append(sender.GetPackages(), sender.GetName()+" send package to "+name))
 	}
 }

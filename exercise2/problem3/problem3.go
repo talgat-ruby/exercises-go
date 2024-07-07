@@ -1,75 +1,103 @@
 package problem3
 
 type Set struct {
-	items []any
-	size  int
+	values map[any]int
 }
 
 func NewSet() *Set {
-	return &Set{}
+	return &Set{values: map[any]int{}}
 }
 
-func (s *Set) Add(element any) {
-	for _, item := range s.items {
-		if element == item {
-			return
-		}
-	}
-	s.items = append(s.items, element)
-	s.size++
+func (s *Set) Add(e any) {
+	s.values[e] = 0
 }
 
-func (s *Set) Remove(element any) {
-	for i, v := range s.items {
-		if v == element {
-			s.items = append(s.items[:i], s.items[i+1:]...)
-			s.size--
-		}
-	}
-}
-
-func (s *Set) IsEmpty() bool {
-	return s.size == 0
+func (s *Set) Remove(e any) {
+	delete(s.values, e)
 }
 
 func (s *Set) Size() int {
-	return s.size
+	return len(s.values)
+}
+
+func (s *Set) IsEmpty() bool {
+	return s.Size() == 0
 }
 
 func (s *Set) List() []any {
-	return s.items
+	l := make([]any, 0, s.Size())
+
+	for k := range s.values {
+		l = append(l, k)
+	}
+
+	return l
 }
 
-func (s *Set) Has(element any) bool {
-	for _, v := range s.items {
-		if v == element {
-			return true
-		}
+func (s *Set) Has(e any) bool {
+	if _, ok := s.values[e]; ok {
+		return true
 	}
 	return false
 }
 
 func (s *Set) Copy() *Set {
-	return &Set{
-		items: s.items,
-		size:  s.size,
+	cS := Set{values: map[any]int{}}
+
+	for k, v := range s.values {
+		cS.values[k] = v
 	}
+
+	return &cS
 }
 
-// optional
+func (s *Set) Difference(otherSet *Set) Set {
+	cS := Set{values: map[any]int{}}
 
-func (s *Set) Difference(set2 *Set) *Set {
-	return nil
+	for k, v := range s.values {
+		if !otherSet.Has(k) {
+			cS.values[k] = v
+		}
+	}
+
+	return cS
 }
 
-func (s *Set) IsSubset(set2 *Set) bool {
-	return false
+func (s *Set) IsSubset(otherSet *Set) bool {
+	for k := range s.values {
+		if !otherSet.Has(k) {
+			return false
+		}
+	}
+
+	return true
 }
 
-func Union(...*Set) *Set {
-	return &Set{}
+func Union(ss ...*Set) Set {
+	cS := Set{values: map[any]int{}}
+
+	for _, oS := range ss {
+		for k, v := range oS.values {
+			if !cS.Has(k) {
+				cS.values[k] = v
+			}
+		}
+	}
+
+	return cS
 }
 
-func Intersect(...*Set) *Set {
-	return &Set{}
+func Intersect(ss ...*Set) *Set {
+	firstSet := ss[0]
+	ss = ss[1:]
+
+	for _, oS := range ss {
+		for k := range firstSet.values {
+			if !oS.Has(k) {
+				firstSet.Remove(k)
+			}
+		}
+	}
+
+	return firstSet
 }
