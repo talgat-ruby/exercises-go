@@ -5,8 +5,7 @@ import (
 )
 
 func send(words []string) string {
-	ch := make(chan string)
-
+	ch := make(chan string, len(words))
 	for _, word := range words {
 		ch <- word
 	}
