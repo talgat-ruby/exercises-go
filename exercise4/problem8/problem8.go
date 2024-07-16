@@ -4,4 +4,11 @@ import (
 	"time"
 )
 
-func withTimeout(ch <-chan string, ttl time.Duration) string {}
+func withTimeout(ch <-chan string, ttl time.Duration) string {
+	select {
+	case v := <-ch:
+		return v
+	case <-time.After(ttl):
+		return "timeout"
+	}
+}

@@ -1,11 +1,12 @@
 package problem3
 
 func sum(a, b int) int {
-	var c int
+	c := make(chan int)
 
-	go func(a, b int) {
-		c = a + b
-	}(a, b)
+	go func(a, b int, c chan<- int) {
+		c <- a + b
+	}(a, b, c)
 
-	return c
+	result := <-c
+	return result
 }
