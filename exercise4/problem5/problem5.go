@@ -7,10 +7,12 @@ import (
 func send(words []string) string {
 	ch := make(chan string)
 
-	for _, word := range words {
-		ch <- word
-	}
-	close(ch)
+	go func() {
+		for _, word := range words {
+			ch <- word
+		}
+		close(ch)
+	}()
 
 	var messages []string
 	for word := range ch {
