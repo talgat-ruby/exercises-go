@@ -1,11 +1,13 @@
 package problem3
 
 func sum(a, b int) int {
-	var c int
+	resultChan := make(chan int) // Создаем канал для передачи результата
 
 	go func(a, b int) {
-		c = a + b
+		result := a + b
+		resultChan <- result // Отправляем результат в канал
 	}(a, b)
 
+	c := <-resultChan // Ожидаем результат из канала
 	return c
 }
