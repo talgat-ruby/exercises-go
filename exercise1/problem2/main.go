@@ -1,3 +1,5 @@
 package main
 
-func binary() {}
+func binary(num int) string {
+	return ""
+}

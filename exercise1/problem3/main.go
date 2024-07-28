@@ -1,3 +1,5 @@
 package main
 
-func numberSquares() {}
+func numberSquares(num int) int {
+return 0	
+}
