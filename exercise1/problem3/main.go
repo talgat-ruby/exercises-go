@@ -5,5 +5,4 @@ func numberSquares(number int) int {
 	for i := 1; i <= number; i++ {
 		total += i * i
 	}
-	return total
 }
