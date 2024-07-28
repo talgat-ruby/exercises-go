@@ -1,3 +1,5 @@
 package main
 
-func addUp() {}
+func addUp() {
+	println("Hello world")
+}
