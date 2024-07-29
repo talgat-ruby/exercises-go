@@ -1,7 +1,16 @@
 package main
 
-func bitwiseAND() {}
+// Функция bitwiseAND возвращает результат побитовой операции AND
+func bitwiseAND(a, b int) int {
+	return a & b
+}
 
-func bitwiseOR() {}
+// Функция bitwiseOR возвращает результат побитовой операции OR
+func bitwiseOR(a, b int) int {
+	return a | b
+}
 
-func bitwiseXOR() {}
+// Функция bitwiseXOR возвращает результат побитовой операции XOR
+func bitwiseXOR(a, b int) int {
+	return a ^ b
+}
