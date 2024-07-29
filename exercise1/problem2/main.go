@@ -2,15 +2,16 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 )
 
-func binary(de int) int {
-	a := uint64(de)
-	return int(a)
+func binary(de int) string {
+	return strconv.FormatInt(int64(de), 2)
 }
 
 func main() {
-	var c int
-	fmt.Scan(&c)
-	fmt.Printf("%b", c)
+	var b int
+	fmt.Scan(&b)
+	res := binary(b)
+	fmt.Println(res)
 }
