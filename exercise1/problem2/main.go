@@ -14,8 +14,11 @@ func binary(d int) string {
 	var rem int
 	for d > 0 {
 		rem = d & 2
+		fmt.Print(rem)
 		bin = strconv.Itoa(rem) + bin
+		fmt.Print(bin)
 		d = d / 2
+		fmt.Print(d)
 	}
 	return bin
 
