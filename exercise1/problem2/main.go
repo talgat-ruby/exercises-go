@@ -23,7 +23,8 @@ func binary(d int) string {
 
 func main() {
 	var inp int
-	fmt.Scan(%inp)
-	res = binary(a)
+	var res string
+	fmt.Scan(inp)
+	res = binary(inp)
 	fmt.Println(res)
 }
