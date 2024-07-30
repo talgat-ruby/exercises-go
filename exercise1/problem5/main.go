@@ -1,3 +1,9 @@
 package main
 
-func potatoes() {}
+import (
+	"strings"
+)
+
+func potatoes(crowd string) int {
+	return strings.Count(crowd, "potato")
+}
