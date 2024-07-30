@@ -1,14 +1,11 @@
 package main
 
-import "strconv"
-
 func highestDigit(in int) int {
-	digits := []rune(strconv.Itoa(in))
 	highest := 0
-	for _, d := range digits {
-		digit, _ := strconv.Atoi(string(d))
-		if digit > highest {
-			highest = digit
+	for i := in; i > 0; i /= 10 {
+		rem := i % 10
+		if rem > highest {
+			highest = rem
 		}
 	}
 	return highest
