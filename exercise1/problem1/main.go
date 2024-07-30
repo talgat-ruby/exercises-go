@@ -1,7 +1,7 @@
 package main
 
 func addUp(num int) int {
-	var count int
+	count := 0
 	for i := 1; i <= num; i++ {
 		count += i
 	}
