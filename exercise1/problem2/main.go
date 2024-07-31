@@ -10,7 +10,6 @@ func binary(decimalStr string) (string, error) {
 		return "", err
 	}
 
-	// Convert the integer to a binary string
 	binaryStr := strconv.FormatInt(int64(decimal), 2)
 	return binaryStr, nil
 }
