@@ -1,11 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"strings"
 )
 
-func emojify(text string) string {
+func emojify(sentence string) string {
 	emojiMap := map[string]string{
 		"smile": "🙂",
 		"grin":  "😀",
@@ -13,11 +15,13 @@ func emojify(text string) string {
 		"mad":   "😠",
 	}
 
-	words := strings.Fields(text)
-	for i := 0; i < len(words); i++ {
-		word := strings.ToLower(words[i])
-		if emoji, ok := emojiMap[word]; ok {
-			words[i] = emoji
+	words := strings.Fields(sentence)
+
+	for i, word := range words {
+		trimmedWord := strings.Trim(word, ",.!?")
+
+		if newValue, exists := emojiMap[trimmedWord]; exists {
+			words[i] = strings.Replace(word, trimmedWord, newValue, 1)
 		}
 	}
 
@@ -25,7 +29,12 @@ func emojify(text string) string {
 }
 
 func main() {
-	var c string
-	fmt.Scan(&c)
-	emojify(c)
+	reader := bufio.NewReader(os.Stdin)
+	input, _ := reader.ReadString('\n')
+
+	input = strings.TrimSpace(input)
+
+	result := emojify(input)
+
+	fmt.Println(result)
 }
