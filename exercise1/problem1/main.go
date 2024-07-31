@@ -1,9 +1,9 @@
 package main
 
-func addUp(n int) int {
+func addUp(num int) int {
 
 	sum := 0
-	for i := 1; i <= n; i++ {
+	for i := 1; i <= num; i++ {
 		sum += i
 	}
 	return sum
