@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	xx := "\\U0001f47f"
+	xx := "\\U0001f42f"
 
 	// Hex String
 	h := strings.ReplaceAll(xx, "\\U", "0x")
