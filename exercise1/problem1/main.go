@@ -6,7 +6,5 @@ func addUp(n int) int {
 	for i := 1; i <= n; i++ {
 		sum += i
 	}
-
 	return sum
-
 }
