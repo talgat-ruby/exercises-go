@@ -6,10 +6,7 @@ import (
 )
 
 func potatoes(a string) int {
-	word := "potato"
-	var b int
-	b, _ = fmt.Println(strings.Count(a, word))
-	return b
+	return strings.Count(a, "potato")
 }
 
 func main() {
