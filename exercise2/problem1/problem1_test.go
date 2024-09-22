@@ -22,7 +22,8 @@ func TestIsChangeEnough(t *testing.T) {
 	for _, r := range table {
 		out := isChangeEnough(r.changes, r.total)
 		if out != r.exp {
-			t.Errorf("isChangeEnough(%v, %f) was incorrect, got: %t, expected: %t.", r.changes, r.total, out, r.exp)
+			t.Errorf("isChangeEnough(%v, %f) was incorrect, got: %t, expected: %t.",
+				r.changes, r.total, out, r.exp)
 		}
 	}
 }
