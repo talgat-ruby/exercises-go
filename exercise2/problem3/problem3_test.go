@@ -1,4 +1,4 @@
-package main
+package problem3
 
 import (
 	"slices"
