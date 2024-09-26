@@ -1,3 +1,3 @@
 package problem11
 
-func keysAndValues() {}
+func keysAndValues(mapa[string, any]) {}
