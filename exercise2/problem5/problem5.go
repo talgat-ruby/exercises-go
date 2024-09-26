@@ -3,29 +3,18 @@ package problem5
 import "sort"
 
 func products(goods map[string]int, num int) []string {
-	res := []string{}
-	prices := []int{}
-	newPrices := []int{}
-	// var check bool
-	for _, v := range goods {
-		prices = append(prices, v)
-	}
-	sort.Ints(prices)
-	for i := len(prices) - 1; i >= 0; i-- {
-		newPrices = append(newPrices, prices[i])
-	}
-	// prevname := ""
-	for _, v1 := range newPrices {
-		if v1 > num {
-			for key, value := range goods {
-				if value == v1 {
-					res = append(res, key)
-					break
+	filtered := []string{}
 
-				}
-			}
+	for product, price := range goods {
+		if price >= num {
+			filtered = append(filtered, product)
 		}
-
 	}
-	return res
+	sort.Slice(filtered, func(i, j int) bool {
+		if goods[filtered[i]] != goods[filtered[j]] {
+			return goods[filtered[i]] > goods[filtered[j]]
+		}
+		return filtered[i] < filtered[j]
+	})
+	return filtered
 }

@@ -22,8 +22,3 @@ func isChangeEnough(changes [4]int, total float32) bool {
 	}
 
 }
-
-// quarter: 25 cents / $0.25
-// dime: 10 cents / $0.10
-// nickel: 5 cents / $0.05
-// penny: 1 cent / $0.01
