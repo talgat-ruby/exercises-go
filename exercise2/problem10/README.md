@@ -2,7 +2,7 @@
 
 Create a function that will return:
 
-1. map of brands mapped to their amount 
+1. map of brands mapped to their amount
 2. function to create a brand, which will return incrementer of numbers of brands item.
 
 ```go

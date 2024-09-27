@@ -1,6 +1,6 @@
 # Problem 12
 
-Create a function that takes a map and returns the keys and values as separate slices. 
+Create a function that takes a map and returns the keys and values as separate slices.
 Return the keys sorted alphabetically, and their corresponding values in the same order.
 
 ```go
