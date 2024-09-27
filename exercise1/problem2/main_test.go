@@ -22,7 +22,7 @@ func TestBinary(t *testing.T) {
 	for _, r := range table {
 		out := binary(r.num)
 		if out != r.exp {
-			t.Errorf("binary(%d) was incorrect, expected: %s, got: %s.", r.num, r.exp, out)
+			t.Errorf("binary(%d) был неверен, ожидалось: %s, получено: %s.", r.num, r.exp, out)
 		}
 	}
 }
