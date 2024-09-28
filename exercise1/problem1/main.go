@@ -1,9 +1,9 @@
 package main
 
 func addUp(num int) int {
-	var result int
+	sum := 0
 	for i := 1; i <= num; i++ {
-		result = result + i
+		sum = sum + i
 	}
-	return result
+	return sum
 }
