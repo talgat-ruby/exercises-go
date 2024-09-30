@@ -13,7 +13,6 @@ func products(catalog map[string]int, minPrice int) []string {
 			filtered = append(filtered, []string{name, fmt.Sprintf("%d", price)})
 		}
 	}
-
 	sort.Slice(filtered, func(i, j int) bool {
 		if filtered[i][1] == filtered[j][1] {
 			return filtered[i][0] < filtered[j][0]

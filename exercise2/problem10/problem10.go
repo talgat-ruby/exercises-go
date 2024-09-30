@@ -8,5 +8,6 @@ func factory() (map[string]int, func(brand string) func(value int)) {
 			brands[brand] = value + brands[brand]
 		}
 	}
+
 	return brands, increase
 }

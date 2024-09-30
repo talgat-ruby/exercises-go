@@ -2,6 +2,7 @@ package problem2
 
 func capitalize(names []string) []string {
 	result := make([]string, len(names))
+
 	for j, name := range names {
 		var oneWord string
 		for i, r := range name {

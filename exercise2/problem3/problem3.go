@@ -14,7 +14,6 @@ func diagonalize(n int, dir dir) [][]int {
 	for i := range matrix {
 		matrix[i] = make([]int, n)
 	}
-
 	switch dir {
 	case ul:
 		for i := 0; i < n; i++ {

@@ -8,5 +8,6 @@ func sumOfTwo(a []int, b []int, sum int) bool {
 			}
 		}
 	}
+
 	return false
 }

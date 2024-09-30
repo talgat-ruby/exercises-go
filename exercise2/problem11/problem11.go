@@ -9,5 +9,6 @@ func removeDups[T comparable](input []T) []T {
 			result = append(result, v)
 		}
 	}
+
 	return result
 }

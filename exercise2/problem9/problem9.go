@@ -6,6 +6,7 @@ func factory(multiple int) func(...int) []int {
 		for _, i := range a {
 			result = append(result, i*multiple)
 		}
+
 		return result
 	}
 }

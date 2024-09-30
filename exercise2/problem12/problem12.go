@@ -9,5 +9,6 @@ func keysAndValues[K comparable, V any](input map[K]V) ([]K, []V) {
 		values[i] = v
 		i++
 	}
+
 	return keys, values
 }
