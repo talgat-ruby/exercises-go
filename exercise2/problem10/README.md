@@ -1,7 +1,9 @@
 # Problem 10
 
-Create a function that will return map of brands and how many of them and function to create a brand, which will return
-incrementer of numbers of brands item.
+Create a function that will return:
+
+1. map of brands mapped to their amount 
+2. function to create a brand, which will return incrementer of numbers of brands item.
 
 ```go
 brands, makeBrand := factory()
