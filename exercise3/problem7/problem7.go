@@ -7,10 +7,6 @@ type BankAccount struct {
 	balance int
 }
 
-func (account *BankAccount) getBalance() int {
-	return account.balance
-}
-
 func (account *BankAccount) setBalance(amount int) {
 	account.balance = account.balance - amount
 }
@@ -34,10 +30,6 @@ type KazPostAccount struct {
 	packages []string
 }
 
-func (account *KazPostAccount) getBalance() int {
-	return account.balance
-}
-
 func (account *KazPostAccount) getName() string {
 	return account.name
 }
@@ -51,7 +43,6 @@ func (account *KazPostAccount) setPackage(pkg string) {
 }
 
 type MinusMoney interface {
-	getBalance() int
 	setBalance(balance int)
 }
 
