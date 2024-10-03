@@ -35,5 +35,5 @@ func main() {
 
 	var totalLegsNum int = (sumOfAllLegs1 + sumOfAllLegs2)
 
-	fmt.Printf("sumOfAllLegsNum %d\n", totalLegsNum)
+	fmt.Printf("sumOfAllLegsNum %d", totalLegsNum)
 }
