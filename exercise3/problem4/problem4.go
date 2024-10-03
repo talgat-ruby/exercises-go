@@ -62,7 +62,7 @@ func (l *LinkedList[T]) Delete(el *Element[T]) bool {
 		return false
 	}
 
-	if l.head == el {
+	if l.head.value == el.value {
 		l.head = l.head.next
 		l.size--
 		return true
@@ -70,7 +70,7 @@ func (l *LinkedList[T]) Delete(el *Element[T]) bool {
 
 	cur := l.head
 	for cur.next != nil {
-		if cur.next == el {
+		if cur.next.value == el.value {
 			cur.next = cur.next.next
 			l.size--
 			return true
