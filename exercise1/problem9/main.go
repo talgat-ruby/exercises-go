@@ -1,7 +1,13 @@
 package main
 
-func bitwiseAND() {}
+func bitwiseAND(n, m int) int {
+	return n & m
+}
 
-func bitwiseOR() {}
+func bitwiseOR(n, m int) int {
+	return n | m
+}
 
-func bitwiseXOR() {}
+func bitwiseXOR(n, m int) int {
+	return n ^ m
+}
