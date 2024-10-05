@@ -130,3 +130,18 @@ func (l *LinkedList[T]) findPrevious(value T) (*Element[T], error) {
 	}
 	return current, nil
 }
+
+func (l *LinkedList[T]) Reverse() {
+	var prev, next *Element[T]
+	current := l.head
+	l.tail = current
+
+	for current != nil {
+		next = current.next
+		current.next = prev
+		prev = current
+		current = next
+	}
+
+	l.head = prev
+}
