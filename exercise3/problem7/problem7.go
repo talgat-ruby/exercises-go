@@ -1,6 +1,8 @@
 package problem7
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type BankAccount struct {
 	name    string
@@ -20,12 +22,11 @@ type KazPostAccount struct {
 
 func withdrawMoney(amount int, accounts ...interface{}) {
 	for _, account := range accounts {
-		switch a := account.(type) {
-		case *BankAccount:
+		if a, ok := account.(*BankAccount); ok {
 			if a.balance >= amount {
 				a.balance -= amount
 			}
-		case *KazPostAccount:
+		} else if a, ok := account.(*KazPostAccount); ok {
 			if a.balance >= amount {
 				a.balance -= amount
 			}
@@ -35,11 +36,10 @@ func withdrawMoney(amount int, accounts ...interface{}) {
 
 func sendPackagesTo(recipient string, accounts ...interface{}) {
 	for _, account := range accounts {
-		switch a := account.(type) {
-		case *FedexAccount:
+		if a, ok := account.(*FedexAccount); ok {
 			message := fmt.Sprintf("%s send package to %s", a.name, recipient)
 			a.packages = append(a.packages, message)
-		case *KazPostAccount:
+		} else if a, ok := account.(*KazPostAccount); ok {
 			message := fmt.Sprintf("%s send package to %s", a.name, recipient)
 			a.packages = append(a.packages, message)
 		}
