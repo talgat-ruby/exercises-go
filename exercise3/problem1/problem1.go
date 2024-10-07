@@ -1,6 +1,6 @@
 package problem1
 
-import "slices"
+import "errors"
 
 type Queue struct {
 	vals []any
@@ -10,15 +10,20 @@ func (q *Queue) Enqueue(val any) {
 	q.vals = append(q.vals, val)
 }
 
-func (q *Queue) Dequeue() ([]any, error) {
-	valLen := len(q.vals)
-	q.vals = slices.Delete(q.vals, valLen-1, valLen)
-	return q.vals, nil
+func (q *Queue) Dequeue() (any, error) {
+	if len(q.vals) == 0 {
+		return nil, errors.New("queue is empty")
+	}
+	first := q.vals[0]
+	q.vals = append(q.vals[:0], q.vals[1:]...)
+	return first, nil
 }
 
-func (q *Queue) Peek() any {
-	valLen := len(q.vals) - 1
-	return q.vals[valLen]
+func (q *Queue) Peek() (any, error) {
+	if len(q.vals) == 0 {
+		return nil, errors.New("queue empty")
+	}
+	return q.vals[0], nil
 }
 
 func (q *Queue) Size() int {
