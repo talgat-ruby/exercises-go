@@ -5,68 +5,79 @@ import (
 	"slices"
 )
 
-type Queue struct {
+func main() {
+	set1 := Set{vals: []any{1, 2, 3, 4}, size: 4}
+	set2 := Set{vals: []any{1, 6, 7}, size: 2}
+	diff := set1.Union(set2)
+	fmt.Println(diff)
+}
+
+type Set struct {
 	vals []any
+	size int
 }
 
-func (q *Queue) Enqueue(val any) {
-	q.vals = append(q.vals, val)
+func (s *Set) Add(val any) {
+	s.vals = append(s.vals, val)
+	s.size += 1
 }
 
-func (q *Queue) Dequeue() (any, error) {
-	valLen := len(q.vals)
-	queueElement := q.vals[valLen-1]
-	q.vals = slices.Delete(q.vals, valLen-1, valLen)
-	return queueElement, nil
+func (s *Set) Remove(val any) {
+	key := slices.Index(s.vals, val)
+	if key >= 0 {
+		s.vals = slices.Delete(s.vals, key, key+1)
+		s.size -= 1
+	}
 }
 
-func (q *Queue) Peek() any {
-	valLen := len(q.vals) - 1
-	return q.vals[valLen]
+func (s *Set) IsEmpty() bool {
+	return s.size == 0
 }
 
-func (q *Queue) Size() int {
-	return len(q.vals)
+func (s *Set) Size() int {
+	return s.size
 }
 
-func (q *Queue) IsEmpty() bool {
-	if len(q.vals) > 0 {
-		return false
+func (s *Set) List() []any {
+	return s.vals
+}
+
+func (s *Set) Has(val any) bool {
+	if slices.Contains(s.vals, val) {
+		return true
+	}
+	return false
+}
+
+func (s *Set) Copy() []any {
+	copySlice := make([]any, 0)
+	copy(copySlice, s.vals)
+	return copySlice
+}
+
+func (s *Set) Difference(data Set) Set {
+	for _, v := range s.vals {
+		if data.Has(v) {
+			s.Remove(v)
+		}
+	}
+	return *s
+}
+
+func (s *Set) IsSubset(data Set) bool {
+	for _, v := range data.vals {
+		if !s.Has(v) {
+			return false
+		}
 	}
 	return true
 }
 
-func main() {
-	queue := Queue{}
-	queue.Enqueue(1)
-	queue.Enqueue(5)
-	queue.Enqueue(9)
-	fmt.Println(queue)
-	queue.Dequeue()
-	fmt.Println(queue)
-	e := queue.Peek()
-	fmt.Println(e)
-	size := queue.Size()
-	fmt.Println(size)
-	fmt.Println(queue.IsEmpty())
-
-	table := []struct {
-		vals []any
-	}{
-		{[]any{1, 2, 3}},
-		{[]any{"1", "2", "3", "4"}},
-		{[]any{true, false}},
-	}
-
-	for _, r := range table {
-		for _, v := range r.vals {
-			queue.Enqueue(v)
-		}
-		for i := range r.vals {
-			d, _ := queue.Dequeue()
-			if d != r.vals[i] {
-				fmt.Println("Error")
-			}
+func (s *Set) Union(data Set) Set {
+	for _, v := range data.vals {
+		if !s.Has(v) {
+			s.Add(v)
 		}
 	}
+	return *s
 }
