@@ -1,6 +1,8 @@
 package problem3
 
-import "slices"
+import (
+	"slices"
+)
 
 type Set struct {
 	vals []any
@@ -8,12 +10,14 @@ type Set struct {
 }
 
 func NewSet() *Set {
-	return &Set{}
+	return &Set{[]any{}, 0}
 }
 
 func (s *Set) Add(val any) {
-	s.vals = append(s.vals, val)
-	s.size += 1
+	if !s.Has(val) {
+		s.vals = append(s.vals, val)
+		s.size += 1
+	}
 }
 
 func (s *Set) Remove(val any) {
@@ -43,23 +47,25 @@ func (s *Set) Has(val any) bool {
 	return false
 }
 
-func (s *Set) Copy() *Set {
-	copySlice := s
-	return copySlice
+func (s Set) Copy() *Set {
+	newVals := make([]any, len(s.vals))
+	copy(newVals, s.vals)
+	return &Set{vals: newVals, size: s.size}
 }
 
 func (s *Set) Difference(data *Set) Set {
+	result := s.Copy()
 	for _, v := range s.vals {
 		if data.Has(v) {
-			s.Remove(v)
+			result.Remove(v)
 		}
 	}
-	return *s
+	return *result
 }
 
 func (s *Set) IsSubset(data *Set) bool {
-	for _, v := range data.vals {
-		if !s.Has(v) {
+	for _, v := range s.vals {
+		if !data.Has(v) {
 			return false
 		}
 	}
@@ -70,7 +76,7 @@ func Union(data ...*Set) Set {
 	slice := NewSet()
 	for _, s := range data {
 		for _, v := range s.vals {
-			if !s.Has(v) {
+			if !slice.Has(v) {
 				slice.Add(v)
 			}
 		}
@@ -79,12 +85,21 @@ func Union(data ...*Set) Set {
 }
 
 func Intersect(data ...*Set) Set {
+	if len(data) == 0 {
+		return Set{}
+	}
+
 	slice := NewSet()
-	for _, s := range data {
-		for _, v := range s.vals {
+	for _, v := range data[0].vals {
+		foundInAll := true
+		for _, s := range data[1:] {
 			if !s.Has(v) {
-				slice.Remove(v)
+				foundInAll = false
+				break
 			}
+		}
+		if foundInAll {
+			slice.Add(v)
 		}
 	}
 	return *slice
