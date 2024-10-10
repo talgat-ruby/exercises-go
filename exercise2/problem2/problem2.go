@@ -1,4 +1,13 @@
 package problem2
 
-func capitalize() {
+import "strings"
+
+func capitalize(names []string) []string {
+
+	capitalizedNames := []string{}
+	for _, name := range names{
+		capitalizedNames = append(capitalizedNames, strings.Title(strings.ToLower(name)))
+	}
+
+	return capitalizedNames
 }
