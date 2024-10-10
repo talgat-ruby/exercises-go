@@ -1,6 +1,6 @@
 # Problem 8
 
-Simplify the given code using your knowledge of map, slices, and pointers. Don't remove `load`, update it. 
+Simplify the given code using your knowledge of map, slices, and pointers. Don't remove `load`, update it.
 The output should be the same
 
 ```go

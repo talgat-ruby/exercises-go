@@ -1,6 +1,6 @@
 # Problem 4
 
-Write a function that creates an object with each (key, value) pair being the (lower case, upper case) versions 
+Write a function that creates an object with each (key, value) pair being the (lower case, upper case) versions
 of a letter, respectively.
 
 All the letters in the input list will always be lowercase.
