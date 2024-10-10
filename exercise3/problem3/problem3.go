@@ -2,130 +2,131 @@ package problem3
 
 import "fmt"
 
-// Set represents a collection of unique elements.
+// Set structure
 type Set struct {
 	elements map[interface{}]struct{}
 }
 
-// NewSet creates a new empty Set.
+// NewSet creates and returns a new Set
 func NewSet() *Set {
-	return &Set{elements: make(map[interface{}]struct{})}
+	return &Set{
+		elements: make(map[interface{}]struct{}),
+	}
 }
 
-// Add adds a new element to the Set.
-func (s *Set) Add(value interface{}) {
-	s.elements[value] = struct{}{}
+// Add adds a new element to the Set
+func (s *Set) Add(element interface{}) {
+	s.elements[element] = struct{}{}
 }
 
-// Remove removes an existing element from the Set.
-func (s *Set) Remove(value interface{}) {
-	delete(s.elements, value)
+// Remove removes an existing element from the Set
+func (s *Set) Remove(element interface{}) {
+	delete(s.elements, element)
 }
 
-// IsEmpty checks if the Set is empty.
+// IsEmpty checks if the Set is empty
 func (s *Set) IsEmpty() bool {
 	return len(s.elements) == 0
 }
 
-// Size returns the number of elements in the Set.
+// Size gets the size of the Set
 func (s *Set) Size() int {
 	return len(s.elements)
 }
 
-// List returns a slice of elements in the Set.
+// List gets the slice out of the Set
 func (s *Set) List() []interface{} {
-	list := make([]interface{}, 0, len(s.elements))
-	for key := range s.elements {
-		list = append(list, key)
+	result := make([]interface{}, 0, len(s.elements))
+	for element := range s.elements {
+		result = append(result, element)
 	}
-	return list
+	return result
 }
 
-// Has checks if an element is a member of the Set.
-func (s *Set) Has(value interface{}) bool {
-	_, exists := s.elements[value]
+// Has checks if an element is a member of the Set
+func (s *Set) Has(element interface{}) bool {
+	_, exists := s.elements[element]
 	return exists
 }
 
-// Copy creates a copy of the Set.
+// Copy creates a copy of the Set
 func (s *Set) Copy() *Set {
-	copySet := NewSet()
-	for key := range s.elements {
-		copySet.Add(key)
+	newSet := NewSet()
+	for element := range s.elements {
+		newSet.Add(element)
 	}
-	return copySet
+	return newSet
 }
 
-// Difference returns the difference between two Sets (A - B).
+// Difference returns the difference of two sets A and B
 func (s *Set) Difference(other *Set) *Set {
-	diffSet := NewSet()
-	for key := range s.elements {
-		if !other.Has(key) {
-			diffSet.Add(key)
+	diff := NewSet()
+	for element := range s.elements {
+		if !other.Has(element) {
+			diff.Add(element)
 		}
 	}
-	return diffSet
+	return diff
 }
 
-// IsSubset checks if Set B is a subset of Set A.
+// IsSubset checks if the current set is a subset of another set
 func (s *Set) IsSubset(other *Set) bool {
-	for key := range other.elements {
-		if !s.Has(key) {
-			return false
+	// Check if all elements in the current set are in the other set
+	for element := range s.elements {
+		if !other.Has(element) {
+			return false // If any element is not found, return false
 		}
 	}
-	return true
+	return true // All elements are found, it's a subset
 }
 
-// Union returns the union of multiple Sets.
-func (s *Set) Union(sets ...*Set) *Set {
-	unionSet := s.Copy() // Start with a copy of the current set
+// Union returns the union of two or more sets
+func Union(sets ...*Set) *Set {
+	unionSet := NewSet()
 	for _, set := range sets {
-		for key := range set.elements {
-			unionSet.Add(key)
+		for element := range set.elements {
+			unionSet.Add(element)
 		}
 	}
 	return unionSet
 }
 
-// Intersect returns the intersection of multiple Sets.
-func (s *Set) Intersect(sets ...*Set) *Set {
+// Intersect returns the intersection of two or more sets
+func Intersect(sets ...*Set) *Set {
+	if len(sets) == 0 {
+		return NewSet()
+	}
 	intersectSet := NewSet()
-	for key := range s.elements {
-		inAll := true
-		for _, set := range sets {
-			if !set.Has(key) {
-				inAll = false
+	for element := range sets[0].elements {
+		isCommon := true
+		for _, set := range sets[1:] {
+			if !set.Has(element) {
+				isCommon = false
 				break
 			}
 		}
-		if inAll {
-			intersectSet.Add(key)
+		if isCommon {
+			intersectSet.Add(element)
 		}
 	}
 	return intersectSet
 }
 
-// Example usage
 func main() {
+	// Example usage
 	setA := NewSet()
 	setA.Add(1)
 	setA.Add(2)
 	setA.Add(3)
 
 	setB := NewSet()
+	setB.Add(1)
 	setB.Add(2)
-	setB.Add(3)
-	setB.Add(4)
 
-	fmt.Println("Set A:", setA.List())                             // Set A: [1 2 3]
-	fmt.Println("Set B:", setB.List())                             // Set B: [2 3 4]
-	fmt.Println("Difference A - B:", setA.Difference(setB).List()) // Difference A - B: [1]
-	fmt.Println("Is B a subset of A?", setA.IsSubset(setB))        // Is B a subset of A? false
+	fmt.Println("Set A:", setA.List()) // should show {1, 2, 3}
+	fmt.Println("Set B:", setB.List()) // should show {1, 2}
 
-	unionSet := setA.Union(setB)
-	fmt.Println("Union of A and B:", unionSet.List()) // Union of A and B: [1 2 3 4]
-
-	intersectSet := setA.Intersect(setB)
-	fmt.Println("Intersection of A and B:", intersectSet.List()) // Intersection of A and B: [2 3]
+	// Checking subsets
+	fmt.Println("B is a subset of A:", setB.IsSubset(setA)) // should be true
+	fmt.Println("A is a subset of B:", setA.IsSubset(setB)) // should be false
 }
