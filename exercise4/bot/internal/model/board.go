@@ -52,6 +52,15 @@ func (b *Board) String() string {
 }
 
 func (b *Board) calculateNewPosition(token Token) int {
+	count := 0
+	for _, p := range b {
+		if p != TokenEmpty {
+			count++
+		}
+	}
+	if count == 1 {
+		return 4
+	}
 	nums := make(map[int]int)
 
 	for j := 0; j < len(b); j++ {
