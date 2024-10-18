@@ -11,6 +11,7 @@ func New() *http.ServeMux {
 	mux := http.NewServeMux()
 
 	mux.Handle("GET /ping", http.HandlerFunc(han.Ping))
+	mux.Handle("GET /harakiri", http.HandlerFunc(han.Harakiri))
 	mux.Handle("POST /move", http.HandlerFunc(han.Move))
 
 	return mux
