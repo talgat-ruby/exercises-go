@@ -2,8 +2,6 @@ package main
 
 import (
 	"context"
-	"github.com/talgat-ruby/exercises-go/exercise4/bot/internal/api"
-	"log/slog"
 	"os"
 	"os/signal"
 	"syscall"
@@ -15,13 +13,7 @@ func main() {
 	ready := startServer()
 	<-ready
 
-	port := os.Getenv("PORT_API")
-	a := api.New()
-
-	if err := a.Start(ctx, port); err != nil {
-		slog.ErrorContext(ctx, "bot start error", "error", err)
-		os.Exit(1)
-	}
+	// TODO after server start
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
