@@ -1,21 +1,27 @@
 package main
 
 import (
-	"context"
+	"fmt"
+	"github.com/talgat-ruby/exercises-go/exercise4/bot/internal/config"
+	"github.com/talgat-ruby/exercises-go/exercise4/bot/internal/constants"
+	"github.com/talgat-ruby/exercises-go/exercise4/bot/internal/game"
+	"log/slog"
 	"os"
-	"os/signal"
-	"syscall"
 )
 
 func main() {
-	ctx := context.Background()
+	apiConfig := config.New().GetApi()
+	preInitFun := preInitFunc(apiConfig.Stop)
+	apiConfig.Start(preInitFun)
+}
 
-	ready := startServer()
-	<-ready
-
-	// TODO after server start
-
-	stop := make(chan os.Signal, 1)
-	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
-	<-stop // Wait for SIGINT or SIGTERM
+func preInitFunc(internalModifier func()) func() {
+	return func() {
+		err := game.JoinGame()
+		if err != nil {
+			slog.Error(fmt.Sprintf("could not join game with host %s: %s", constants.Host, err))
+			internalModifier()
+			os.Exit(1)
+		}
+	}
 }
