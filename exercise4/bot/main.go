@@ -1,14 +1,13 @@
 package main
 
 import (
-	"context"
 	"os"
 	"os/signal"
 	"syscall"
 )
 
 func main() {
-	ctx := context.Background()
+	//ctx := context.Background()
 
 	ready := startServer()
 	<-ready
