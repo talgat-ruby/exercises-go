@@ -1,20 +1,13 @@
 package problem11
 
-import "sort"
-
 func keysAndValues[K comparable, V any](input map[K]V) ([]K, []V) {
-	keys := make([]K, 0, len(input))
+	keys := make([]K, len(input))
 	values := make([]V, len(input))
-
-	for k := range input {
-		keys = append(keys, k)
+	i := 0
+	for k, v := range input {
+		keys[i] = k
+		values[i] = v
+		i++
 	}
-
-	asd := sort.MapKeys(input)
-
-	for i, k := range keys {
-		values[i] = input[k]
-	}
-
 	return keys, values
 }
