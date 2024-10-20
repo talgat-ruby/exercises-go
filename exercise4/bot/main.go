@@ -14,10 +14,7 @@ func main() {
 	ready := startServer()
 	<-ready
 
-	name := os.Getenv("NAME")
-	port := os.Getenv("PORT")
-	url := "http://locolhost:" + port
-	client.SendJoinRequest(ctx, name, url)
+	client.SendJoinRequest(ctx)
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
