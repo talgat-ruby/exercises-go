@@ -4,19 +4,15 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/talgat-ruby/exercises-go/exercise4/bot/internal/game"
+	"github.com/talgat-ruby/exercises-go/exercise4/bot/internal/types"
 	"io"
-	"math/rand"
 	"net"
 	"net/http"
 	"os"
 	"sync"
 	"time"
 )
-
-type MoveRequest struct {
-	Board []string `json:"board"`
-	Token string   `json:"token"`
-}
 
 type readyListener struct {
 	net.Listener
@@ -42,16 +38,17 @@ func moveHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var moveReq MoveRequest
+	var moveReq types.MoveRequest
 	err = json.Unmarshal(bodyBytes, &moveReq)
 	if err != nil {
 		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
 		return
 	}
 
-	cell := rand.Intn(9)
-	moveReq.Board[cell] = moveReq.Token
-	responseData, err := json.Marshal(moveReq)
+	cell := game.BestMove(&moveReq)
+	resp := types.ResponseMove{Index: cell}
+
+	responseData, err := json.Marshal(resp)
 	if err != nil {
 		http.Error(w, "Failed to marshal response", http.StatusInternalServerError)
 		return
