@@ -59,12 +59,25 @@ End match #%d: %s %s %d:%d %s %s
 	<-time.After(time.Second)
 }
 
-func (m *Match) totalRoundsWonBy(p *player.Player) int {
+//	func (m *Match) totalRoundsWonBy(p *player.Player) int {
+//		total := 0
+//
+//		for _, r := range m.Rounds {
+//			if r.Winner.URL == p.URL {
+//				total += 1
+//			}
+//		}
+//
+//		return total
+//	}
+func (m Match) totalRoundsWonBy(p *player.Player) int {
 	total := 0
 
 	for _, r := range m.Rounds {
-		if r.Winner.URL == p.URL {
+		if r.Winner == nil {
 			total += 1
+		} else if r.Winner.URL == p.URL {
+			total += 2
 		}
 	}
 
