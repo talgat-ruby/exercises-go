@@ -8,6 +8,8 @@ import (
 	"os"
 	"sync"
 	"time"
+
+	"github.com/talgat-ruby/exercises-go/exercise4/bot/internal/api/router"
 )
 
 type readyListener struct {
@@ -21,6 +23,11 @@ func (l *readyListener) Accept() (net.Conn, error) {
 	return l.Listener.Accept()
 }
 
+func pingHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "pong")
+}
+
 func startServer() <-chan struct{} {
 	ready := make(chan struct{})
 
@@ -29,8 +36,15 @@ func startServer() <-chan struct{} {
 		panic(err)
 	}
 
+	print(listener)
+
+	// os.Getenv("NAME")
+
+	r := router.New()
+
 	list := &readyListener{Listener: listener, ready: ready}
 	srv := &http.Server{
+		Handler:     r,
 		IdleTimeout: 2 * time.Minute,
 	}
 
