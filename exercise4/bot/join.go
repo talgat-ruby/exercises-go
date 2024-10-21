@@ -35,7 +35,7 @@ func JoinHandler() {
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode == http.StatusOK {
+	if resp.StatusCode == http.StatusNoContent {
 		log.Println("Success join")
 	} else {
 		log.Println("Not success join", resp.StatusCode)
