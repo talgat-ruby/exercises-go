@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/talgat-ruby/exercises-go/exercise4/bot/game/move"
 	"io"
 	"log/slog"
 	"net"
@@ -15,10 +14,9 @@ import (
 	"strings"
 	"sync"
 	"time"
-)
 
-// TODO: logic to response
-// TODO: Don't start server if judge returns bad request
+	"github.com/talgat-ruby/exercises-go/exercise4/bot/game/move"
+)
 
 type readyListener struct {
 	net.Listener
