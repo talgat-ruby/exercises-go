@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net"
 	"net/http"
-	"os"
 	"sync"
 	"time"
 )
@@ -24,7 +23,7 @@ func (l *readyListener) Accept() (net.Conn, error) {
 func startServer() <-chan struct{} {
 	ready := make(chan struct{})
 
-	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", os.Getenv("PORT")))
+	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", Port))
 	if err != nil {
 		panic(err)
 	}
