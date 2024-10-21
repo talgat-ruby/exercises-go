@@ -28,7 +28,7 @@ func (p *Player) JoinGame(ctx context.Context) error {
 
 	judgePort := os.Getenv("JUDGE")
 	if judgePort == "" {
-		return fmt.Errorf("JUDGE environment variable is not set")
+		judgePort = "4444"
 	}
 
 	req, err := http.NewRequestWithContext(
