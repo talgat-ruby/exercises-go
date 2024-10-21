@@ -10,8 +10,17 @@ import (
 	"github.com/talgat-ruby/exercises-go/exercise4/judge/internal/ticTacToe/round"
 )
 
+/*
+Определение переменной токенов
+Здесь определяются два токена для игры: TokenX и TokenO. Эти токены, вероятно, обозначают символы игроков, например, "крестики" и "нолики" в игре "Крестики-нолики".
+*/
 var tokens = [2]internal.Token{internal.TokenX, internal.TokenO}
 
+/*
+Метод Start для запуска матча
+Метод Start запускает матч. Он принимает контекст ctx для управления процессом и номер матча num.
+Сначала вызывается метод m.startPrint(num), который выводит информацию о начале матча.
+*/
 func (m *Match) Start(ctx context.Context, num int) {
 	m.startPrint(num)
 
