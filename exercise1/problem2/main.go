@@ -1,3 +1,7 @@
 package main
 
-func binary() {}
+import "strconv"
+
+func binary(decimal int) string {
+	return strconv.FormatInt(int64(decimal), 2)
+}
