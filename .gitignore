@@ -25,3 +25,8 @@ go.work
 
 # Students
 students.txt
+
+# VS Code
+.vscode/
+*.code-workspace
+.history/
