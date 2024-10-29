@@ -160,7 +160,7 @@ func findEmptySlotForToken(variants []map[int]Token, token Token) int {
 		}
 	}
 
-	return emptyIndex // Возвращаем индекс пустой ячейки (может быть -1, если все занято)
+	return emptyIndex // Возвращаем индекс пустой ячейки 
 }
 
 func (b *Board) findEmptyCorners() int {
