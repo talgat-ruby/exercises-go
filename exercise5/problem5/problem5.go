@@ -1,8 +1,20 @@
 package problem5
 
-func producer() {}
+func producer(words []string, ch chan<- string) {
+	for _, i := range words {
+		ch <- i
+	}
+	close(ch)
+}
 
-func consumer() {}
+func consumer(ch <-chan string) string {
+	var words string
+
+	for i := range ch {
+		words += i + " "
+	}
+	return words[:len(words)-1]
+}
 
 func send(
 	words []string,
