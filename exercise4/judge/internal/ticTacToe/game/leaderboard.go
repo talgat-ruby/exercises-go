@@ -43,11 +43,13 @@ func (g *Game) getAllPlayersWithPoints() []*PlayerWithPoints {
 			if r.Winner == nil {
 				plsM[r.Players[0].URL].points += PointsDraw
 				plsM[r.Players[1].URL].points += PointsDraw
+				break
 			}
 
 			if r.Winner.URL == r.Players[0].URL {
 				plsM[r.Players[0].URL].points += PointsWin
 				plsM[r.Players[1].URL].points += PointsLose
+				break
 			}
 
 			plsM[r.Players[0].URL].points += PointsLose
