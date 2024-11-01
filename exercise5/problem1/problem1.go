@@ -7,6 +7,7 @@ func incrementConcurrently(num int) int {
 	wg.Add(1)
 
 	go func() {
+		defer wg.Done()
 		num++
 	}()
 
