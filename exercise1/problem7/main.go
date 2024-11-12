@@ -1,21 +1,18 @@
 package main
 
-import "slices"
+import "strings"
 
-func highestDigit(num int) int {
-	if num != 0 {
-		numS := ItoSlice(num)
-		return slices.Max(numS)
-	}
-	return 0
-}
+func emojify(sentence string) string {
+    replacements := map[string]string{
+        "smile": "😊",
+        "grin":  "😁",
+        "sad":   "😥",
+        "mad":   "😠",
+    }
 
-func ItoSlice(n int) []int {
-	var numS []int
-	for n >= 1 {
-		i := n % 10
-		numS = append(numS, i)
-		n = n / 10
-	}
-	return numS
+    for word, emoji := range replacements {
+        sentence = strings.ReplaceAll(sentence, word, emoji)
+    }
+
+    return sentence
 }
