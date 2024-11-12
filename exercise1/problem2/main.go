@@ -1,7 +1,7 @@
 package main
 
-import "fmt"
+import "strconv"
 
 func binary(num int) string {
-	return fmt.Sprintf("%b", num)
+    return strconv.FormatInt(int64(num), 2)
 }
