@@ -1,15 +1,9 @@
 package main
 
-import (
-	"unicode"
-)
-
-func detectWord(crowd string) string {
-	var result string
-	for _, s := range crowd {
-		if !unicode.IsUpper(s) {
-			result = result + string(s)
-		}
-	}
-	return result
+func numberSquares(n int) int {
+    total := 0
+    for i := 1; i <= n; i++ {
+        total += i * i
+    }
+    return total
 }
