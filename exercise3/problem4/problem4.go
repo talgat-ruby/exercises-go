@@ -1,96 +1,127 @@
-package problem4
+package main
 
 import "fmt"
 
-type Element[T comparable] struct {
+// Node represents a single element in the linked list
+type Node[T any] struct {
 	value T
-	next  *Element[T]
+	next  *Node[T]
 }
 
-type LinkedList[T comparable] struct {
-	head *Element[T]
+// LinkedList represents a linked list structure with various operations
+type LinkedList[T any] struct {
+	head *Node[T]
 	size int
 }
 
-func (ll *LinkedList[T]) Add(element *Element[T]) {
+// Add appends a new element to the end of the linked list
+func (ll *LinkedList[T]) Add(value T) {
+	newNode := &Node[T]{value: value}
 	if ll.head == nil {
-		ll.head = element
+		ll.head = newNode
 	} else {
 		current := ll.head
 		for current.next != nil {
 			current = current.next
 		}
-		current.next = element
+		current.next = newNode
 	}
 	ll.size++
 }
 
-func (ll *LinkedList[T]) Insert(element *Element[T], position int) error {
+// Insert inserts a new element at a specific position in the linked list
+func (ll *LinkedList[T]) Insert(value T, position int) bool {
 	if position < 0 || position > ll.size {
-		return fmt.Errorf("invalid position")
+		return false
 	}
+	newNode := &Node[T]{value: value}
 	if position == 0 {
-		element.next = ll.head
-		ll.head = element
-		ll.size++
-		return nil
+		newNode.next = ll.head
+		ll.head = newNode
+	} else {
+		current := ll.head
+		for i := 0; i < position-1; i++ {
+			current = current.next
+		}
+		newNode.next = current.next
+		current.next = newNode
 	}
-	current := ll.head
-	for i := 0; i < position-1; i++ {
-		current = current.next
-	}
-	element.next = current.next
-	current.next = element
 	ll.size++
-	return nil
+	return true
 }
 
-func (ll *LinkedList[T]) Delete(element *Element[T]) error {
+// Delete removes the first occurrence of a specific element from the linked list
+func (ll *LinkedList[T]) Delete(value T) bool {
 	if ll.head == nil {
-		return fmt.Errorf("list is empty")
+		return false
 	}
-	if ll.head.value == element.value {
+	if ll.head.value == value {
 		ll.head = ll.head.next
 		ll.size--
-		return nil
+		return true
 	}
 	current := ll.head
-	for current.next != nil {
-		if current.next.value == element.value {
-			current.next = current.next.next
-			ll.size--
-			return nil
-		}
+	for current.next != nil && current.next.value != value {
 		current = current.next
 	}
-	return fmt.Errorf("element not found")
+	if current.next == nil {
+		return false
+	}
+	current.next = current.next.next
+	ll.size--
+	return true
 }
 
-func (ll *LinkedList[T]) Find(value T) (*Element[T], error) {
+// Find searches for an element and returns its pointer if found, or nil otherwise
+func (ll *LinkedList[T]) Find(value T) *Node[T] {
 	current := ll.head
 	for current != nil {
 		if current.value == value {
-			return current, nil
+			return current
 		}
 		current = current.next
 	}
-	return nil, fmt.Errorf("element not found")
+	return nil
 }
 
+// List returns a slice containing all elements in the linked list
 func (ll *LinkedList[T]) List() []T {
-	result := make([]T, 0, ll.size)
+	var elements []T
 	current := ll.head
 	for current != nil {
-		result = append(result, current.value)
+		elements = append(elements, current.value)
 		current = current.next
 	}
-	return result
+	return elements
 }
 
+// Size returns the number of elements in the linked list
 func (ll *LinkedList[T]) Size() int {
 	return ll.size
 }
 
+// IsEmpty checks if the linked list is empty
 func (ll *LinkedList[T]) IsEmpty() bool {
 	return ll.size == 0
+}
+
+// Test the LinkedList data structure
+func main() {
+	ll := &LinkedList[int]{}
+	ll.Add(10)
+	ll.Add(20)
+	ll.Add(30)
+
+	fmt.Println("List:", ll.List())          // Output: [10, 20, 30]
+	fmt.Println("Size:", ll.Size())          // Output: 3
+	fmt.Println("IsEmpty:", ll.IsEmpty())    // Output: false
+
+	ll.Insert(15, 1)                         // Insert 15 at position 1
+	fmt.Println("After Insert:", ll.List())  // Output: [10, 15, 20, 30]
+
+	ll.Delete(20)                            // Delete value 20
+	fmt.Println("After Delete:", ll.List())  // Output: [10, 15, 30]
+
+	fmt.Println("Find 15:", ll.Find(15))     // Output: &{15 <next node>}
+	fmt.Println("Find 99:", ll.Find(99))     // Output: <nil>
 }
