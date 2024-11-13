@@ -1,64 +1,232 @@
+Skip to content
+Navigation Menu
+talgat-ruby
+/
+exercises-go
+
+Code
+Issues
+Pull requests
+129
+Actions
+Projects
+Security
+Insights
+eldar-go #210
+Resolving conflicts between EldarActorGuy:Eldar and talgat-ruby:main and committing changes  EldarActorGuy:Eldar
+8 conflicting files
+problem1.go
+exercise6/problem1/problem1.go
+problem2.go
+exercise6/problem2/problem2.go
+problem3.go
+exercise6/problem3/problem3.go
+problem4.go
+exercise6/problem4/problem4.go
+problem5.go
+exercise6/problem5/problem5.go
+problem6.go
+exercise6/problem6/problem6.go
+problem7.go
+exercise6/problem7/problem7.go
+problem8.go
+exercise6/problem8/problem8.go
+exercise6/problem2/problem2.go1 conflict  
+1
+ 
+<<<<<<< Eldar
+2
+ 
 package main
-
+3
+ 
+​
+4
+ 
 import (
-	"fmt"
-	"sync"
+5
+ 
+  "fmt"
+6
+ 
+  "sync"
+7
+ 
 )
-
+8
+ 
+​
+9
+ 
 // bankAccount represents a simple bank account with a balance and mutex for concurrent safety
+10
+ 
 type bankAccount struct {
-	balance int
-	mu      sync.Mutex
+11
+ 
+  balance int
+12
+ 
+  mu      sync.Mutex
+13
+ 
 }
-
+14
+ 
+​
+15
+ 
 // Deposit adds an amount to the account balance, ensuring concurrent safety
+16
+ 
 func (a *bankAccount) Deposit(amount int) {
-	a.mu.Lock()
-	defer a.mu.Unlock()
-	a.balance += amount
+17
+ 
+  a.mu.Lock()
+18
+ 
+  defer a.mu.Unlock()
+19
+ 
+  a.balance += amount
+20
+ 
 }
-
+21
+ 
+​
+22
+ 
 // Withdraw subtracts an amount from the account balance if funds are available, ensuring concurrent safety
+23
+ 
 func (a *bankAccount) Withdraw(amount int) bool {
-	a.mu.Lock()
-	defer a.mu.Unlock()
-	if a.balance >= amount {
-		a.balance -= amount
-		return true
-	}
-	return false // insufficient funds
+24
+ 
+  a.mu.Lock()
+25
+ 
+  defer a.mu.Unlock()
+26
+ 
+  if a.balance >= amount {
+27
+ 
+    a.balance -= amount
+28
+ 
+    return true
+29
+ 
+  }
+30
+ 
+  return false // insufficient funds
+31
+ 
 }
-
-// Balance returns the current balance of the account, ensuring concurrent safety
+32
+ 
+​
+33
+ 
+// Balance safely returns the current balance of the account
+34
+ 
 func (a *bankAccount) Balance() int {
-	a.mu.Lock()
-	defer a.mu.Unlock()
-	return a.balance
+35
+ 
+  a.mu.Lock()
+36
+ 
+  defer a.mu.Unlock()
+37
+ 
+  return a.balance
+38
+ 
 }
-
+39
+ 
+​
+40
+ 
 func main() {
-	account := &bankAccount{}
-
-	var wg sync.WaitGroup
-
-	// Concurrently deposit money
-	for i := 0; i < 1000; i++ {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			account.Deposit(10)
-		}()
-	}
-
-	// Concurrently withdraw money
-	for i := 0; i < 500; i++ {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			account.Withdraw(5)
-		}()
-	}
-
-	wg.Wait()
-	fmt.Println("Final Balance:", account.Balance())
+41
+ 
+  account := &bankAccount{}
+42
+ 
+  account.Deposit(1000)
+43
+ 
+  fmt.Println("Current Balance:", account.Balance()) // Should print 1000
+44
+ 
+​
+45
+ 
+  account.Withdraw(200)
+46
+ 
+  fmt.Println("Current Balance after withdrawal:", account.Balance()) // Should print 800
+47
+ 
+=======
+48
+ 
+package problem2
+49
+ 
+​
+50
+ 
+import (
+51
+ 
+  "time"
+52
+ 
+)
+53
+ 
+​
+54
+ 
+var readDelay = 10 * time.Millisecond
+55
+ 
+​
+56
+ 
+type bankAccount struct {
+57
+ 
+  blnc int
+58
+ 
 }
+59
+ 
+​
+60
+ 
+func newAccount(blnc int) *bankAccount {
+61
+ 
+  return &bankAccount{blnc}
+62
+ 
+}
+Footer
+© 2024 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Docs
+Contact
+Manage cookies
+Do not share my personal information
+Resolve Conflicts · Pull Request #210 · talgat-ruby/exercises-go
