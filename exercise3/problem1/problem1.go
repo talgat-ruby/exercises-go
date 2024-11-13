@@ -1,38 +1,63 @@
-package problem1
+package main
 
-import "errors"
+import "fmt"
 
-type Queue struct {
-	vals []any
+// Queue represents a simple queue structure with basic operations
+type Queue[T any] struct {
+	items []T
 }
 
-func (q *Queue) Enqueue(val any) {
-	q.vals = append(q.vals, val)
+// Enqueue adds an element to the back of the Queue
+func (q *Queue[T]) Enqueue(value T) {
+	q.items = append(q.items, value)
 }
 
-func (q *Queue) Dequeue() (any, error) {
-	if len(q.vals) == 0 {
-		return nil, errors.New("queue is empty")
+// Dequeue removes and returns the element at the front of the Queue
+// If the Queue is empty, it returns the zero value of the element type and false
+func (q *Queue[T]) Dequeue() (T, bool) {
+	if q.IsEmpty() {
+		var zero T
+		return zero, false
 	}
-	first := q.vals[0]
-	q.vals = append(q.vals[:0], q.vals[1:]...)
-	return first, nil
+	value := q.items[0]
+	q.items = q.items[1:]
+	return value, true
 }
 
-func (q *Queue) Peek() (any, error) {
-	if len(q.vals) == 0 {
-		return nil, errors.New("queue empty")
+// Peek returns the element at the front of the Queue without removing it
+// If the Queue is empty, it returns the zero value of the element type and false
+func (q *Queue[T]) Peek() (T, bool) {
+	if q.IsEmpty() {
+		var zero T
+		return zero, false
 	}
-	return q.vals[0], nil
+	return q.items[0], true
 }
 
-func (q *Queue) Size() int {
-	return len(q.vals)
+// Size returns the number of elements in the Queue
+func (q *Queue[T]) Size() int {
+	return len(q.items)
 }
 
-func (q *Queue) IsEmpty() bool {
-	if len(q.vals) > 0 {
-		return false
-	}
-	return true
+// IsEmpty checks if the Queue is empty
+func (q *Queue[T]) IsEmpty() bool {
+	return len(q.items) == 0
+}
+
+// Test the Queue data structure
+func main() {
+	queue := &Queue[int]{}
+
+	queue.Enqueue(10)
+	queue.Enqueue(20)
+	queue.Enqueue(30)
+
+	fmt.Println("Size:", queue.Size())       // Output: Size: 3
+	fmt.Println("Peek:", queue.Peek())       // Output: Peek: 10
+	fmt.Println("Dequeue:", queue.Dequeue()) // Output: Dequeue: 10
+	fmt.Println("Size after dequeue:", queue.Size()) // Output: Size after dequeue: 2
+	fmt.Println("IsEmpty:", queue.IsEmpty()) // Output: IsEmpty: false
+	queue.Dequeue()
+	queue.Dequeue()
+	fmt.Println("IsEmpty after all dequeues:", queue.IsEmpty()) // Output: IsEmpty after all dequeues: true
 }
