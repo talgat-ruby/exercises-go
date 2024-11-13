@@ -1,35 +1,64 @@
-package problem2
+package main
 
-import "errors"
+import "fmt"
 
-type Stack struct {
-	vals []any
+// Stack represents a simple stack structure with basic operations
+type Stack[T any] struct {
+	items []T
 }
 
-func (s *Stack) Push(val any) {
-	s.vals = append(s.vals, val)
+// Push adds an element to the top of the Stack
+func (s *Stack[T]) Push(value T) {
+	s.items = append(s.items, value)
 }
 
-func (s *Stack) Pop() (any, error) {
-	if len(s.vals) == 0 {
-		return nil, errors.New("stack is empty")
+// Pop removes and returns the element at the top of the Stack
+// If the Stack is empty, it returns the zero value of the element type and false
+func (s *Stack[T]) Pop() (T, bool) {
+	if s.IsEmpty() {
+		var zero T
+		return zero, false
 	}
-	topElement := s.vals[len(s.vals)-1]
-	s.vals = s.vals[:len(s.vals)-1]
-	return topElement, nil
+	// Remove and return the last element
+	value := s.items[len(s.items)-1]
+	s.items = s.items[:len(s.items)-1]
+	return value, true
 }
 
-func (s *Stack) Peek() (any, error) {
-	if len(s.vals) == 0 {
-		return nil, errors.New("stack is empty")
+// Peek returns the element at the top of the Stack without removing it
+// If the Stack is empty, it returns the zero value of the element type and false
+func (s *Stack[T]) Peek() (T, bool) {
+	if s.IsEmpty() {
+		var zero T
+		return zero, false
 	}
-	return s.vals[len(s.vals)-1], nil
+	return s.items[len(s.items)-1], true
 }
 
-func (s *Stack) Size() int {
-	return len(s.vals)
+// Size returns the number of elements in the Stack
+func (s *Stack[T]) Size() int {
+	return len(s.items)
 }
 
-func (s *Stack) IsEmpty() bool {
-	return len(s.vals) == 0
+// IsEmpty checks if the Stack is empty
+func (s *Stack[T]) IsEmpty() bool {
+	return len(s.items) == 0
+}
+
+// Test the Stack data structure
+func main() {
+	stack := &Stack[int]{}
+
+	stack.Push(10)
+	stack.Push(20)
+	stack.Push(30)
+
+	fmt.Println("Size:", stack.Size())       // Output: Size: 3
+	fmt.Println("Peek:", stack.Peek())       // Output: Peek: 30
+	fmt.Println("Pop:", stack.Pop())         // Output: Pop: 30
+	fmt.Println("Size after pop:", stack.Size()) // Output: Size after pop: 2
+	fmt.Println("IsEmpty:", stack.IsEmpty()) // Output: IsEmpty: false
+	stack.Pop()
+	stack.Pop()
+	fmt.Println("IsEmpty after all pops:", stack.IsEmpty()) // Output: IsEmpty after all pops: true
 }
