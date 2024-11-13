@@ -1,106 +1,64 @@
-package problem3
+package main
 
-import (
-	"slices"
-)
+import "fmt"
 
-type Set struct {
-	vals []any
-	size int
+// Stack represents a simple stack structure with basic operations
+type Stack[T any] struct {
+	items []T
 }
 
-func NewSet() *Set {
-	return &Set{[]any{}, 0}
+// Push adds an element to the top of the Stack
+func (s *Stack[T]) Push(value T) {
+	s.items = append(s.items, value)
 }
 
-func (s *Set) Add(val any) {
-	if !s.Has(val) {
-		s.vals = append(s.vals, val)
-		s.size += 1
+// Pop removes and returns the element at the top of the Stack
+// If the Stack is empty, it returns the zero value of the element type and false
+func (s *Stack[T]) Pop() (T, bool) {
+	if s.IsEmpty() {
+		var zero T
+		return zero, false
 	}
+	// Remove and return the last element
+	value := s.items[len(s.items)-1]
+	s.items = s.items[:len(s.items)-1]
+	return value, true
 }
 
-func (s *Set) Remove(val any) {
-	key := slices.Index(s.vals, val)
-	if key >= 0 {
-		s.vals = slices.Delete(s.vals, key, key+1)
-		s.size -= 1
+// Peek returns the element at the top of the Stack without removing it
+// If the Stack is empty, it returns the zero value of the element type and false
+func (s *Stack[T]) Peek() (T, bool) {
+	if s.IsEmpty() {
+		var zero T
+		return zero, false
 	}
+	return s.items[len(s.items)-1], true
 }
 
-func (s *Set) IsEmpty() bool {
-	return s.size == 0
+// Size returns the number of elements in the Stack
+func (s *Stack[T]) Size() int {
+	return len(s.items)
 }
 
-func (s *Set) Size() int {
-	return s.size
+// IsEmpty checks if the Stack is empty
+func (s *Stack[T]) IsEmpty() bool {
+	return len(s.items) == 0
 }
 
-func (s *Set) List() []any {
-	return s.vals
-}
+// Test the Stack data structure
+func main() {
+	stack := &Stack[int]{}
 
-func (s *Set) Has(val any) bool {
-	if slices.Contains(s.vals, val) {
-		return true
-	}
-	return false
-}
+	stack.Push(10)
+	stack.Push(20)
+	stack.Push(30)
 
-func (s Set) Copy() *Set {
-	newVals := make([]any, len(s.vals))
-	copy(newVals, s.vals)
-	return &Set{vals: newVals, size: s.size}
-}
-
-func (s *Set) Difference(data *Set) Set {
-	result := s.Copy()
-	for _, v := range s.vals {
-		if data.Has(v) {
-			result.Remove(v)
-		}
-	}
-	return *result
-}
-
-func (s *Set) IsSubset(data *Set) bool {
-	for _, v := range s.vals {
-		if !data.Has(v) {
-			return false
-		}
-	}
-	return true
-}
-
-func Union(data ...*Set) Set {
-	slice := NewSet()
-	for _, s := range data {
-		for _, v := range s.vals {
-			if !slice.Has(v) {
-				slice.Add(v)
-			}
-		}
-	}
-	return *slice
-}
-
-func Intersect(data ...*Set) Set {
-	if len(data) == 0 {
-		return Set{}
-	}
-
-	slice := NewSet()
-	for _, v := range data[0].vals {
-		foundInAll := true
-		for _, s := range data[1:] {
-			if !s.Has(v) {
-				foundInAll = false
-				break
-			}
-		}
-		if foundInAll {
-			slice.Add(v)
-		}
-	}
-	return *slice
+	fmt.Println("Size:", stack.Size())       // Output: Size: 3
+	fmt.Println("Peek:", stack.Peek())       // Output: Peek: 30
+	fmt.Println("Pop:", stack.Pop())         // Output: Pop: 30
+	fmt.Println("Size after pop:", stack.Size()) // Output: Size after pop: 2
+	fmt.Println("IsEmpty:", stack.IsEmpty()) // Output: IsEmpty: false
+	stack.Pop()
+	stack.Pop()
+	fmt.Println("IsEmpty after all pops:", stack.IsEmpty()) // Output: IsEmpty after all pops: true
 }
