@@ -22,7 +22,7 @@ func TestLegs(t *testing.T) {
 		legsNum: 8,
 	}
 
-	totalLegsNum := sumOfAllLegsNum(horse, kangaroo, ant, spider)
+	sumOfAllLegsNum sumOfAllLegsNum(horse, kangaroo, ant, spider)
 
 	if totalLegsNum != 20 {
 		t.Errorf("sumOfAllLegsNum() was incorrect, got: %d, expected: %d", totalLegsNum, 20)
