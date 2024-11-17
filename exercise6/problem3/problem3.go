@@ -1,3 +1,4 @@
+ Eldar
 package main
 
 import (
@@ -34,4 +35,16 @@ func main() {
 
 	c.Decrement()
 	fmt.Println("Counter after decrement:", c.Value()) // Should print 0
+
+package problem3
+
+type counter struct {
+	val int64
+}
+
+func newCounter() *counter {
+	return &counter{
+		val: 0,
+	}
+ main
 }

@@ -1,3 +1,4 @@
+Eldar
 Skip to content
 Navigation Menu
 talgat-ruby
@@ -33,8 +34,8 @@ problem8.go
 exercise6/problem8/problem8.go
 exercise6/problem2/problem2.go1 conflict  
 1
- 
-<<<<<<< Eldar
+
+Eldar
 2
  
 package main
@@ -230,3 +231,14 @@ Contact
 Manage cookies
 Do not share my personal information
 Resolve Conflicts · Pull Request #210 · talgat-ruby/exercises-go
+
+package problem1
+
+type bankAccount struct {
+	blnc int
+}
+
+func newAccount(blnc int) *bankAccount {
+	return &bankAccount{blnc}
+}
+main

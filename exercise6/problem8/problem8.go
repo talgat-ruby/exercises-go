@@ -1,3 +1,4 @@
+ Eldar
 package main
 
 import (
@@ -56,3 +57,8 @@ func main() {
 	result := multiplexer([]<-chan int{ch1, ch2, ch3})
 	fmt.Println("Result:", result) // Output: [1 2 3 4 5] (order may vary based on arrival)
 }
+
+package problem8
+
+func multiplex(chs []<-chan string) []string {}
+ main
