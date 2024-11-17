@@ -1,9 +1,12 @@
-package main
+package problem4
 
-func numberSquares(n int) int {
-    total := 0
-    for i := 1; i <= n; i++ {
-        total += i * i
+func detectWord(crowd string) string {
+    word := ""
+    for _, char := range crowd {
+        // Check if the character is lowercase
+        if char >= 'a' && char <= 'z' {
+            word += string(char)
+        }
     }
-    return total
+    return word
 }
