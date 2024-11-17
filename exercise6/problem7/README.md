@@ -1,3 +1,5 @@
 # Problem 7
 
-`runTasks` need to initialize some conf and we need to run it only once.
+Identify the data race in `task`. Fix the issue.
+
+NOTE: don't forget to run test with `-race` flag
