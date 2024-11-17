@@ -6,14 +6,12 @@ import (
 	"time"
 )
 
-//TODO: identify the data race
-// fix the issue.
-
 func task() {
 	start := time.Now()
 	var t *time.Timer
 	t = time.AfterFunc(
-		randomDuration(), func() {
+		randomDuration(),
+		func() {
 			fmt.Println(time.Now().Sub(start))
 			t.Reset(randomDuration())
 		},
