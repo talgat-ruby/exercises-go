@@ -3,20 +3,32 @@ package problem7
 import (
 	"fmt"
 	"math/rand"
+	"sync"
 	"time"
 )
 
 func task() {
 	start := time.Now()
 	var t *time.Timer
+	var mu sync.Mutex
+
 	t = time.AfterFunc(
 		randomDuration(),
 		func() {
-			fmt.Println(time.Now().Sub(start))
-			t.Reset(randomDuration())
+			mu.Lock()
+			defer mu.Unlock()
+			fmt.Println(time.Since(start))
+			if t != nil {
+				t.Reset(randomDuration())
+			}
 		},
 	)
+
 	time.Sleep(5 * time.Second)
+
+	mu.Lock()
+	t.Stop()
+	mu.Unlock()
 }
 
 func randomDuration() time.Duration {
