@@ -8,15 +8,28 @@ import (
 
 func task() {
 	start := time.Now()
+
+	done := make(chan struct{})
+
 	var t *time.Timer
-	t = time.AfterFunc(
-		randomDuration(),
-		func() {
-			fmt.Println(time.Now().Sub(start))
+
+	timerFunc := func() {
+		fmt.Println(time.Now().Sub(start))
+		select {
+		case <-done:
+			return
+		default:
+
 			t.Reset(randomDuration())
-		},
-	)
+		}
+	}
+
+	t = time.AfterFunc(randomDuration(), timerFunc)
+
 	time.Sleep(5 * time.Second)
+
+	t.Stop()
+	close(done)
 }
 
 func randomDuration() time.Duration {
