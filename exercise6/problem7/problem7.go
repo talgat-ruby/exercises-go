@@ -23,8 +23,6 @@ func task() {
 	t = time.AfterFunc(
 		randomDuration(),
 		func() {
-			m.Lock() // Lock before accessing the timer
-			defer m.Unlock()
 			fmt.Println(time.Now().Sub(start))
 			resetTimer()
 		},
