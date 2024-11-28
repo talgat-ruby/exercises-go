@@ -1,3 +1,7 @@
+HEAD
+
+ Eldar
+6786b69556adaf3ccffc518c7655a26812d55e64
 package main
 
 import (
@@ -36,4 +40,31 @@ func main() {
 
 	wg.Wait() // Wait for all tasks to complete
 	fmt.Println("All tasks completed.")
+HEAD
+
+package problem7
+
+import (
+	"fmt"
+	"math/rand"
+	"time"
+)
+
+func task() {
+	start := time.Now()
+	var t *time.Timer
+	t = time.AfterFunc(
+		randomDuration(),
+		func() {
+			fmt.Println(time.Now().Sub(start))
+			t.Reset(randomDuration())
+		},
+	)
+	time.Sleep(5 * time.Second)
+}
+
+func randomDuration() time.Duration {
+	return time.Duration(rand.Int63n(1e9))
+ main
+6786b69556adaf3ccffc518c7655a26812d55e64
 }

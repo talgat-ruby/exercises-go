@@ -1,3 +1,7 @@
+HEAD
+=======
+Eldar
+6786b69556adaf3ccffc518c7655a26812d55e64
 Skip to content
 Navigation Menu
 talgat-ruby
@@ -33,8 +37,8 @@ problem8.go
 exercise6/problem8/problem8.go
 exercise6/problem2/problem2.go1 conflict  
 1
- 
-<<<<<<< Eldar
+
+Eldar
 2
  
 package main
@@ -172,7 +176,7 @@ func main() {
   fmt.Println("Current Balance after withdrawal:", account.Balance()) // Should print 800
 47
  
-=======
+
 48
  
 package problem2
@@ -229,4 +233,19 @@ Docs
 Contact
 Manage cookies
 Do not share my personal information
+ HEAD
 Resolve Conflicts · Pull Request #210 · talgat-ruby/exercises-go
+
+Resolve Conflicts · Pull Request #210 · talgat-ruby/exercises-go
+
+package problem1
+
+type bankAccount struct {
+	blnc int
+}
+
+func newAccount(blnc int) *bankAccount {
+	return &bankAccount{blnc}
+}
+main
+6786b69556adaf3ccffc518c7655a26812d55e64

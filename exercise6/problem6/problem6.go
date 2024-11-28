@@ -1,3 +1,7 @@
+HEAD
+
+ Eldar
+6786b69556adaf3ccffc518c7655a26812d55e64
 package main
 
 import (
@@ -36,4 +40,28 @@ func main() {
 
 	wg.Wait() // Wait for all tasks to complete
 	fmt.Println("All tasks completed.")
+HEAD
+
+
+package problem6
+
+import (
+	"sync"
+)
+
+func runTasks(init func()) {
+	var wg sync.WaitGroup
+
+	for range 10 {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+
+			//TODO: modify so that load function gets called only once.
+			init()
+		}()
+	}
+	wg.Wait()
+ main
+6786b69556adaf3ccffc518c7655a26812d55e64
 }

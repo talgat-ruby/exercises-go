@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"sync"
+	"time"
 )
 
 // bankAccount represents a simple bank account with a balance and mutex for concurrent safety
@@ -33,6 +34,7 @@ func (a *bankAccount) Withdraw(amount int) bool {
 func (a *bankAccount) Balance() int {
 	a.mu.Lock()
 	defer a.mu.Unlock()
+	time.Sleep(10 * time.Millisecond) // Simulate a read delay
 	return a.balance
 }
 
