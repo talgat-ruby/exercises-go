@@ -1,46 +1,3 @@
-HEAD
-=======
-Eldar
-6786b69556adaf3ccffc518c7655a26812d55e64
-Skip to content
-Navigation Menu
-talgat-ruby
-/
-exercises-go
-
-Code
-Issues
-Pull requests
-129
-Actions
-Projects
-Security
-Insights
-eldar-go #210
-Resolving conflicts between EldarActorGuy:Eldar and talgat-ruby:main and committing changes  EldarActorGuy:Eldar
-8 conflicting files
-problem1.go
-exercise6/problem1/problem1.go
-problem2.go
-exercise6/problem2/problem2.go
-problem3.go
-exercise6/problem3/problem3.go
-problem4.go
-exercise6/problem4/problem4.go
-problem5.go
-exercise6/problem5/problem5.go
-problem6.go
-exercise6/problem6/problem6.go
-problem7.go
-exercise6/problem7/problem7.go
-problem8.go
-exercise6/problem8/problem8.go
-exercise6/problem2/problem2.go1 conflict  
-1
-
-Eldar
-2
- 
 package main
 3
  
@@ -179,7 +136,7 @@ func main() {
 
 48
  
-package problem2
+package main
 49
  
 ​
@@ -233,12 +190,12 @@ Docs
 Contact
 Manage cookies
 Do not share my personal information
- HEAD
+HEAD
 Resolve Conflicts · Pull Request #210 · talgat-ruby/exercises-go
 
 Resolve Conflicts · Pull Request #210 · talgat-ruby/exercises-go
 
-package problem1
+package main
 
 type bankAccount struct {
 	blnc int
