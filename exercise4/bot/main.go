@@ -1,21 +1,24 @@
 package main
 
 import (
-	"context"
+	"log"
 	"os"
 	"os/signal"
 	"syscall"
 )
 
 func main() {
-	ctx := context.Background()
 
 	ready := startServer()
 	<-ready
 
-	// TODO after server start
+	// Присоединяемся к игре
+	err := joinGame()
+	if err != nil {
+		log.Fatalf("Failed to join the game: %v", err)
+	}
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
-	<-stop // Wait for SIGINT or SIGTERM
+	<-stop // Ожидание завершения по SIGINT или SIGTERM
 }
