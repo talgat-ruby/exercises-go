@@ -1,8 +1,27 @@
 package problem5
 
-func producer() {}
+func producer(words []string, ch chan<- string) {
+	for i, w := range words {
+		if i != len(words)-1 {
+			ch <- w + " "
+			continue
+		}
+		ch <- w
+	}
+	close(ch)
+}
 
-func consumer() {}
+func consumer(ch <-chan string) string {
+	msg := ""
+	for {
+		w, more := <-ch
+		if more {
+			msg += w
+		} else {
+			return msg
+		}
+	}
+}
 
 func send(
 	words []string,
