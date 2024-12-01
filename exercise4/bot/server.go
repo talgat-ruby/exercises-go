@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"net"
@@ -21,7 +22,7 @@ func (l *readyListener) Accept() (net.Conn, error) {
 	return l.Listener.Accept()
 }
 
-func startServer() <-chan struct{} {
+func startServer(ctx context.Context, mux *http.ServeMux) <-chan struct{} {
 	ready := make(chan struct{})
 
 	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", os.Getenv("PORT")))
@@ -31,6 +32,7 @@ func startServer() <-chan struct{} {
 
 	list := &readyListener{Listener: listener, ready: ready}
 	srv := &http.Server{
+		Handler:     mux,
 		IdleTimeout: 2 * time.Minute,
 	}
 
