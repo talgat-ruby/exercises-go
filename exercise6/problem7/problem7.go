@@ -1,23 +1,32 @@
 package problem7
 
 import (
-	"fmt"
 	"math/rand"
+	"sync"
 	"time"
 )
 
-//TODO: identify the data race
-// fix the issue.
-
 func task() {
-	start := time.Now()
+	var m sync.Mutex
 	var t *time.Timer
-	t = time.AfterFunc(
-		randomDuration(), func() {
-			fmt.Println(time.Now().Sub(start))
+
+	resetTimer := func() {
+		m.Lock()
+		defer m.Unlock()
+		if t != nil {
 			t.Reset(randomDuration())
+		}
+	}
+
+	m.Lock()
+	t = time.AfterFunc(
+		randomDuration(),
+		func() {
+			resetTimer()
 		},
 	)
+	m.Unlock()
+
 	time.Sleep(5 * time.Second)
 }
 
