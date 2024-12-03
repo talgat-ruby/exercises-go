@@ -1,5 +1,6 @@
 # Blogging Platform
 
-Please check https://roadmap.sh/projects/blogging-platform-api.
+Добро пожаловать в мой проект!
 
-https://github.com/UAssylbek/exercises-go/tree/exercise7/exercise7/blogging-platform
+Проект доступен по следующей ссылке: [Проект на GitHub](https://github.com/UAssylbek/exercises-go/tree/exercise7/exercise7/blogging-platform)
+
