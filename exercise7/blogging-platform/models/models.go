@@ -1,11 +1,11 @@
 package models
 
 type Blog struct {
-	id        int
-	title     string
-	content   string
-	category  string
-	tags      []string
-	createdAt string
-	updatedAt string
+	Id        string   `json:"id"`
+	Title     string   `json:"title"`
+	Content   string   `json:"content"`
+	Category  string   `json:"category"`
+	Tags      []string `json:"tags"`
+	CreatedAt string   `json:"created_at"`
+	UpdatedAt string   `json:"updated_at"`
 }
