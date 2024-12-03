@@ -5,21 +5,26 @@ import "sync"
 func multiplex(chs []<-chan string) []string {
 	result := []string{}
 	wg := new(sync.WaitGroup)
-	wg.Add(len(chs))
-	mx := new(sync.Mutex)
+	resultCh := make(chan string)
 
 	for _, ch := range chs {
+		wg.Add(1)
 		go func(c <-chan string) {
 			defer wg.Done()
 			for v := range c {
-				mx.Lock()
-				result = append(result, v)
-				mx.Unlock()
+				resultCh <- v
 			}
 		}(ch)
 	}
 
-	wg.Wait()
+	go func() {
+		wg.Wait()
+		close(resultCh)
+	}()
+
+	for v := range resultCh {
+		result = append(result, v)
+	}
 
 	return result
 }
