@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/pkg/httputils/statusError"
+	"github.com/UAssylbek/blogging-platform/pkg/httputils/statusError"
 )
 
 func JSON(w http.ResponseWriter, r *http.Request, dst interface{}) error {
