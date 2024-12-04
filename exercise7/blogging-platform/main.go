@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	config2 "github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/internal/config"
 	"log/slog"
 	"os"
 	"os/signal"
@@ -12,6 +13,17 @@ import (
 
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
+
+	//config
+	_, err := config2.NewConfig()
+	if err != nil {
+		slog.ErrorContext(
+			ctx,
+			"error on load config",
+			"service", "config",
+			"error", err,
+		)
+	}
 
 	// db
 	_, err := db.New()
