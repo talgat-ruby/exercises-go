@@ -34,10 +34,21 @@ func New() (*sql.DB, error) {
 		return nil, err
 	}
 	if !exists {
-		res, err := ReadSQLFIle("file_sql/create_table")
-		if err != nil {
-			return nil, err
-		}
+		// res, err := ReadSQLFIle("file_sql/create_table")
+		// if err != nil {
+		// 	return nil, err
+		// }
+		res := `
+	CREATE TABLE posts (
+    	id INTEGER PRIMARY KEY AUTOINCREMENT,
+    	title VARCHAR(50) NOT NULL,
+    	content TEXT NOT NULL,
+    	category VARCHAR(50),
+    	tags VARCHAR(50),
+    	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+		);
+		`
 		_, err = db.Exec(res)
 		if err != nil {
 			return nil, err
@@ -54,11 +65,22 @@ func NewPostCreator(body models.Blog) error {
 	if err != nil {
 		return err
 	}
-	res, err := ReadSQLFIle("file_sql/create_new_post")
-	if err != nil {
-		return err
-	}
-	_, err = db.Exec(res, body.Title, body.Content, body.Category, body.Tags, body.CreatedAt, body.UpdatedAt)
+	// res, err := ReadSQLFIle("file_sql/create_new_post")
+	// if err != nil {
+	// 	return err
+	// }
+	res := `
+	INSERT INTO posts (
+    title, 
+    content,
+    category,
+    tags,
+    created_at,
+    updated_at
+    ) 
+	VALUES ($1, $2, $3)
+	`
+	_, err = db.Exec(res, body.Title, body.Content, body.Category, body.Tags)
 	return err
 }
 func ReadSQLFIle(path string) (string, error) {
@@ -69,12 +91,20 @@ func ReadSQLFIle(path string) (string, error) {
 	return string(res), nil
 }
 func CheckTable(db *sql.DB) (bool, error) {
-	query, err := ReadSQLFIle("file_sql/check_table")
-	if err != nil {
-		return false, err
-	}
+	// query, err := ReadSQLFIle("file_sql/check_table")
+	// if err != nil {
+	// 	return false, err
+	// }
+	query := `
+SELECT EXISTS (
+SELECT 1
+FROM posts
+WHERE schemaname = 'public'
+AND tablename = 'posts'
+);
+	`
 	var exists bool
-	err = db.QueryRow(query, "posts").Scan(&exists)
+	err := db.QueryRow(query, "posts").Scan(&exists)
 	if err != nil {
 		return false, err
 	}
