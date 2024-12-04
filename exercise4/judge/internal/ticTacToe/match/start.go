@@ -63,9 +63,8 @@ func (m *Match) totalRoundsWonBy(p *player.Player) int {
 	total := 0
 
 	for _, r := range m.Rounds {
-		if r.Winner != nil && r.Winner.URL == p.URL {
+		if r.Winner.URL == p.URL {
 			total += 1
-			break
 		}
 	}
 
