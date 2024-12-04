@@ -1,15 +1,15 @@
-package movies
+package posts
 
 import (
 	"net/http"
 	"strconv"
 
-	"github.com/talgat-ruby/lessons-go/projects/movie-reservation/pkg/httputils/response"
+	"github.com/UAssylbek/blogging-platform/pkg/httputils/response"
 )
 
-func (h *Movies) DeleteMovie(w http.ResponseWriter, r *http.Request) {
+func (h *Posts) DeletePost(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	log := h.logger.With("method", "DeleteMovie")
+	log := h.logger.With("method", "DeletePost")
 
 	idStr := r.PathValue("id")
 
@@ -25,7 +25,7 @@ func (h *Movies) DeleteMovie(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// db request
-	if err := h.db.DeleteMovie(ctx, int64(id)); err != nil {
+	if err := h.db.DeletePost(ctx, int64(id)); err != nil {
 		log.ErrorContext(
 			ctx,
 			"failed to query from db",
@@ -50,7 +50,7 @@ func (h *Movies) DeleteMovie(w http.ResponseWriter, r *http.Request) {
 
 	log.InfoContext(
 		ctx,
-		"success delete movie",
+		"success delete post",
 		"id", id,
 	)
 	return

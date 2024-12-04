@@ -3,16 +3,16 @@ package handler
 import (
 	"log/slog"
 
-	"github.com/talgat-ruby/lessons-go/projects/movie-reservation/internal/api/handler/movies"
-	"github.com/talgat-ruby/lessons-go/projects/movie-reservation/internal/db"
+	"github.com/UAssylbek/blogging-platform/internal/api/handler/posts"
+	"github.com/UAssylbek/blogging-platform/internal/db"
 )
 
 type Handler struct {
-	*movies.Movies
+	*posts.Posts
 }
 
 func New(logger *slog.Logger, db *db.DB) *Handler {
 	return &Handler{
-		Movies: movies.New(logger, db),
+		Posts: posts.New(logger, db),
 	}
 }

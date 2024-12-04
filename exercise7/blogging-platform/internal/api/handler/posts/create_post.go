@@ -1,27 +1,27 @@
-package movies
+package posts
 
 import (
 	"net/http"
 
-	"github.com/talgat-ruby/lessons-go/projects/movie-reservation/internal/db/movie"
-	"github.com/talgat-ruby/lessons-go/projects/movie-reservation/pkg/httputils/request"
-	"github.com/talgat-ruby/lessons-go/projects/movie-reservation/pkg/httputils/response"
+	"github.com/UAssylbek/blogging-platform/internal/db/post"
+	"github.com/UAssylbek/blogging-platform/pkg/httputils/request"
+	"github.com/UAssylbek/blogging-platform/pkg/httputils/response"
 )
 
-type CreateMovieRequest struct {
-	Data *movie.ModelMovie `json:"data"`
+type CreatePostRequest struct {
+	Data *post.ModelPost `json:"data"`
 }
 
-type CreateMovieResponse struct {
-	Data *movie.ModelMovie `json:"data"`
+type CreatePostResponse struct {
+	Data *post.ModelPost `json:"data"`
 }
 
-func (h *Movies) CreateMovie(w http.ResponseWriter, r *http.Request) {
+func (h *Posts) CreatePost(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	log := h.logger.With("method", "CreateMovie")
+	log := h.logger.With("method", "CreatePost")
 
 	// request parse
-	requestBody := &CreateMovieRequest{}
+	requestBody := &CreatePostRequest{}
 
 	if err := request.JSON(w, r, requestBody); err != nil {
 		log.ErrorContext(
@@ -34,7 +34,7 @@ func (h *Movies) CreateMovie(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// db request
-	dbResp, err := h.db.CreateMovie(ctx, requestBody.Data)
+	dbResp, err := h.db.CreatePost(ctx, requestBody.Data)
 
 	if err != nil {
 		log.ErrorContext(
@@ -56,7 +56,7 @@ func (h *Movies) CreateMovie(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// response
-	resp := CreateMovieResponse{
+	resp := CreatePostResponse{
 		Data: dbResp,
 	}
 
@@ -75,8 +75,8 @@ func (h *Movies) CreateMovie(w http.ResponseWriter, r *http.Request) {
 
 	log.InfoContext(
 		ctx,
-		"success insert movie",
-		"movie id", resp.Data.ID,
+		"success insert post",
+		"post id", resp.Data.ID,
 	)
 	return
 }

@@ -7,8 +7,8 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
-	"github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/internal/api"
-	"github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/internal/db"
+	"github.com/UAssylbek/blogging-platform/internal/api"
+	"github.com/UAssylbek/blogging-platform/internal/db"
 )
 
 func main() {

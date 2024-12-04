@@ -8,14 +8,13 @@ import (
 	"strconv"
 
 	_ "github.com/lib/pq"
-
-	"github.com/talgat-ruby/lessons-go/projects/movie-reservation/internal/db/movie"
+	"github.com/UAssylbek/blogging-platform/internal/db/post"
 )
 
 type DB struct {
 	logger *slog.Logger
 	pg     *sql.DB
-	*movie.Movie
+	*post.Post
 }
 
 func New(logger *slog.Logger) (*DB, error) {
@@ -27,7 +26,7 @@ func New(logger *slog.Logger) (*DB, error) {
 	return &DB{
 		logger: logger,
 		pg:     pgsql,
-		Movie:  movie.New(pgsql, logger),
+		Post:  post.New(pgsql, logger),
 	}, nil
 }
 

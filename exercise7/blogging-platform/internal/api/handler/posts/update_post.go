@@ -1,21 +1,21 @@
-package movies
+package posts
 
 import (
 	"net/http"
 	"strconv"
 
-	"github.com/talgat-ruby/lessons-go/projects/movie-reservation/internal/db/movie"
-	"github.com/talgat-ruby/lessons-go/projects/movie-reservation/pkg/httputils/request"
-	"github.com/talgat-ruby/lessons-go/projects/movie-reservation/pkg/httputils/response"
+	"github.com/UAssylbek/blogging-platform/internal/db/post"
+	"github.com/UAssylbek/blogging-platform/pkg/httputils/request"
+	"github.com/UAssylbek/blogging-platform/pkg/httputils/response"
 )
 
-type UpdateMovieRequest struct {
-	Data *movie.ModelMovie `json:"data"`
+type UpdatePostRequest struct {
+	Data *post.ModelPost `json:"data"`
 }
 
-func (h *Movies) UpdateMovie(w http.ResponseWriter, r *http.Request) {
+func (h *Posts) UpdatePost(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	log := h.logger.With("method", "UpdateMovie")
+	log := h.logger.With("method", "UpdatePost")
 
 	idStr := r.PathValue("id")
 
@@ -31,7 +31,7 @@ func (h *Movies) UpdateMovie(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// request parse
-	requestBody := &UpdateMovieRequest{}
+	requestBody := &UpdatePostRequest{}
 
 	if err := request.JSON(w, r, requestBody); err != nil {
 		log.ErrorContext(
@@ -44,7 +44,7 @@ func (h *Movies) UpdateMovie(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// db request
-	if err := h.db.UpdateMovie(ctx, int64(id), requestBody.Data); err != nil {
+	if err := h.db.UpdatePost(ctx, int64(id), requestBody.Data); err != nil {
 		log.ErrorContext(
 			ctx,
 			"failed to query from db",
@@ -69,7 +69,7 @@ func (h *Movies) UpdateMovie(w http.ResponseWriter, r *http.Request) {
 
 	log.InfoContext(
 		ctx,
-		"success update movie",
+		"success update post",
 		"id", id,
 	)
 	return

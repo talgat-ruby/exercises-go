@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/talgat-ruby/lessons-go/projects/movie-reservation/internal/api/handler"
+	"github.com/UAssylbek/blogging-platform/internal/api/handler"
 )
 
 type Router struct {
@@ -22,7 +22,7 @@ func New(handler *handler.Handler) *Router {
 }
 
 func (r *Router) Start(ctx context.Context) *http.ServeMux {
-	r.movies(ctx)
+	r.posts(ctx)
 
 	return r.router
 }

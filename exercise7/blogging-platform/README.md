@@ -2,5 +2,5 @@
 
 Добро пожаловать в мой проект!
 
-Проект доступен по следующей ссылке: [Проект на GitHub](https://github.com/UAssylbek/exercises-go/tree/exercise7/exercise7/blogging-platform)
+Проект доступен по следующей ссылке: [Проект на GitHub](https://6bb9-188-0-144-205.ngrok-free.app/)
 

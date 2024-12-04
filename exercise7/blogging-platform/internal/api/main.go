@@ -10,9 +10,9 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/talgat-ruby/lessons-go/projects/movie-reservation/internal/api/handler"
-	"github.com/talgat-ruby/lessons-go/projects/movie-reservation/internal/api/router"
-	"github.com/talgat-ruby/lessons-go/projects/movie-reservation/internal/db"
+	"github.com/UAssylbek/blogging-platform/internal/api/handler"
+	"github.com/UAssylbek/blogging-platform/internal/api/router"
+	"github.com/UAssylbek/blogging-platform/internal/db"
 )
 
 type Api struct {

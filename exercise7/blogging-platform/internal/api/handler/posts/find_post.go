@@ -1,20 +1,20 @@
-package movies
+package posts
 
 import (
 	"net/http"
 	"strconv"
 
-	"github.com/talgat-ruby/lessons-go/projects/movie-reservation/internal/db/movie"
-	"github.com/talgat-ruby/lessons-go/projects/movie-reservation/pkg/httputils/response"
+	"github.com/UAssylbek/blogging-platform/internal/db/post"
+	"github.com/UAssylbek/blogging-platform/pkg/httputils/response"
 )
 
-type FindMovieResponse struct {
-	Data *movie.ModelMovie `json:"data"`
+type FindPostResponse struct {
+	Data *post.ModelPost `json:"data"`
 }
 
-func (h *Movies) FindMovie(w http.ResponseWriter, r *http.Request) {
+func (h *Posts) FindPost(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	log := h.logger.With("method", "FindMovie")
+	log := h.logger.With("method", "FindPost")
 
 	idStr := r.PathValue("id")
 
@@ -29,7 +29,7 @@ func (h *Movies) FindMovie(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	dbResp, err := h.db.FindMovie(ctx, int64(id))
+	dbResp, err := h.db.FindPost(ctx, int64(id))
 
 	if err != nil {
 		log.ErrorContext(
@@ -41,7 +41,7 @@ func (h *Movies) FindMovie(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp := FindMovieResponse{
+	resp := FindPostResponse{
 		Data: dbResp,
 	}
 
@@ -60,8 +60,8 @@ func (h *Movies) FindMovie(w http.ResponseWriter, r *http.Request) {
 
 	log.InfoContext(
 		ctx,
-		"success find movie",
-		"movie id", resp.Data.ID,
+		"success find post",
+		"post id", resp.Data.ID,
 	)
 	return
 }
