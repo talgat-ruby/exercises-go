@@ -8,7 +8,7 @@ You have two projects `judge` and `bot`.
   can run it:
 
 ```shell
-$ PORT=4444 go run .
+//$ PORT=4444 go run .
 ```
 
 * `bot` is a boilerplate app for you bot. Don't delete anything, but rather add.
