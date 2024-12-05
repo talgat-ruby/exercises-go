@@ -2,20 +2,17 @@ package main
 
 import (
 	"context"
-	config2 "github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/internal/config"
-	"log/slog"
-	"os"
-	"os/signal"
-
 	"github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/internal/api"
-	"github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/internal/db"
+	config2 "github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/internal/config"
+	db "github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/internal/db"
+	"log/slog"
 )
 
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 
 	//config
-	_, err := config2.NewConfig()
+	config, err := config2.NewConfig()
 	if err != nil {
 		slog.ErrorContext(
 			ctx,
@@ -26,7 +23,7 @@ func main() {
 	}
 
 	// db
-	_, err := db.New()
+	dbConnect, err := db.New()
 	if err != nil {
 		slog.ErrorContext(
 			ctx,
@@ -38,24 +35,8 @@ func main() {
 	}
 
 	// api
-	a := api.New()
-	if err := a.Start(ctx); err != nil {
-		slog.ErrorContext(
-			ctx,
-			"initialize service error",
-			"service", "api",
-			"error", err,
-		)
-		panic(err)
-	}
-
-	go func() {
-		shutdown := make(chan os.Signal, 1)   // Create channel to signify s signal being sent
-		signal.Notify(shutdown, os.Interrupt) // When an interrupt is sent, notify the channel
-
-		sig := <-shutdown
-		slog.WarnContext(ctx, "signal received - shutting down...", "signal", sig)
-
-		cancel()
-	}()
+	a := api.NewApi(config, dbConnect)
+	slog.InfoContext(ctx, "initialize service", "service", "api")
+	a.Start(ctx, cancel)
+	<-ctx.Done()
 }
