@@ -8,13 +8,16 @@ import (
 
 	"github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/internal/api"
 	"github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/internal/db"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 
-	// db
-	_, err := db.New()
+	_ = godotenv.Load()
+
+	d, err := db.New(slog.With("service", "db"))
 	if err != nil {
 		slog.ErrorContext(
 			ctx,
@@ -25,8 +28,15 @@ func main() {
 		panic(err)
 	}
 
-	// api
-	a := api.New()
+	if err := d.Ping(ctx); err != nil {
+		panic(err)
+	}
+
+	if err := d.Init(ctx); err != nil {
+		panic(err)
+	}
+
+	a := api.New(slog.With("service", "api"), d)
 	if err := a.Start(ctx); err != nil {
 		slog.ErrorContext(
 			ctx,
@@ -46,4 +56,10 @@ func main() {
 
 		cancel()
 	}()
+
+	if err := a.Stop(ctx); err != nil {
+		slog.ErrorContext(ctx, "service stop error", "error", err)
+	}
+
+	slog.InfoContext(ctx, "server was successfully shutdown.")
 }
