@@ -12,6 +12,10 @@ import (
 	"github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/pkg/httputils/response"
 )
 
+type CreatedPost struct {
+	newPost models.Blog
+}
+
 func GetNumberPost(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.PathValue("numberPost"))
 	if err != nil {
@@ -52,12 +56,13 @@ func PostNumberPost(w http.ResponseWriter, r *http.Request) {
 	var newPost models.Blog
 	err := json.NewDecoder(r.Body).Decode(&newPost)
 	if err != nil {
-		response.JSON(w, http.StatusBadRequest, "")
+		request.JSON(w, r, http.StatusBadRequest)
 		return
 	}
+	// err := response.JSON(w, http.StatusCreated, &newPost)
 	err = service.CreationPost(newPost)
 	if err != nil {
-		response.JSON(w, http.StatusBadRequest, "")
+		request.JSON(w, r, http.StatusBadRequest)
 		return
 	}
 	fmt.Fprintln(w, "POST succes")
