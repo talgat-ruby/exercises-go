@@ -7,13 +7,14 @@ import (
 	"os"
 	"os/signal"
 
+	"github.com/joho/godotenv"
 	"github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/internal/api"
 	"github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/internal/db"
 )
 
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
-	// _ := godotenv.Load()
+	_ = godotenv.Load()
 	// db
 	dataBase, err := db.New(slog.With("servie", "db"))
 	if err != nil {
