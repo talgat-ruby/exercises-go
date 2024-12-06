@@ -18,7 +18,7 @@ func (h Posts) PutNumberPost(w http.ResponseWriter, r *http.Request) {
 	log := h.logger.With(
 		"method", "UpdatePost",
 	)
-	id, err := strconv.Atoi(r.PathValue("numberPost"))
+	id, err := strconv.Atoi(r.PathValue("id"))
 	if err != nil {
 		log.ErrorContext(
 			ctx,

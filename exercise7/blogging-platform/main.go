@@ -28,16 +28,16 @@ func main() {
 	}
 
 	// api
-	a := api.New(slog.With("servie", "api"), dataBase)
-	if err := a.Start(ctx); err != nil {
-		slog.ErrorContext(
-			ctx,
-			"initialize service error",
-			"service", "api",
-			"error", err,
-		)
-		panic(err)
-	}
+	a := api.New(slog.With("service", "api"), dataBase)
+	// if err := a.Start(ctx); err != nil {
+	// 	slog.ErrorContext(
+	// 		ctx,
+	// 		"initialize service error",
+	// 		"service", "api",
+	// 		"error", err,
+	// 	)
+	// 	panic(err)
+	// }
 	go func(ctx context.Context, cancelFunc context.CancelFunc) {
 		if err := a.Start(ctx); err != nil {
 			slog.ErrorContext(ctx, "failed to start api", "error", err.Error())

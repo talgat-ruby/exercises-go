@@ -12,7 +12,7 @@ func (h *Posts) DeleteNumberPost(w http.ResponseWriter, r *http.Request) {
 	log := h.logger.With(
 		"method", "DeletePost",
 	)
-	idString, err := strconv.Atoi(r.PathValue("numberPost"))
+	idString, err := strconv.Atoi(r.PathValue("id"))
 	if err != nil {
 		log.ErrorContext(
 			ctx,

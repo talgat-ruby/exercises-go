@@ -34,6 +34,7 @@ func (a *Api) Start(ctx context.Context) error {
 	mux := a.router.Start(ctx)
 	port, err := strconv.Atoi(os.Getenv("API_PORT"))
 	if err != nil {
+		fmt.Println(123)
 		return err
 	}
 
