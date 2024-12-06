@@ -5,60 +5,50 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"log/slog"
 	"net"
 	"net/http"
 	"os"
 	"strconv"
 
-	"github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/internal/handler"
+	"github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/internal/api/handler"
+	"github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/internal/api/router"
+	"github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/internal/db"
 )
 
-type API struct {
-	router *http.ServeMux
+type Api struct {
+	logger *slog.Logger
+	router *router.Router
 }
 
-func New() *API {
-	mux := http.NewServeMux()
-	return &API{
-		router: mux,
+func New(logger *slog.Logger, db *db.DB) *Api {
+	h := handler.New(logger, db)
+	r := router.New(h)
+	return &Api{
+		logger: logger,
+		router: r,
 	}
 }
-func (a *API) Start(ctx context.Context) error {
-	a.BloggingRouter(ctx)
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
-	decimalPort, err := strconv.Atoi(port)
+
+func (a *Api) Start(ctx context.Context) error {
+	mux := a.router.Start(ctx)
+	port, err := strconv.Atoi(os.Getenv("API_PORT"))
 	if err != nil {
 		return err
 	}
-	stringPort := fmt.Sprintf(":%d", decimalPort)
+
 	server := &http.Server{
-		Addr:    stringPort,
-		Handler: a.router,
+		Addr:    fmt.Sprintf(":%d", port),
+		Handler: mux,
 		BaseContext: func(l net.Listener) context.Context {
 			return ctx
 		},
 	}
-	// go func() {
-	// 	<-ctx.Done()
-	// 	if err := server.Shutdown(context.Background()); err != nil {
-	// 		fmt.Println("Error shutting down server:", err)
-	// 	}
-	// }()
-	log.Printf("Start server: %d\n", decimalPort)
+
+	log.Printf("Start server: %d\n", port)
 	err = server.ListenAndServe()
 	if err != nil && errors.Is(err, http.ErrServerClosed) {
 		return err
 	}
 	return nil
-}
-
-func (a API) BloggingRouter(_ context.Context) {
-	a.router.HandleFunc("GET /post/{numberPost}", handler.GetNumberPost)
-	a.router.HandleFunc("GET /posts", handler.GetPosts)
-	a.router.HandleFunc("DELETE /post/{numberPost}", handler.DeleteNumberPost)
-	a.router.HandleFunc("POST /posts", handler.PostNumberPost)
-	a.router.HandleFunc("PUT /post/{numberPost}", handler.PutNumberPost)
 }

@@ -1,53 +1,58 @@
-// problem5.go
 package problem5
 
 import (
+	"fmt"
 	"sync"
 	"time"
 )
 
-func worker(id int, shoppingList *[]string, ch chan<- int, wg *sync.WaitGroup, mu *sync.Mutex, isReady *bool, cond *sync.Cond) {
+func worker(id int, shoppingList *[]string, ch chan<- int, mu *sync.Mutex, wg *sync.WaitGroup, ready *bool) {
 	defer wg.Done()
+	for {
+		mu.Lock()
+		if *ready {
+			fmt.Println(321)
+			ch <- id
 
-	mu.Lock()
-	for !*isReady {
-		cond.Wait()
+			mu.Unlock()
+			return
+		}
+		fmt.Println(654)
+		mu.Unlock()
+
+		time.Sleep(10 * time.Millisecond)
 	}
-	mu.Unlock()
 
-	// Send the worker ID after releasing the lock
-	ch <- id
+	// TODO wait for shopping list to be completed
 }
 
-func updateShopList(shoppingList *[]string, mu *sync.Mutex, isReady *bool, cond *sync.Cond) {
+func updateShopList(shoppingList *[]string, mu *sync.Mutex, ready *bool) {
 	time.Sleep(10 * time.Millisecond)
-
 	mu.Lock()
-	*shoppingList = append(*shoppingList, "apples", "milk", "bake soda")
-	*isReady = true
-	cond.Broadcast()
+	fmt.Println(987)
+	*shoppingList = append(*shoppingList, "apples")
+	*shoppingList = append(*shoppingList, "milk")
+	*shoppingList = append(*shoppingList, "bake soda")
+	*ready = true
 	mu.Unlock()
 }
 
 func notifyOnShopListUpdate(shoppingList *[]string, numWorkers int) <-chan int {
-	notifier := make(chan int, numWorkers)
+	mu := &sync.Mutex{}
 	var wg sync.WaitGroup
-	var mu sync.Mutex
-	isReady := false
-	cond := sync.NewCond(&mu)
-
-	for i := 0; i < numWorkers; i++ {
+	notifier := make(chan int)
+	ready := false
+	for i := range numWorkers {
 		wg.Add(1)
-		go worker(i+1, shoppingList, notifier, &wg, &mu, &isReady, cond)
-		time.Sleep(time.Millisecond) // Order matters
+		go worker(i, shoppingList, notifier, mu, &wg, &ready)
+		time.Sleep(time.Millisecond) // order matters
 	}
 
-	go updateShopList(shoppingList, &mu, &isReady, cond)
-
 	go func() {
+		updateShopList(shoppingList, mu, &ready)
 		wg.Wait()
 		close(notifier)
 	}()
-
+	defer close(notifier)
 	return notifier
 }
