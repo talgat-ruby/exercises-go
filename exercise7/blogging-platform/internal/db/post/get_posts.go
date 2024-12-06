@@ -7,27 +7,34 @@ import (
 )
 
 func (p Post) DBGetPosts(ctx context.Context) ([]models.Blog, error) {
-	// db, err := New()
-	// if err != nil {
-	// 	return nil, err
-	// }
-	var res []models.Blog
-	// res, err := db.Exec("SELECT  FROM posts")
-	rows, err := p.db.Query("SELECT * FROM posts")
+	log := p.logger.With("method", "GetPost")
+	stmt := `
+	SELECT id, title, description, posterUrl, created_at, updated_at 
+	FROM movie
+	`
+	rows, err := p.db.QueryContext(ctx, stmt)
 	if err != nil {
+		log.ErrorContext(ctx, "fail to query table post", "error", err)
 		return nil, err
 	}
-	defer rows.Close()
+	posts := []models.Blog{}
+	post := models.Blog{}
 	for rows.Next() {
-		var post models.Blog
-		err := rows.Scan(&post.Id, &post.Title, &post.Content, &post.Category, &post.Tags, &post.CreatedAt, &post.UpdatedAt)
-		if err != nil {
+		if err := rows.Scan(
+			&post.Id,
+			&post.Title,
+			&post.Content,
+			&post.Category,
+			&post.Tags,
+			&post.CreatedAt,
+			&post.UpdatedAt,
+		); err != nil {
+			log.ErrorContext(ctx, "fail to scan post", "error", err)
 			return nil, err
 		}
-		res = append(res, post)
+		posts = append(posts, post)
 	}
-	if err = rows.Err(); err != nil {
-		return nil, err
-	}
-	return res, nil
+
+	log.InfoContext(ctx, "succes query table posts")
+	return posts, nil
 }
