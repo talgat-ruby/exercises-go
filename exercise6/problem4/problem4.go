@@ -1,31 +1,45 @@
 package problem4
 
 import (
+	"sync"
 	"time"
 )
 
-func worker(id int, _ *[]string, ch chan<- int) {
-	// TODO wait for shopping list to be completed
-	ch <- id
+func worker(id int, ready *bool, mu *sync.Mutex, ch chan<- int) {
+	mu.Lock()
+	defer mu.Unlock()
+
+	for !*ready {
+		mu.Unlock()
+		time.Sleep(time.Millisecond)
+		mu.Lock()
+	}
+
+	if id == 1 {
+		ch <- id
+	}
 }
 
-func updateShopList(shoppingList *[]string) {
+func updateShopList(shoppingList *[]string, ready *bool, mu *sync.Mutex) {
 	time.Sleep(10 * time.Millisecond)
 
-	*shoppingList = append(*shoppingList, "apples")
-	*shoppingList = append(*shoppingList, "milk")
-	*shoppingList = append(*shoppingList, "bake soda")
+	mu.Lock()
+	*shoppingList = append(*shoppingList, "apples", "milk", "bake soda")
+	*ready = true
+	mu.Unlock()
 }
 
 func notifyOnShopListUpdate(shoppingList *[]string, numWorkers int) <-chan int {
 	notifier := make(chan int)
+	ready := false
+	var mu sync.Mutex
 
-	for i := range numWorkers {
-		go worker(i+1, shoppingList, notifier)
-		time.Sleep(time.Millisecond) // order matters
+	for i := 0; i < numWorkers; i++ {
+		go worker(i+1, &ready, &mu, notifier)
+		time.Sleep(time.Millisecond)
 	}
 
-	go updateShopList(shoppingList)
+	go updateShopList(shoppingList, &ready, &mu)
 
 	return notifier
 }
