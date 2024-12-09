@@ -15,27 +15,40 @@ func (h *Blogs) FindBlogPosts(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	log := h.logger.With("method", "FindBlogPosts")
 
+	offset := 0
+	limit := 10
+
 	query := r.URL.Query()
 
-	offset, err := strconv.Atoi(query.Get("offset"))
-	if err != nil {
-		log.ErrorContext(
-			ctx,
-			"fail parse query offset",
-			"error", err,
-		)
-		http.Error(w, "invalid query offset", http.StatusBadRequest)
-		return
+	if offsetStr := query.Get("offset"); offsetStr != "" {
+		parsedOffset, err := strconv.Atoi(offsetStr)
+		if err != nil {
+			log.ErrorContext(ctx, "invalid offset parameter", "error", err)
+			http.Error(w, "invalid offset parameter", http.StatusBadRequest)
+			return
+		}
+		if parsedOffset < 0 {
+			http.Error(w, "offset cannot be negative", http.StatusBadRequest)
+			return
+		}
+		offset = parsedOffset
 	}
-	limit, err := strconv.Atoi(query.Get("limit"))
-	if err != nil {
-		log.ErrorContext(
-			ctx,
-			"fail parse query limit",
-			"error", err,
-		)
-		http.Error(w, "invalid query limit", http.StatusBadRequest)
-		return
+
+	if limitStr := query.Get("limit"); limitStr != "" {
+		parsedLimit, err := strconv.Atoi(limitStr)
+		if err != nil {
+			log.ErrorContext(ctx, "invalid limit parameter", "error", err)
+			http.Error(w, "invalid limit parameter", http.StatusBadRequest)
+			return
+		}
+		if parsedLimit <= 0 {
+			http.Error(w, "limit must be positive", http.StatusBadRequest)
+			return
+		}
+		if parsedLimit > 100 { // Maximum limit
+			parsedLimit = 100
+		}
+		limit = parsedLimit
 	}
 
 	dbResp, err := h.db.FindBlogPosts(ctx, offset, limit)
@@ -48,16 +61,8 @@ func (h *Blogs) FindBlogPosts(w http.ResponseWriter, r *http.Request) {
 		Data: dbResp,
 	}
 
-	if err := response.JSON(
-		w,
-		http.StatusOK,
-		resp,
-	); err != nil {
-		log.ErrorContext(
-			ctx,
-			"fail json",
-			"error", err,
-		)
+	if err := response.JSON(w, http.StatusOK, resp); err != nil {
+		log.ErrorContext(ctx, "failed to write JSON response", "error", err)
 		return
 	}
 
