@@ -2,12 +2,11 @@ package main
 
 import (
 	"context"
+	"github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/internal/api"
+	"github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/internal/db"
 	"log/slog"
 	"os"
 	"os/signal"
-
-	"github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/internal/api"
-	"github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/internal/db"
 )
 
 func main() {
