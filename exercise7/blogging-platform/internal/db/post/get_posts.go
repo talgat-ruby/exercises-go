@@ -9,8 +9,8 @@ import (
 func (p Post) DBGetPosts(ctx context.Context) ([]models.Blog, error) {
 	log := p.logger.With("method", "GetPost")
 	stmt := `
-	SELECT id, title, description, posterUrl, created_at, updated_at 
-	FROM movie
+	SELECT id, title, content, category, tags, created_at, updated_at 
+	FROM posts
 	`
 	rows, err := p.db.QueryContext(ctx, stmt)
 	if err != nil {

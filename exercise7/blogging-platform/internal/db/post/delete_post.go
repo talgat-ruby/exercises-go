@@ -5,7 +5,7 @@ import "context"
 func (p Post) DeletePost(id int64, ctx context.Context) error {
 	log := p.logger.With("metgod", "deletePost", "id", id)
 	stmt := `
-	DELETE FROM movie
+	DELETE FROM posts
 	WHERE id = $1
 	`
 	res, err := p.db.ExecContext(ctx, stmt, id)

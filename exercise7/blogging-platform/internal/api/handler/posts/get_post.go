@@ -1,13 +1,16 @@
 package posts
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
-	"github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/pkg/httputils/request"
+	"github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/models"
 	"github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/pkg/httputils/response"
 )
+
+type GetPostResponse struct {
+	Data *models.Blog `json:"data"`
+}
 
 func (h *Posts) GetNumberPost(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
@@ -34,11 +37,23 @@ func (h *Posts) GetNumberPost(w http.ResponseWriter, r *http.Request) {
 		)
 		return
 	}
-
-	err = request.JSON(w, r, res)
+	resp := GetPostResponse{
+		Data: res,
+	}
+	err = response.JSON(w, http.StatusOK, resp)
 	if err != nil {
-		response.JSON(w, http.StatusConflict, "")
+		log.ErrorContext(
+			ctx,
+			"fail json",
+			"error", err,
+		)
 		return
 	}
-	fmt.Fprintln(w, "GETIDpost succes")
+	log.InfoContext(
+		ctx,
+		"succes find posts",
+		"id", resp.Data.Id,
+	)
+	return
+
 }

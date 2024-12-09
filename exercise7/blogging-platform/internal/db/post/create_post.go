@@ -19,6 +19,7 @@ func (p *Post) NewPostCreator(ctx context.Context, body models.Blog) (*models.Bl
 	
 	)
 	VALUES ($1, $2, $3, $4)
+	RETURNING id, title, content, category, tags, created_at, updated_at
 	`
 	row := p.db.QueryRowContext(ctx, res, body.Title, body.Content, body.Category, body.Tags)
 	if err := row.Err(); err != nil {
@@ -31,9 +32,9 @@ func (p *Post) NewPostCreator(ctx context.Context, body models.Blog) (*models.Bl
 		&post.Title,
 		&post.Content,
 		&post.Category,
-		post.Tags,
-		post.UpdatedAt,
-		post.CreatedAt,
+		&post.Tags,
+		&post.CreatedAt,
+		&post.UpdatedAt,
 	); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			log.ErrorContext(ctx, "no values was found", "erros", err)

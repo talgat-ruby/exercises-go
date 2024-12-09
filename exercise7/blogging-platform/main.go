@@ -16,6 +16,7 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	_ = godotenv.Load()
 	// db
+
 	dataBase, err := db.New(slog.With("servie", "db"))
 	if err != nil {
 		slog.ErrorContext(
@@ -26,7 +27,15 @@ func main() {
 		)
 		panic(err)
 	}
-
+	if err := dataBase.Init(ctx); err != nil {
+		slog.ErrorContext(
+			ctx,
+			"create table error",
+			"service", "db",
+			"error", err,
+		)
+		panic(err)
+	}
 	// api
 	a := api.New(slog.With("service", "api"), dataBase)
 	// if err := a.Start(ctx); err != nil {

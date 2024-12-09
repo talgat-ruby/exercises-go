@@ -9,8 +9,8 @@ import (
 func (p *Post) ServiceGetNumberPost(ctx context.Context, id int) (error, *models.Blog) {
 	log := p.logger.With("method", "GetPost")
 	stmt := `
-	SELECT id, title, description, posterUrl, created_at, updated_at 
-	FROM movie
+	SELECT id, title, content, category, tags, created_at, updated_at 
+	FROM posts
 	WHERE id = $1
 	`
 	row := p.db.QueryRowContext(ctx, stmt, id)

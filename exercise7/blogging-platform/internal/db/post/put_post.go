@@ -10,7 +10,7 @@ import (
 func (p Post) UpdatePost(ctx context.Context, id int64, body models.Blog) error {
 	log := p.logger.With("method", "updatePost", "id", id)
 	stmt := `
-UPDATE movie
+UPDATE posts
 SET title = $2, content = $3, category = $4, tags = $5
 WHERE id = $1
 	`
