@@ -21,7 +21,7 @@ func New(handler *handler.Handler) *Router {
 }
 
 func (r *Router) Start(ctx context.Context) *http.ServeMux {
-	r.(ctx)
+	r.blogs(ctx)
 
 	return r.router
 }

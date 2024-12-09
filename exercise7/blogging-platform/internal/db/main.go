@@ -3,6 +3,7 @@ package db
 import (
 	"database/sql"
 	"fmt"
+	_ "github.com/lib/pq" // Required for postgres driver
 	"github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/internal/db/blog"
 	"log/slog"
 	"os"
@@ -21,8 +22,16 @@ func New(logger *slog.Logger) (*DB, error) {
 		return nil, fmt.Errorf("creating postgres connection: %w", err)
 	}
 
-	//Verifying database connections
+	// Verifying database connections
 	if err := pgsql.Ping(); err != nil {
+		// Log connection details (excluding password) for debugging
+		logger.Error("failed to ping database",
+			"host", getEnvOrDefault("DB_HOST", "localhost"),
+			"port", getEnvOrDefault("DB_PORT", "5432"),
+			"user", getEnvOrDefault("DB_USER", "postgres"),
+			"dbname", getEnvOrDefault("DB_NAME", "blogdb"),
+			"error", err,
+		)
 		return nil, fmt.Errorf("pinging database: %w", err)
 	}
 
@@ -34,7 +43,6 @@ func New(logger *slog.Logger) (*DB, error) {
 }
 
 func NewPgSQL() (*sql.DB, error) {
-
 	config := struct {
 		host     string
 		port     int
