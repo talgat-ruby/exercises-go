@@ -1,14 +1,30 @@
 package config
 
-import "github.com/joho/godotenv"
+import (
+	"context"
+	"flag"
+	"github.com/joho/godotenv"
+)
 
-type Config struct {
+type SharedConfig struct {
+	Port int    `env:"PORT"`
+	Host string `env:"HOST,default=localhost"`
 }
 
-func NewConfig() (*Config, error) {
+type Config struct {
+	DB *DBConfig
+}
+
+func NewConfig(ctx context.Context) (*Config, error) {
 	config := &Config{}
 	if err := godotenv.Load(".env"); err != nil {
 		return nil, err
 	}
+	if c, err := NewConfigDB(ctx); err != nil {
+		return nil, err
+	} else {
+		config.DB = c
+	}
+	flag.Parse()
 	return config, nil
 }

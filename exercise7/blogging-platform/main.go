@@ -14,7 +14,7 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 
 	//config
-	_, err := conf.NewConfig()
+	config, err := conf.NewConfig(ctx)
 	if err != nil {
 		slog.ErrorContext(
 			ctx,
@@ -25,7 +25,7 @@ func main() {
 	}
 
 	// db
-	dbConnect, err := db.New()
+	dbConnect, err := db.New(config)
 	if err != nil {
 		slog.ErrorContext(
 			ctx,
