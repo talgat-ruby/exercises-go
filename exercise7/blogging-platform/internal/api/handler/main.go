@@ -10,7 +10,7 @@ type Handler struct {
 	*blogs.Blogs
 }
 
-func NewHandler(logger *slog.Logger, db *db.DB) *Handler {
+func NewHandler(logger *slog.Logger, db *db.ConfDB) *Handler {
 	return &Handler{
 		blogs.New(
 			logger,

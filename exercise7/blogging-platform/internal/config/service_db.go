@@ -25,6 +25,5 @@ func NewConfigDB(ctx context.Context) (*DBConfig, error) {
 	flag.StringVar(&c.User, "db-user", c.User, "database user [DB_USER]")
 	flag.StringVar(&c.Password, "db-password", c.Password, "database password [DB_PASSWORD]")
 	flag.StringVar(&c.DBName, "db-name", c.DBName, "database name [DB_NAME]")
-
 	return c, nil
 }

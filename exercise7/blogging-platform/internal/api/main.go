@@ -17,7 +17,7 @@ type Api struct {
 	router *router.Router
 }
 
-func NewApi(logger *slog.Logger, db *db.DB) *Api {
+func NewApi(logger *slog.Logger, db *db.ConfDB) *Api {
 	h := handler.NewHandler(logger, db)
 	r := router.NewRouter(h)
 	return &Api{

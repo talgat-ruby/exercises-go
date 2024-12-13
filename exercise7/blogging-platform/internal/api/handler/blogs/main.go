@@ -7,9 +7,9 @@ import (
 
 type Blogs struct {
 	logger *slog.Logger
-	db     *db.DB
+	db     *db.ConfDB
 }
 
-func New(logger *slog.Logger, db *db.DB) *Blogs {
+func New(logger *slog.Logger, db *db.ConfDB) *Blogs {
 	return &Blogs{logger: logger, db: db}
 }
