@@ -14,26 +14,17 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 
 	// db
-	_, err := db.New()
+	d, err := db.New(slog.With("service", "db"))
 	if err != nil {
-		slog.ErrorContext(
-			ctx,
-			"initialize service error",
-			"service", "db",
-			"error", err,
-		)
+		panic(err)
+	}
+	if err := d.Init(ctx); err != nil {
 		panic(err)
 	}
 
 	// api
-	a := api.New()
+	a := api.New(slog.With("service", "api"), d)
 	if err := a.Start(ctx); err != nil {
-		slog.ErrorContext(
-			ctx,
-			"initialize service error",
-			"service", "api",
-			"error", err,
-		)
 		panic(err)
 	}
 
