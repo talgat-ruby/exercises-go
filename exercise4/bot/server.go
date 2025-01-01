@@ -32,8 +32,12 @@ func startServer() <-chan struct{} {
 	list := &readyListener{Listener: listener, ready: ready}
 	srv := &http.Server{
 		IdleTimeout: 2 * time.Minute,
+		Handler:     http.NewServeMux(),
 	}
-
+	mux := srv.Handler.(*http.ServeMux)
+	mux.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, "pong")
+	})
 	go func() {
 		err := srv.Serve(list)
 		if !errors.Is(err, http.ErrServerClosed) {
