@@ -12,11 +12,13 @@ func (p Post) DBGetPosts(ctx context.Context) ([]models.Blog, error) {
 	SELECT id, title, content, category, tags, created_at, updated_at 
 	FROM posts
 	`
+
 	rows, err := p.db.QueryContext(ctx, stmt)
 	if err != nil {
 		log.ErrorContext(ctx, "fail to query table post", "error", err)
 		return nil, err
 	}
+
 	posts := []models.Blog{}
 	post := models.Blog{}
 	for rows.Next() {
