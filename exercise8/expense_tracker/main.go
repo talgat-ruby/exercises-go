@@ -52,7 +52,12 @@ func BalanceHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func ParseToken(token, secret string) (Tokens, error) {}
+func ParseToken(token, secret string) (Tokens, error) {
+	t, err := jwt.ParseToken(
+		token,
+	)
+	return Tokens{}, nil
+}
 
 type Tokens struct {
 	AccessToken  string `json:"access_token"`
