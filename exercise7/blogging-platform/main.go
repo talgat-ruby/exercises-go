@@ -25,7 +25,7 @@ func main() {
 	}
 
 	// db
-	dbConnect, err := db.New(config)
+	dbConnect, err := db.New(config, slog.With("service", "db"))
 	if err != nil {
 		slog.ErrorContext(
 			ctx,
