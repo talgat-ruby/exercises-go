@@ -4,6 +4,7 @@ func iter(ch chan<- int, nums []int) {
 	for _, n := range nums {
 		ch <- n
 	}
+	close(ch)
 }
 
 func sum(nums []int) int {
@@ -11,9 +12,10 @@ func sum(nums []int) int {
 
 	go iter(ch, nums)
 
-	var sum int
+	var total int
+
 	for n := range ch {
-		sum += n
+		total += n
 	}
-	return sum
+	return total
 }
