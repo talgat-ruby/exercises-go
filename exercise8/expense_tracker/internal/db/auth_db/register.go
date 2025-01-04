@@ -22,7 +22,7 @@ func NewAuthDB(db db.ExpencesDBSt) AuthDB {
 
 func (h *authDB) DBRegister(ctx context.Context, inp *models.DBModelUser) (*models.DBModelUser, error) {
 	log := h.logger.With("method", "Register")
-	tx, err := h.database.newDb.BeginTx(ctx, nil)
+	tx, err := h.database.
 	if err != nil {
 		log.ErrorContext(
 			ctx,
