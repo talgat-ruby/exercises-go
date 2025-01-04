@@ -3,6 +3,8 @@ package auth
 import (
 	"errors"
 	"fmt"
+	"strconv"
+	"time"
 
 	"tracker/internal/models"
 
@@ -28,12 +30,16 @@ func ParseToken(token, secret string) (*models.UserData, error) {
 		if err != nil {
 			return data, fmt.Errorf("invalid token")
 		}
+		intID, err := strconv.Atoi(id)
+		if err != nil {
+			return data, fmt.Errorf("invalid token")
+		}
 		email, ok := claims["email"].(string)
 		if !ok {
 			return data, fmt.Errorf("invalid token")
 		}
 		data = &models.UserData{
-			ID:    id,
+			ID:    intID,
 			Email: email,
 		}
 		return data, nil
@@ -46,4 +52,28 @@ func ParseToken(token, secret string) (*models.UserData, error) {
 	default:
 		return data, nil
 	}
+}
+
+func GenerateToken(user *models.UserData, secret string) (*models.Tokens, error) {
+	token := jwt.New(jwt.SigningMethodHS256)
+	claims := token.Claims.(jwt.MapClaims)
+	claims["email"] = user.Email
+	claims["sub"] = user.ID
+	claims["exp"] = time.Now().Add(time.Minute * 15).Unix()
+	t, err := token.SignedString([]byte(secret))
+	if err != nil {
+		return nil, fmt.Errorf("error generating token: %w", err)
+	}
+	refeshToken := jwt.New(jwt.SigningMethodHS256)
+	rtClaims := refeshToken.Claims.(jwt.MapClaims)
+	rtClaims["sub"] = user.ID
+	rtClaims["exp"] = time.Now().Add(time.Hour * 24).Unix()
+	rt, err := refeshToken.SignedString([]byte(secret))
+	if err != nil {
+		return nil, fmt.Errorf("error generating token: %w", err)
+	}
+	return &models.Tokens{
+		AccessToken:  t,
+		RefreshToken: rt,
+	}, nil
 }

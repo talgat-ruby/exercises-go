@@ -11,7 +11,7 @@ import (
 	"tracker/internal/service"
 )
 
-func BasicHandlers(mux *http.ServeMux, newdb db.ExpencesDB) {
+func BasicHandlers(mux *http.ServeMux, newdb db.ExpencesDBSt) {
 	serviceExpence := service.NewServiceExpence(newdb)
 	handlerExpence := handler.NewHandlerExpence(serviceExpence)
 	mux.Handle("POST /expenses", middleware.AuthMiddleware(http.HandlerFunc(handlerExpence.ExpensesNew)))
@@ -19,8 +19,8 @@ func BasicHandlers(mux *http.ServeMux, newdb db.ExpencesDB) {
 	mux.Handle("GET /balance", middleware.AuthMiddleware(http.HandlerFunc(handlerExpence.BalanceHandler)))
 }
 
-func AuthorizationHandlers(mux *http.ServeMux, newdb db.ExpencesDB) {
-	authdb := authdb.NewAuthDB(&newdb)
+func AuthorizationHandlers(mux *http.ServeMux, newdb db.ExpencesDBSt) {
+	authdb := authdb.NewAuthDB(newdb)
 	authHandler := authhandler.NewAuthHandler(authdb)
 
 	mux.HandleFunc("POST /register", authHandler.Register)

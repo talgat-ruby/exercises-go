@@ -8,16 +8,16 @@ import (
 	"time"
 )
 
-type ExpencesDB interface{
-	
+type ExpencesDB interface {
+	Init() (error, *sql.DB)
 }
 
-type expencesDB struct {
+type ExpencesDBSt struct {
 	newDb *sql.DB
 }
 
-func NewExpenceDB(db *sql.DB) ExpencesDB {
-	return &expencesDB{
+func NewExpenceDB(db *sql.DB) ExpencesDBSt {
+	return ExpencesDBSt{
 		newDb: db,
 	}
 }

@@ -7,10 +7,9 @@ import (
 type ServiceExpence interface{}
 
 type serviceExpence struct {
-	dbExpence db.ExpencesDB
+	dbExpence db.ExpencesDBSt
 }
 
-func NewServiceExpence(dataBase db.ExpencesDB) ServiceExpence {
+func NewServiceExpence(dataBase db.ExpencesDBSt) ServiceExpence {
 	return &serviceExpence{dbExpence: dataBase}
 }
-
