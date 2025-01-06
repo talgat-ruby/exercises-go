@@ -2,10 +2,10 @@ package db
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 	"os"
-	"time"
 )
 
 type ExpencesDB interface {
@@ -16,13 +16,22 @@ type ExpencesDBSt struct {
 	NewDb *sql.DB
 }
 
-func NewExpenceDB(db *sql.DB) ExpencesDBSt {
+func NewExpenceDB() (ExpencesDBSt, error) {
+	err, db := Newpostgresql()
+	if err != nil {
+		return ExpencesDBSt{}, err
+	}
+	var e ExpencesDBSt
+	e.NewDb = db
+	if e.NewDb == nil {
+		return ExpencesDBSt{}, errors.New("sdfsdfs")
+	}
 	return ExpencesDBSt{
 		NewDb: db,
-	}
+	}, nil
 }
 
-func Init() (error, *sql.DB) {
+func Newpostgresql() (error, *sql.DB) {
 	host := os.Getenv("DB_HOST")
 	port := os.Getenv("DB_PORT")
 	user := os.Getenv("DB_USER")
@@ -32,17 +41,9 @@ func Init() (error, *sql.DB) {
 	info := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, database)
 	log.Println("Waiting for database to be ready...")
 	fmt.Println("info", info)
-	for i := 0; i < 5; i++ {
-		newDb, err := sql.Open("postgres", info)
-		if err == nil {
-			if err = newDb.Ping(); err == nil {
-				log.Println("Succesfully connected to the database!")
-			}
-			return nil, newDb
-
-		}
-		log.Printf("Database not ready yet ... retrying(%d/5)\n", i+1)
-		time.Sleep(5 * time.Second)
+	newDb, err := sql.Open("postgres", info)
+	if err != nil {
+		return err, nil
 	}
-	return fmt.Errorf("failed to connect to database"), nil
+	return nil, newDb
 }

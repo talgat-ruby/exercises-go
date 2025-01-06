@@ -53,7 +53,7 @@ services:
       "postgres://$DB_USER:$DB_PASSWORD@db:5432/$DB_NAME?sslmode=disable"
     ]
     volumes:
-      - ./internal/db/migrations:/migrations
+      - ./migrations:/migrations
     depends_on:
       db:
         condition: service_healthy

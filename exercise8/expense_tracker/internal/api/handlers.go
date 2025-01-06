@@ -1,6 +1,8 @@
 package api
 
 import (
+	"fmt"
+	"log/slog"
 	"net/http"
 
 	"tracker/internal/api/middleware"
@@ -19,9 +21,18 @@ func BasicHandlers(mux *http.ServeMux, newdb db.ExpencesDBSt) {
 	mux.Handle("GET /balance", middleware.AuthMiddleware(http.HandlerFunc(handlerExpence.BalanceHandler)))
 }
 
-func AuthorizationHandlers(mux *http.ServeMux, newdb db.ExpencesDBSt) {
-	authdb := authdb.NewAuthDB(newdb)
-	authHandler := authhandler.NewAuthHandler(authdb)
+func AuthorizationHandlers(mux *http.ServeMux, newdb *db.ExpencesDBSt) {
+	logger := slog.With("service", "auth")
+	authdb := authdb.NewAuthDB(newdb, logger)
+	if authdb == nil {
+		fmt.Println("aaaaaaaa")
+		return
+	}
+	authHandler := authhandler.NewAuthHandler(authdb, logger)
+	if authHandler == nil {
+		fmt.Println("bbbbbbbbbbb")
+		return
+	}
 
 	mux.HandleFunc("POST /register", authHandler.Register)
 }

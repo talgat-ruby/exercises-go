@@ -22,19 +22,25 @@ type RegisterRequest struct {
 type RegisterResponse struct {
 	Data *models.Tokens `json:"data"`
 }
-type authHandler struct {
+type AuthentificatorHandler struct {
 	database authdb.AuthDB
 	logger   *slog.Logger
 }
 
-func NewAuthHandler(authDB authdb.AuthDB) AuthHandler {
-	return &authHandler{
+func NewAuthHandler(authDB *authdb.AuthentificatorDB, slogger *slog.Logger) *AuthentificatorHandler {
+	return &AuthentificatorHandler{
+		logger:   slogger,
 		database: authDB,
 	}
 }
 
-func (h *authHandler) Register(w http.ResponseWriter, r *http.Request) {
+func (h *AuthentificatorHandler) Register(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
+	if h.logger == nil {
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+
 	log := h.logger.With("method", "Register")
 	requestBody := &RegisterRequest{}
 	err := request.RequestJSON(w, r, requestBody)
@@ -62,6 +68,7 @@ func (h *authHandler) Register(w http.ResponseWriter, r *http.Request) {
 		PasswordHash: hashPassWOrd,
 		Salt:         salt,
 	}
+
 	dbResp, err := h.database.DBRegister(ctx, user)
 	if err != nil {
 		log.ErrorContext(
