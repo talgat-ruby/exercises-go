@@ -3,6 +3,7 @@ package authdb
 import (
 	"context"
 	"log/slog"
+
 	"tracker/internal/db"
 	"tracker/internal/models"
 )
@@ -22,7 +23,7 @@ func NewAuthDB(db db.ExpencesDBSt) AuthDB {
 
 func (h *authDB) DBRegister(ctx context.Context, inp *models.DBModelUser) (*models.DBModelUser, error) {
 	log := h.logger.With("method", "Register")
-	tx, err := h.database.
+	tx, err := h.database.NewDb.Begin()
 	if err != nil {
 		log.ErrorContext(
 			ctx,
@@ -70,5 +71,4 @@ func (h *authDB) DBRegister(ctx context.Context, inp *models.DBModelUser) (*mode
 	}
 
 	return &user, nil
-
 }

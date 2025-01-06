@@ -13,12 +13,12 @@ type ExpencesDB interface {
 }
 
 type ExpencesDBSt struct {
-	newDb *sql.DB
+	NewDb *sql.DB
 }
 
 func NewExpenceDB(db *sql.DB) ExpencesDBSt {
 	return ExpencesDBSt{
-		newDb: db,
+		NewDb: db,
 	}
 }
 
@@ -31,6 +31,7 @@ func Init() (error, *sql.DB) {
 
 	info := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, database)
 	log.Println("Waiting for database to be ready...")
+	fmt.Println("info", info)
 	for i := 0; i < 5; i++ {
 		newDb, err := sql.Open("postgres", info)
 		if err == nil {
