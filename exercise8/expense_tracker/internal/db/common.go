@@ -16,17 +16,15 @@ type ExpencesDBSt struct {
 	NewDb *sql.DB
 }
 
-func NewExpenceDB() (ExpencesDBSt, error) {
+func NewExpenceDB() (*ExpencesDBSt, error) {
 	err, db := Newpostgresql()
 	if err != nil {
-		return ExpencesDBSt{}, err
+		return &ExpencesDBSt{}, err
 	}
-	var e ExpencesDBSt
-	e.NewDb = db
-	if e.NewDb == nil {
-		return ExpencesDBSt{}, errors.New("sdfsdfs")
+	if db == nil {
+		return nil, errors.New("bd is nil")
 	}
-	return ExpencesDBSt{
+	return &ExpencesDBSt{
 		NewDb: db,
 	}, nil
 }

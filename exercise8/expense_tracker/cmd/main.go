@@ -23,7 +23,7 @@ func main() {
 		return
 	}
 	log.Println(os.Getenv("API_PORT"))
-	err = api.StartServer(&dbExpence)
+	err = api.StartServer(dbExpence)
 	if err != nil {
 		slog.Error("error start program")
 		return

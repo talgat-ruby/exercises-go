@@ -30,28 +30,26 @@ func (h *AuthentificatorDB) DBRegister(ctx context.Context, inp *models.DBModelU
 	if h.database.NewDb == nil {
 		return nil, errors.New("nil poinet sqldb")
 	}
-	err, desql := db.Newpostgresql()
-	if err != nil {
-		return nil, errors.New("assadfadsfgdsfg")
-	}
+
 	log := h.logger.With("method", "Register")
 	if h.logger == nil {
 		return nil, errors.New("log is nil")
 	}
-	tx, err := desql.Begin()
+	tx, err := h.database.NewDb.Begin()
 	if err != nil {
 		log.ErrorContext(
 			ctx,
 			"failed to begin transaction",
 			"error", err,
 		)
+		return nil, errors.New("failed transation")
 	}
 
 	defer func() {
 		p := recover()
 		if p != nil {
 			tx.Rollback()
-			panic(p)
+			slog.Error("panic")
 		} else if err != nil {
 			rollbackerr := tx.Rollback()
 			if rollbackerr != nil {
