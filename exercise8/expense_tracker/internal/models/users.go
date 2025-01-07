@@ -16,3 +16,6 @@ type DBModelUser struct {
 	Created      string `json:"created"`
 	Update       string `json:"update"`
 }
+type LoginRequest struct {
+	Data *AuthUser `json:"data"`
+}

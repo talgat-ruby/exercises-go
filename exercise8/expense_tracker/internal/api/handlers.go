@@ -1,7 +1,7 @@
 package api
 
 import (
-	"fmt"
+	"log"
 	"log/slog"
 	"net/http"
 
@@ -25,14 +25,16 @@ func AuthorizationHandlers(mux *http.ServeMux, newdb *db.ExpencesDBSt) {
 	logger := slog.With("service", "auth")
 	authdb := authdb.NewAuthDB(newdb, logger)
 	if authdb == nil {
-		fmt.Println("aaaaaaaa")
+		log.Println("nil pionter authdb")
+
 		return
 	}
 	authHandler := authhandler.NewAuthHandler(authdb, logger)
 	if authHandler == nil {
-		fmt.Println("bbbbbbbbbbb")
+		log.Println("nil pionter authHandler")
 		return
 	}
 
 	mux.HandleFunc("POST /register", authHandler.Register)
+	mux.HandleFunc("POST /login", authHandler.Login)
 }

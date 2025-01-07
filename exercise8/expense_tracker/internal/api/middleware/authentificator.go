@@ -32,6 +32,7 @@ func AuthMiddleware(next http.Handler) http.Handler {
 				http.StatusText(http.StatusUnauthorized),
 				http.StatusUnauthorized,
 			)
+			log.Println("Unauthorized", "error", err)
 			return
 		}
 		newCtx := context.WithValue(ctx, "user", userData)

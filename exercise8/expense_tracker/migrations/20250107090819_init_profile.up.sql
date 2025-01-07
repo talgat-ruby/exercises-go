@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS users_ (
-    id SERIAL PRIMARY KEY,
+    id_user SERIAL PRIMARY KEY,
     email TEXT NOT NULL UNIQUE,
     password_hash TEXT NOT NULL,
     salt TEXT NOT NULL,

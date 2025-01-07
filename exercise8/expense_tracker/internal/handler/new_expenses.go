@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"tracker/internal/models"
 )
 
 func (h expensesHandler) ExpensesNew(w http.ResponseWriter, r *http.Request) {
@@ -14,5 +15,11 @@ func (h expensesHandler) ExpensesHandlerGet(w http.ResponseWriter, r *http.Reque
 }
 
 func (h expensesHandler) BalanceHandler(w http.ResponseWriter, r *http.Request) {
+	_, ok := r.Context().Value("user").(*models.UserData)
+	if !ok {
+		http.Error(w, "User not found", http.StatusUnauthorized)
+		return
+	}
+
 	fmt.Println("Balance handler")
 }
