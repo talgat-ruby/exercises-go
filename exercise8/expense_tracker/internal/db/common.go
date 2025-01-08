@@ -6,10 +6,12 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"tracker/internal/models"
 )
 
 type ExpencesDB interface {
 	Init() (error, *sql.DB)
+	NewUserDB(newUser models.NewUser) (models.NewUserResponse, error)
 }
 
 type ExpencesDBSt struct {

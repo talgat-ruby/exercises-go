@@ -16,9 +16,10 @@ import (
 func BasicHandlers(mux *http.ServeMux, newdb db.ExpencesDBSt) {
 	serviceExpence := service.NewServiceExpence(newdb)
 	handlerExpence := handler.NewHandlerExpence(serviceExpence)
-	mux.Handle("POST /expenses", middleware.AuthMiddleware(http.HandlerFunc(handlerExpence.ExpensesNew)))
-	mux.Handle("GET /expenses", middleware.AuthMiddleware(http.HandlerFunc(handlerExpence.ExpensesHandlerGet)))
-	mux.Handle("GET /balance", middleware.AuthMiddleware(http.HandlerFunc(handlerExpence.BalanceHandler)))
+	mux.Handle("POST /expense", middleware.AuthMiddleware(http.HandlerFunc(handlerExpence.ExpensesNew)))
+	mux.Handle("GET /expenses/{id}", middleware.AuthMiddleware(http.HandlerFunc(handlerExpence.ExpensesHandlerGet)))
+	mux.Handle("GET /balance/{id}", middleware.AuthMiddleware(http.HandlerFunc(handlerExpence.BalanceHandler)))
+	mux.Handle("PUT /expense/{id}", middleware.AuthMiddleware(http.HandlerFunc(handlerExpence.ExpenseEdit)))
 }
 
 func AuthorizationHandlers(mux *http.ServeMux, newdb *db.ExpencesDBSt) {

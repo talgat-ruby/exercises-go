@@ -10,6 +10,7 @@ type ExpencesHandler interface {
 	BalanceHandler(w http.ResponseWriter, r *http.Request)
 	ExpensesHandlerGet(w http.ResponseWriter, r *http.Request)
 	ExpensesNew(w http.ResponseWriter, r *http.Request)
+	ExpenseEdit(w http.ResponseWriter, r *http.Request)
 }
 
 type expensesHandler struct {

@@ -4,17 +4,36 @@ import (
 	"fmt"
 	"net/http"
 	"tracker/internal/models"
+	"tracker/utils/request"
+	"tracker/utils/respone"
 )
 
-func (h expensesHandler) ExpensesNew(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("NewExpence")
+func (h *expensesHandler) ExpensesNew(w http.ResponseWriter, r *http.Request) {
+	newUser := &models.NewUser{}
+	err := request.RequestJSON(w, r, newUser)
+	if err != nil {
+		http.Error(w, "Bad request", http.StatusBadRequest)
+		return
+	}
+	responseNewUser, err := h.serviceExpence.ServiceNewUser(*newUser)
+	if err != nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+	err = respone.ResponseJSON(w, responseNewUser, http.StatusCreated)
+	if err != nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
 }
 
-func (h expensesHandler) ExpensesHandlerGet(w http.ResponseWriter, r *http.Request) {
+func (h *expensesHandler) ExpensesHandlerGet(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Expence Get")
 }
 
-func (h expensesHandler) BalanceHandler(w http.ResponseWriter, r *http.Request) {
+func (h *expensesHandler) BalanceHandler(w http.ResponseWriter, r *http.Request) {
+
 	_, ok := r.Context().Value("user").(*models.UserData)
 	if !ok {
 		http.Error(w, "User not found", http.StatusUnauthorized)
@@ -22,4 +41,8 @@ func (h expensesHandler) BalanceHandler(w http.ResponseWriter, r *http.Request) 
 	}
 
 	fmt.Println("Balance handler")
+}
+
+func (h *expensesHandler) ExpenseEdit(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Expense Put")
 }
