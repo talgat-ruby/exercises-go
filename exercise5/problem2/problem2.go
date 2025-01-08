@@ -1,16 +1,42 @@
 package problem2
 
-// add - sequential code to add numbers, don't update it, just to illustrate concept
-func add(numbers []int) int64 {
-	var sum int64
-	for _, n := range numbers {
-		sum += int64(n)
+import (
+	"runtime"
+	"sync"
+)
+
+// addConcurrently calculates the sum of the input slice in parallel.
+func addConcurrently(nums []int) int {
+	numCPUs := runtime.NumCPU()              // Get the number of CPU cores available
+	partSize := (len(nums) + numCPUs - 1) / numCPUs // Calculate the size of each part
+	results := make([]int, numCPUs)          // Slice to hold partial results
+	var wg sync.WaitGroup
+
+	// Launch a goroutine for each segment
+	for i := 0; i < numCPUs; i++ {
+		wg.Add(1)
+		start := i * partSize
+		end := start + partSize
+		if end > len(nums) {
+			end = len(nums)
+		}
+		go func(i, start, end int) {
+			defer wg.Done()
+			sum := 0
+			for _, num := range nums[start:end] {
+				sum += num
+			}
+			results[i] = sum
+		}(i, start, end)
 	}
-	return sum
-}
 
-func addConcurrently(numbers []int) int64 {
-	var sum int64
+	// Wait for all goroutines to complete
+	wg.Wait()
 
-	return sum
+	// Aggregate results from all goroutines
+	totalSum := 0
+	for _, partialSum := range results {
+		totalSum += partialSum
+	}
+	return totalSum
 }

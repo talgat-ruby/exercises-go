@@ -1,49 +1,29 @@
 package main
 
 import (
-	"context"
-	"log/slog"
-	"os"
-	"os/signal"
-
-	"github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/internal/api"
-	"github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/internal/db"
+	"log"
+	"net/http"
+	"blogging-platform/internal/posts" // Импорт обработчиков
+	"blogging-platform/pkg/database"  // Импорт базы данных
 )
 
 func main() {
-	ctx, cancel := context.WithCancel(context.Background())
+	// Подключаем базу данных
+	database.Connect()
 
-	// db
-	_, err := db.New()
-	if err != nil {
-		slog.ErrorContext(
-			ctx,
-			"initialize service error",
-			"service", "db",
-			"error", err,
-		)
-		panic(err)
-	}
+	// Настраиваем маршрут для /posts
+	http.HandleFunc("/posts", func(w http.ResponseWriter, r *http.Request) {
+		switch r.Method {
+		case http.MethodGet:
+			posts.GetPosts(w, r)
+		case http.MethodPost:
+			posts.CreatePost(w, r)
+		default:
+			http.Error(w, "Метод не поддерживается", http.StatusMethodNotAllowed)
+		}
+	})
 
-	// api
-	a := api.New()
-	if err := a.Start(ctx); err != nil {
-		slog.ErrorContext(
-			ctx,
-			"initialize service error",
-			"service", "api",
-			"error", err,
-		)
-		panic(err)
-	}
-
-	go func() {
-		shutdown := make(chan os.Signal, 1)   // Create channel to signify s signal being sent
-		signal.Notify(shutdown, os.Interrupt) // When an interrupt is sent, notify the channel
-
-		sig := <-shutdown
-		slog.WarnContext(ctx, "signal received - shutting down...", "signal", sig)
-
-		cancel()
-	}()
+	// Запускаем сервер
+	log.Println("Сервер запущен на :8080")
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
