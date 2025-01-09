@@ -7,6 +7,9 @@ import (
 
 type ServiceExpence interface {
 	ServiceNewUser(newUser models.NewUser) (models.NewUserResponse, error)
+	ServiceEditUser(editUser models.EditUser) error
+	ServiceBalance(id int) (map[string]float64, error)
+	ServiceGetExpenses(id int) (models.TransactionsReponse, error)
 }
 
 type serviceExpence struct {

@@ -12,6 +12,9 @@ import (
 type ExpencesDB interface {
 	Init() (error, *sql.DB)
 	NewUserDB(newUser models.NewUser) (models.NewUserResponse, error)
+	DBEditUser(editUser models.EditUser) error
+	DBBalance(id int) (map[string]float64, error)
+	DBGetExpenses(id int) (models.TransactionsReponse, error)
 }
 
 type ExpencesDBSt struct {
