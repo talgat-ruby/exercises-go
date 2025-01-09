@@ -48,7 +48,7 @@ func (h *AuthentificatorHandler) Login(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "user not found", http.StatusUnauthorized)
 		return
 	}
-	valid, err := auth.VerifyPassword(requestBody.Data.Password, user.PasswordHash, os.Getenv("PEPPER"), user.Salt)
+	valid, err := auth.VerifyPassword(requestBody.Data.Password, user.Salt, os.Getenv("PEPPER"), user.PasswordHash)
 	if err != nil {
 		log.ErrorContext(
 			ctx,

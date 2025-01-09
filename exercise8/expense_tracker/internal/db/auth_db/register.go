@@ -64,7 +64,7 @@ func (h *AuthentificatorDB) DBRegister(ctx context.Context, inp *models.DBModelU
 		}
 	}()
 	user := models.DBModelUser{}
-	stmt := `INSERT INTO users_ (email, password_hash, salt) VALUES ($1, $2, $3) RETURNING id, email, password_hash, salt;`
+	stmt := `INSERT INTO users_ (email, password_hash, salt) VALUES ($1, $2, $3) RETURNING id_user, email, password_hash, salt;`
 	row := tx.QueryRowContext(ctx, stmt, inp.Email, inp.PasswordHash, inp.Salt)
 	if err := row.Err(); err != nil {
 		log.ErrorContext(

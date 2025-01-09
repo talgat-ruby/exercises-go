@@ -1,4 +1,4 @@
-CREATE TYPE category AS ENUM ('groceries', 'leisure', 'electronics', 'utilities', 'clothing', 'health');
+CREATE TYPE category AS ENUM ('groceries', 'leisure', 'electronics', 'utilities', 'clothing', 'health', 'others');
 CREATE TABLE IF NOT EXISTS transactions (
     id_transaction SERIAL PRIMARY KEY,
     id_user INT NOT NULL,

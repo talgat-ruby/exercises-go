@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -9,6 +10,16 @@ import (
 
 	"tracker/internal/auth"
 )
+
+// type Middleware struct {
+// 	log *slog.Logger
+// }
+
+// func New(log *slog.Logger) *Middleware {
+// 	return &Middleware{
+// 		log: log,
+// 	}
+// }
 
 func AuthMiddleware(next http.Handler) http.Handler {
 	a := func(w http.ResponseWriter, r *http.Request) {
@@ -25,7 +36,10 @@ func AuthMiddleware(next http.Handler) http.Handler {
 			return
 		}
 		tokenStr := authHeader[len("Bearer "):]
-		userData, err := auth.ParseToken(tokenStr, os.Getenv("TOKEN_SECRET"))
+		tokenSecret := os.Getenv("SECRET_TOKEN")
+		fmt.Printf("this token secret: (%s)\n", tokenSecret)
+		fmt.Printf("this acces token : (%s)\n", tokenStr)
+		userData, err := auth.ParseToken(tokenStr, tokenSecret)
 		if err != nil {
 			http.Error(
 				w,

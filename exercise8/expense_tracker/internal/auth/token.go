@@ -20,22 +20,28 @@ func ParseToken(token, secret string) (*models.UserData, error) {
 	var data *models.UserData
 	switch {
 	case t == nil:
+		fmt.Println("token is nil")
 		return data, fmt.Errorf("invalid token")
 	case t.Valid:
 		claims, ok := t.Claims.(jwt.MapClaims)
 		if !ok {
+			fmt.Println("token is nil1")
 			return data, fmt.Errorf("invalid token")
 		}
 		id, err := claims.GetSubject()
 		if err != nil {
+			fmt.Println(token, secret)
+			fmt.Println("get subject")
 			return data, fmt.Errorf("invalid token")
 		}
 		intID, err := strconv.Atoi(id)
 		if err != nil {
+			fmt.Println("atoi")
 			return data, fmt.Errorf("invalid token")
 		}
 		email, ok := claims["email"].(string)
 		if !ok {
+			fmt.Println("claims email")
 			return data, fmt.Errorf("invalid token")
 		}
 		data = &models.UserData{
@@ -44,10 +50,14 @@ func ParseToken(token, secret string) (*models.UserData, error) {
 		}
 		return data, nil
 	case errors.Is(err, jwt.ErrTokenMalformed):
+		fmt.Println("malformed")
 		return data, fmt.Errorf("invalid token")
 	case errors.Is(err, jwt.ErrTokenExpired) || errors.Is(err, jwt.ErrTokenNotValidYet):
+		fmt.Println("expired")
 		return data, err
+
 	case errors.Is(err, jwt.ErrTokenSignatureInvalid):
+		fmt.Println("signature")
 		return data, fmt.Errorf("invalid signature")
 	default:
 		return data, nil

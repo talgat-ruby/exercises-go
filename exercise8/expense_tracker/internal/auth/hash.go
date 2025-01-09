@@ -40,12 +40,12 @@ func hashWithSaltAndPepper(password, salt, pepper []byte) []byte {
 	return result
 }
 
-func VerifyPassword(password, salt, pepper, hash string) (bool, error) {
+func VerifyPassword(password, salt, pepper, passwordHash string) (bool, error) {
 	decodesalt, err := base64.StdEncoding.DecodeString(salt)
 	if err != nil {
 		return false, fmt.Errorf("error decode salt: %w", err)
 	}
-	decodehash, err := base64.StdEncoding.DecodeString(hash)
+	decodehash, err := base64.StdEncoding.DecodeString(passwordHash)
 	if err != nil {
 		return false, fmt.Errorf("error decode hash: %w", err)
 	}

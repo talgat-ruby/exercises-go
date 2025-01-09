@@ -13,6 +13,12 @@ import (
 	"tracker/internal/service"
 )
 
+// type Router struct {
+// 	router  *http.ServeMux
+
+// 	midd    *middleware.Middleware
+// }
+
 func BasicHandlers(mux *http.ServeMux, newdb db.ExpencesDBSt) {
 	serviceExpence := service.NewServiceExpence(newdb)
 	handlerExpence := handler.NewHandlerExpence(serviceExpence)
