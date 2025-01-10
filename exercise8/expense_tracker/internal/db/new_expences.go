@@ -5,11 +5,11 @@ import (
 	"tracker/internal/models"
 )
 
-func (e *ExpencesDBSt) NewUserDB(newUser models.NewUser) (models.NewUserResponse, error) {
+func (e *ExpencesDBSt) NewUserDB(newUser models.NewUser, id int) (models.NewUserResponse, error) {
 	stmt := `
-		INSERT INTO budget (user_id, amount)
+		INSERT INTO budget (id_user, amount)
 		VALUES ($1, $2)
-		RETURNING budget_id, user_id, amount
+		RETURNING id_budget, id_user, amount
 		`
 
 	tx, err := e.NewDb.Begin()
@@ -34,8 +34,9 @@ func (e *ExpencesDBSt) NewUserDB(newUser models.NewUser) (models.NewUserResponse
 		}
 
 	}()
+
 	respNewUser := models.NewUserResponse{}
-	row := tx.QueryRow(stmt, newUser.UserID, newUser.Amount)
+	row := tx.QueryRow(stmt, id, newUser.Amount)
 	err = row.Scan(
 		&respNewUser.BudgetID,
 		&respNewUser.UserID,

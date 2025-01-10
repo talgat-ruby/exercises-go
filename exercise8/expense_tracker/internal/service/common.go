@@ -6,8 +6,8 @@ import (
 )
 
 type ServiceExpence interface {
-	ServiceNewUser(newUser models.NewUser) (models.NewUserResponse, error)
-	ServiceEditUser(editUser models.EditUser) error
+	ServiceNewUser(newUser models.NewUser, authToken string) (models.NewUserResponse, error)
+	ServiceEditUser(editUser models.EditUserRequest, id string) error
 	ServiceBalance(id int) (map[string]float64, error)
 	ServiceGetExpenses(id int) (models.TransactionsReponse, error)
 }

@@ -15,14 +15,15 @@ func (h *expensesHandler) ExpenseEdit(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "User not found", http.StatusUnauthorized)
 		return
 	}
-	editUser := &models.EditUser{}
+	id := r.PathValue("id")
+	editUser := &models.EditUserData{}
 	err := request.RequestJSON(w, r, editUser)
 	if err != nil {
 		http.Error(w, "Bad request", http.StatusBadRequest)
 		slog.Error("failed to write", "error", err)
 		return
 	}
-	err = h.serviceExpence.ServiceEditUser(*editUser)
+	err = h.serviceExpence.ServiceEditUser(editUser.RequestUserEdit, id)
 	if err != nil {
 		http.Error(w, "status internal server", http.StatusInternalServerError)
 		slog.Error("failed to write", "error", err)

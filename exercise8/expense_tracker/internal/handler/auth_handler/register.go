@@ -1,6 +1,7 @@
 package authhandler
 
 import (
+	"fmt"
 	"log/slog"
 	"net/http"
 	"os"
@@ -79,10 +80,14 @@ func (h *AuthentificatorHandler) Register(w http.ResponseWriter, r *http.Request
 		http.Error(w, "failed to register user", http.StatusInternalServerError)
 		return
 	}
+	fmt.Printf("id:(%d)\n", dbResp.ID)
+	fmt.Printf("email:(%s)\n", dbResp.Email)
+	fmt.Printf("id:(%s)\n", os.Getenv("SECRET_TOKEN"))
+
 	tokenpair, err := auth.GenerateToken(&models.UserData{
 		ID:    dbResp.ID,
 		Email: dbResp.Email,
-	}, os.Getenv("TOKEN_SECRET"))
+	}, os.Getenv("SECRET_TOKEN"))
 	if err != nil {
 		log.ErrorContext(
 			ctx,

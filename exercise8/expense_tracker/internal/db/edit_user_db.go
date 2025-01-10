@@ -5,7 +5,8 @@ import (
 	"tracker/internal/models"
 )
 
-func (e *ExpencesDBSt) DBEditUser(editUser models.EditUser) error {
+func (e *ExpencesDBSt) DBEditUser(editUser models.EditUserRequest, idUser int) error {
+	budgetId := 0
 	tx, err := e.NewDb.Begin()
 	if err != nil {
 		return err
@@ -34,9 +35,9 @@ func (e *ExpencesDBSt) DBEditUser(editUser models.EditUser) error {
 	WHERE id_user = $2
 	RETURNING id_budget;
 	`
-	row := tx.QueryRow(stmt, editUser.Expense, editUser.IdUser)
+	row := tx.QueryRow(stmt, editUser.Expense, idUser)
 	err = row.Scan(
-		&editUser.IdBudget,
+		&budgetId,
 	)
 	if err != nil {
 		return err
@@ -45,7 +46,7 @@ func (e *ExpencesDBSt) DBEditUser(editUser models.EditUser) error {
 	INSERT INTO transactions (id_user, id_budget, expense, comment, expense_category)
 	VALUES ($1, $2, $3, $4, $5);
 	`
-	_, err = tx.Exec(query, editUser.IdUser, editUser.IdBudget, editUser.Expense, editUser.Comment, editUser.ExpenseCategory)
+	_, err = tx.Exec(query, idUser, budgetId, editUser.Expense, editUser.Comment, editUser.ExpenseCategory)
 	if err != nil {
 		return err
 	}

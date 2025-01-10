@@ -3,15 +3,23 @@ package service
 import (
 	"errors"
 	"math"
+	"os"
+	"tracker/internal/auth"
 	"tracker/internal/models"
 )
 
-func (s *serviceExpence) ServiceNewUser(newUser models.NewUser) (models.NewUserResponse, error) {
+func (s *serviceExpence) ServiceNewUser(newUser models.NewUser, authToken string) (models.NewUserResponse, error) {
 	if newUser.Amount < 0 {
-		newUser.Amount = int(math.Abs(float64(newUser.Amount)))
+		newUser.Amount = math.Abs(newUser.Amount)
 	}
-	if newUser.UserID == 0 || newUser.Amount <= 0 {
+
+	userData, err := auth.ParseToken(authToken, os.Getenv("SECRET_TOKEN"))
+	if newUser.Amount <= 0 || userData.ID == 0 {
 		return models.NewUserResponse{}, errors.New("user not found")
 	}
-	return s.dbExpence.NewUserDB(newUser)
+	if err != nil {
+		return models.NewUserResponse{}, err
+	}
+
+	return s.dbExpence.NewUserDB(newUser, userData.ID)
 }

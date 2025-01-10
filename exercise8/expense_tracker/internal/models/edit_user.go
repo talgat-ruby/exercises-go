@@ -7,3 +7,13 @@ type EditUser struct {
 	Comment         string  `json:"comment"`
 	ExpenseCategory string  `json:"expense_category"`
 }
+
+type EditUserData struct {
+	RequestUserEdit EditUserRequest `json:"data"`
+}
+
+type EditUserRequest struct {
+	Expense         float64 `json:"expense"`
+	Comment         string  `json:"comment"`
+	ExpenseCategory string  `json:"expense_category"`
+}

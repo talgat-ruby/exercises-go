@@ -1,6 +1,7 @@
 package db
 
 import (
+	"context"
 	"database/sql"
 	"errors"
 	"fmt"
@@ -12,9 +13,11 @@ import (
 type ExpencesDB interface {
 	Init() (error, *sql.DB)
 	NewUserDB(newUser models.NewUser) (models.NewUserResponse, error)
-	DBEditUser(editUser models.EditUser) error
+	DBEditUser(editUser models.EditUserRequest, id int) error
 	DBBalance(id int) (map[string]float64, error)
 	DBGetExpenses(id int) (models.TransactionsReponse, error)
+	DBRegister(ctx context.Context, inp *models.DBModelUser) (*models.DBModelUser, error)
+	DbLogin(email string, ctx context.Context) (*models.DBModelUser, error)
 }
 
 type ExpencesDBSt struct {

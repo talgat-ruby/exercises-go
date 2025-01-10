@@ -1,11 +1,13 @@
 package models
 
+type RequestNewUser struct {
+	NewUserRequest NewUser `json:"data"`
+}
 type NewUser struct {
-	UserID int `json:"user_id"`
-	Amount int `json:"budget"`
+	Amount float64 `json:"budget"`
 }
 type NewUserResponse struct {
-	UserID   int `json:"user_id"`
-	BudgetID int `json:"budget_id"`
-	Amount   int `json:"budget"`
+	UserID   int     `json:"user_id"`
+	BudgetID int     `json:"budget_id"`
+	Amount   float64 `json:"budget"`
 }
