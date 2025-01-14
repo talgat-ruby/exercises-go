@@ -1,0 +1,29 @@
+services:
+#  server:
+#    build:
+#      context: .
+#      target: final
+#    ports:
+#      - 8080:8080
+  db:
+    image: postgres
+    container_name: blog_db
+    restart: always
+    user: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_URL='postgres://postgres:root@localhost:5432/postgres?sslmode=disable'
+    ports:
+      - 54322:5432
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+volumes:
+  db-data:
+
