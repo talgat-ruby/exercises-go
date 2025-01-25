@@ -25,4 +25,7 @@ func TestIsChangeEnough(t *testing.T) {
 			t.Errorf("isChangeEnough(%v, %f) was incorrect, got: %t, expected: %t.", r.changes, r.total, out, r.exp)
 		}
 	}
+	// changeEnoush := func isChangeEnough( change []int, total float64 )bool {
+
+	// }
 }
