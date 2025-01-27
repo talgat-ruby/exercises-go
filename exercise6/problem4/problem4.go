@@ -1,12 +1,16 @@
 package problem4
 
 import (
+	"sync"
 	"time"
 )
 
-func worker(id int, _ *[]string, ch chan<- int) {
+func worker(id int, _ *[]string, ch chan<- int, once *sync.Once) {
 	// TODO wait for shopping list to be completed
-	ch <- id
+	once.Do(func() {
+		ch <- id
+	})
+
 }
 
 func updateShopList(shoppingList *[]string) {
@@ -19,9 +23,10 @@ func updateShopList(shoppingList *[]string) {
 
 func notifyOnShopListUpdate(shoppingList *[]string, numWorkers int) <-chan int {
 	notifier := make(chan int)
+	var once sync.Once
 
 	for i := range numWorkers {
-		go worker(i+1, shoppingList, notifier)
+		go worker(i+1, shoppingList, notifier, &once)
 		time.Sleep(time.Millisecond) // order matters
 	}
 

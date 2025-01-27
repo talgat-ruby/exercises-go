@@ -8,12 +8,9 @@ import (
 
 func task() {
 	start := time.Now()
-	var t *time.Timer
-	t = time.AfterFunc(
-		randomDuration(),
-		func() {
+	time.AfterFunc(
+		randomDuration(), func() {
 			fmt.Println(time.Now().Sub(start))
-			t.Reset(randomDuration())
 		},
 	)
 	time.Sleep(5 * time.Second)
