@@ -1,5 +1,7 @@
 package problem2
 
+import "runtime"
+
 // add - sequential code to add numbers, don't update it, just to illustrate concept
 func add(numbers []int) int64 {
 	var sum int64
@@ -11,6 +13,12 @@ func add(numbers []int) int64 {
 
 func addConcurrently(numbers []int) int64 {
 	var sum int64
+	ch := make(chan int64)
+	cpuNum := runtime.NumCPU()
 
+	go addSlcToCh(slc)
+	for i := 0; i < cpuNum; i++ {
+
+	}
 	return sum
 }
