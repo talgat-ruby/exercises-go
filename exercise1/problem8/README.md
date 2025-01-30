@@ -1,15 +1,28 @@
-# Problem 8
+package main
 
-Create a function that takes a string and returns the number (count) of vowels contained within it.
+import (
+	"fmt"
+	"strings"
+)
 
-```go
-countVowels("Celebration") // 5
+// countVowels takes a string and returns the count of vowels in it
+func countVowels(s string) int {
+	vowels := "aeiouAEIOU"
+	count := 0
 
-countVowels("Palm") // 1
+	// Loop through each character in the string
+	for _, char := range s {
+		// Check if the character is in the vowels string
+		if strings.ContainsRune(vowels, char) {
+			count++
+		}
+	}
 
-countVowels("Prediction") // 4
-```
+	return count
+}
 
-**Notes**
-
-* **a, e, i, o, u** are considered vowels (not y).
+func main() {
+	fmt.Println(countVowels("Celebration")) // Output: 5
+	fmt.Println(countVowels("Palm"))        // Output: 1
+	fmt.Println(countVowels("Prediction"))  // Output: 4
+}
