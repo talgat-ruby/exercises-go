@@ -1,8 +1,22 @@
 package problem5
 
-func producer() {}
+func producer(list []string, ch chan<- string) {
+	for _, v := range list {
+		ch <- v
+	}
+	close(ch)
+}
 
-func consumer() {}
+func consumer(ch <-chan string) string {
+	var text string
+	for v := range ch {
+		if text != "" {
+			text += " "
+		}
+		text = text + v
+	}
+	return text
+}
 
 func send(
 	words []string,

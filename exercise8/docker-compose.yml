@@ -1,0 +1,50 @@
+services:
+#    server:
+#        build:
+#        context: .
+#        target: final
+#        environment:
+#        - API_PORT=80
+#        - DB_HOST=db
+#        - DB_PORT=5432
+#        - DB_NAME=$DB_NAME
+#        - DB_USER=$DB_USER
+#        - DB_PASSWORD=$DB_PASSWORD
+#        ports:
+#        - ${API_PORT}:80
+#        depends_on:
+#        db:
+#            condition: service_healthy
+
+    db:
+        image: postgres
+        restart: always
+        volumes:
+          - ./db-data:/var/lib/postgresql/data
+        environment:
+          - POSTGRES_DB=$DB_NAME
+          - POSTGRES_USER=$DB_USER
+          - POSTGRES_PASSWORD=$DB_PASSWORD
+        ports:
+          - ${DB_PORT}:5432
+        healthcheck:
+          test: [ "CMD", "pg_isready" ]
+          interval: 10s
+          timeout: 5s
+          retries: 5
+
+    migrate:
+        image: migrate/migrate
+        profiles: [ "tools" ]
+        entrypoint: [
+          "migrate",
+          "-path",
+          "./migrations",
+          "-database",
+          "postgres://$DB_USER:$DB_PASSWORD@db:5432/$DB_NAME?sslmode=disable"
+        ]
+        volumes:
+          - ./internal/db/migrations:/migrations
+        depends_on:
+          db:
+            condition: service_healthy
