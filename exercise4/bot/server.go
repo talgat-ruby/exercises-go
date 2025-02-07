@@ -34,6 +34,9 @@ func startServer() <-chan struct{} {
 		IdleTimeout: 2 * time.Minute,
 	}
 
+	http.HandleFunc("/ping", handlePing) // Пинг
+	http.HandleFunc("/move", handleMove) // Ходы
+
 	go func() {
 		err := srv.Serve(list)
 		if !errors.Is(err, http.ErrServerClosed) {
