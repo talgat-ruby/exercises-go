@@ -1,0 +1,17 @@
+IMAGE_NAME = myblog:latest
+
+.PHONY: build
+build:
+	go build -o bin/myblog ./cmd/main.go
+
+.PHONY: run
+run: 
+	go run ./cmd/main.go
+
+.PHONY: docker-build
+docker-build:
+	docker build -t $(IMAGE_NAME) -f docker/Dockerfile .
+
+.PHONY: docker-run
+docker-run:
+	docker run --name myblog_container -p 8080:8080 --rm $(IMAGE_NAME)
