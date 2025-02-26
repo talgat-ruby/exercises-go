@@ -32,4 +32,8 @@ Get the size of the linked list.
 
 Check if the linked list is empty.
 
+- _Reverse_
+
+Reverse linked list by changing the links between elements
+
 ! Please check the tests for signature and more examples.

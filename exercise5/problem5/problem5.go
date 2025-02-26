@@ -1,8 +1,25 @@
 package problem5
 
-func producer() {}
+import "fmt"
 
-func consumer() {}
+func producer(words []string, ch chan<- string) {
+	defer close(ch)
+	for _, word := range words {
+		ch <- word
+	}
+}
+
+func consumer(ch <-chan string) string {
+	var result string
+	for word := range ch {
+		if result == "" {
+			result += word
+		} else {
+			result += fmt.Sprintf(" %s", word)
+		}
+	}
+	return result
+}
 
 func send(
 	words []string,
