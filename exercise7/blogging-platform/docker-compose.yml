@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15
+    container_name: blogging-platform-db
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: blogging_platform
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: blogging-platform-app
+    restart: always
+    depends_on:
+      - db
+    environment:
+      - DB_URL=postgres://user:password@db:5432/blogging_platform?sslmode=disable
+    ports:
+      - "8080:8080"
+    command: [ "./app" ] # Команда для запуска контейнера
+
+volumes:
+  postgres_data:
