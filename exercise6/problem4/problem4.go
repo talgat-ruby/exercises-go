@@ -1,11 +1,19 @@
 package problem4
 
 import (
+	"sync"
 	"time"
 )
 
-func worker(id int, _ *[]string, ch chan<- int) {
-	// TODO wait for shopping list to be completed
+var shopListCond = sync.NewCond(&sync.Mutex{})
+var listFull bool
+
+func worker(id int, shoppingList *[]string, ch chan<- int) {
+	shopListCond.L.Lock()
+	defer shopListCond.L.Unlock()
+	for !listFull {
+		shopListCond.Wait()
+	}
 	ch <- id
 }
 
@@ -15,6 +23,10 @@ func updateShopList(shoppingList *[]string) {
 	*shoppingList = append(*shoppingList, "apples")
 	*shoppingList = append(*shoppingList, "milk")
 	*shoppingList = append(*shoppingList, "bake soda")
+	shopListCond.L.Lock()
+	listFull = true
+	shopListCond.Signal()
+	shopListCond.L.Unlock()
 }
 
 func notifyOnShopListUpdate(shoppingList *[]string, numWorkers int) <-chan int {
