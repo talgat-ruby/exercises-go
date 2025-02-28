@@ -1,4 +1,5 @@
 package problem7
 
-func swap() {
+func swap(x, y *int) {
+	*x, *y = *y, *x
 }
