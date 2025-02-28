@@ -1,9 +1,12 @@
 package problem1
 
 func incrementConcurrently(num int) int {
+
+	result := make(chan int)
+
 	go func() {
-		num++
+		result <- num + 1
 	}()
 
-	return num
+	return <-result
 }
