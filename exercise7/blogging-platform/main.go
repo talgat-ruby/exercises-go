@@ -2,48 +2,38 @@ package main
 
 import (
 	"context"
-	"log/slog"
+	"fmt"
+	"log"
 	"os"
 	"os/signal"
 
-	"github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/internal/api"
-	"github.com/talgat-ruby/exercises-go/exercise7/blogging-platform/internal/db"
+	"blogging-platform/internal/api"
+	"blogging-platform/internal/db"
 )
 
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
-	// db
-	_, err := db.New()
+	// Подключение к БД
+	_, err := db.InitDB() // Теперь вызываем `InitDB()`
 	if err != nil {
-		slog.ErrorContext(
-			ctx,
-			"initialize service error",
-			"service", "db",
-			"error", err,
-		)
-		panic(err)
+		log.Fatalf("❌ Ошибка подключения к БД: %v", err)
 	}
 
-	// api
+	// Запуск API
 	a := api.New()
 	if err := a.Start(ctx); err != nil {
-		slog.ErrorContext(
-			ctx,
-			"initialize service error",
-			"service", "api",
-			"error", err,
-		)
-		panic(err)
+		log.Fatalf("❌ Ошибка запуска API: %v", err)
 	}
 
+	// Завершаем работу при нажатии Ctrl+C
 	go func() {
-		shutdown := make(chan os.Signal, 1)   // Create channel to signify s signal being sent
-		signal.Notify(shutdown, os.Interrupt) // When an interrupt is sent, notify the channel
+		shutdown := make(chan os.Signal, 1)
+		signal.Notify(shutdown, os.Interrupt)
 
 		sig := <-shutdown
-		slog.WarnContext(ctx, "signal received - shutting down...", "signal", sig)
-
+		fmt.Println("⚠️ Получен сигнал завершения:", sig)
 		cancel()
 	}()
 }
