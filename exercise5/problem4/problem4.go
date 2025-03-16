@@ -12,8 +12,9 @@ func sum(nums []int) int {
 	go iter(ch, nums)
 
 	var sum int
-	for n := range ch {
-		sum += n
+	for i := 0; i < len(nums); i++ {
+		sum += <-ch
 	}
+
 	return sum
 }

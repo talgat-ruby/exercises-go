@@ -3,17 +3,28 @@ package problem7
 import (
 	"fmt"
 	"math/rand"
+	"sync"
 	"time"
 )
 
 func task() {
 	start := time.Now()
 	var t *time.Timer
+	m := sync.Mutex{}
+
+	resetTimer := func() {
+		m.Lock() // Lock before accessing the timer
+		defer m.Unlock()
+
+		// Reset the timer inside the critical section
+		t.Reset(randomDuration())
+	}
+
 	t = time.AfterFunc(
 		randomDuration(),
 		func() {
 			fmt.Println(time.Now().Sub(start))
-			t.Reset(randomDuration())
+			resetTimer()
 		},
 	)
 	time.Sleep(5 * time.Second)
