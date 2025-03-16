@@ -1,3 +1,5 @@
 package main
 
-func addUp() {}
+func addUp(n int) int {
+	return n * (n + 1) / 2
+}
