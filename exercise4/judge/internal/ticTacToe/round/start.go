@@ -11,6 +11,11 @@ import (
 	"github.com/talgat-ruby/exercises-go/exercise4/judge/internal/ticTacToe/player"
 )
 
+/*
+Метод Start для запуска раунда
+Метод Start запускает раунд. Он принимает контекст ctx и номер раунда num.
+Сначала вызывается метод r.startPrint(num), который выводит информацию о начале раунда.
+*/
 func (r *Round) Start(ctx context.Context, num int) {
 	r.startPrint(num)
 
