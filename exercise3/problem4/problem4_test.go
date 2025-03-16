@@ -451,4 +451,49 @@ func TestLinkedList(t *testing.T) {
 			}
 		})
 	})
+
+	t.Run("Reverse", func(t *testing.T) {
+		table := []struct {
+			list     []any
+			expected []any
+		}{
+			{
+				[]any{1, 2, 3, 4, 5},
+				[]any{5, 4, 3, 2, 1},
+			},
+			{
+				[]any{"a", "b", "c", "d", "e"},
+				[]any{"e", "d", "c", "b", "a"},
+			},
+			{
+				[]any{true, false},
+				[]any{false, true},
+			},
+		}
+
+		for _, r := range table {
+			ll := &LinkedList[any]{}
+			for _, value := range r.list {
+				ll.Add(
+					&Element[any]{
+						value: value,
+					},
+				)
+			}
+
+			ll.Reverse()
+
+			actual := ll.List()
+			if len(actual) != len(r.expected) {
+				t.Errorf("Reverse(%v) was incorrect, got size: %d, expected size: %d", r.list, len(actual), len(r.expected))
+			}
+
+			for i := 0; i < len(actual); i++ {
+				if actual[i] != r.expected[i] {
+					t.Errorf("Reverse(%v) was incorrect, actual value: %v, expect value: %v", r.list, actual[i], r.expected[i])
+				}
+			}
+		}
+
+	})
 }
