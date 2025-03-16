@@ -18,7 +18,7 @@ func TestHighestDigit(t *testing.T) {
 	for _, r := range table {
 		out := highestDigit(r.num)
 		if out != r.exp {
-			t.Errorf("emojify(%d) was incorrect, expected: %d, got: %d.", r.num, r.exp, out)
+			t.Errorf("highestDigit(%d) was incorrect, expected: %d, got: %d.", r.num, r.exp, out)
 		}
 	}
 }

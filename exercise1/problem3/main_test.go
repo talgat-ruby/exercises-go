@@ -21,7 +21,7 @@ func TestNumberSquares(t *testing.T) {
 	for _, r := range table {
 		out := numberSquares(r.num)
 		if out != r.exp {
-			t.Errorf("numberSquares(%d) was incorrect, expected: %d, got: %d.", r.num, r.exp, out)
+			t.Errorf("numberSquares(%d) был неверен, ожидалось: %d, получено: %d.", r.num, r.exp, out)
 		}
 	}
 }
