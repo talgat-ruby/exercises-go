@@ -1,8 +1,28 @@
 package problem5
 
-func producer() {}
+func producer(words []string, ch chan<- string) {
+	ch <- "first"
+	for _, n := range words {
+		ch <- n
+	}
+	ch <- "last"
+	close(ch)
+}
 
-func consumer() {}
+func consumer(ch <-chan string) string {
+	var sum string
+	var word string
+	for n := range ch {
+		if n != "last" && word != "first" && n != "first" {
+			sum += word + " "
+		}
+		if n == "last" {
+			sum += word
+		}
+		word = n
+	}
+	return sum
+}
 
 func send(
 	words []string,
