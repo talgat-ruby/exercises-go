@@ -1,18 +1,29 @@
 package problem7
 
 import (
-	"fmt"
 	"math/rand"
+	"sync"
 	"time"
 )
 
+var (
+	once     sync.Once
+	initLock sync.Mutex
+	initRun  int
+)
+
+func initConf() {
+	initLock.Lock()
+	defer initLock.Unlock()
+	initRun++
+}
+
 func task() {
-	start := time.Now()
+	once.Do(initConf)
+
 	var t *time.Timer
 	t = time.AfterFunc(
-		randomDuration(),
-		func() {
-			fmt.Println(time.Now().Sub(start))
+		randomDuration(), func() {
 			t.Reset(randomDuration())
 		},
 	)

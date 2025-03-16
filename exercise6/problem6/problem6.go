@@ -4,17 +4,18 @@ import (
 	"sync"
 )
 
+var once sync.Once
+
 func runTasks(init func()) {
 	var wg sync.WaitGroup
-
-	for range 10 {
+	count := 0
+	for count < 10 {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-
-			//TODO: modify so that load function gets called only once.
-			init()
+			once.Do(init)
 		}()
+		count++
 	}
 	wg.Wait()
 }
