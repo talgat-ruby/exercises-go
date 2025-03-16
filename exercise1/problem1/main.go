@@ -1,3 +1,8 @@
 package main
 
-func addUp() {}
+func addUp(num int) int {
+	if num == 1 {
+		return num
+	}
+	return (addUp((num - 1)) + num)
+}
