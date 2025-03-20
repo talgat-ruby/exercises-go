@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-//go:embed students.txt
+// go:embed students.txt
 var studentsData string
 
 func main() {
